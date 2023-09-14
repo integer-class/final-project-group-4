@@ -40,7 +40,7 @@ The purpose of the app is to streamline the process of managing the inventory of
 
 - Project Sponsor: State Polytechnic of Malang
 - Project Manager: Dicha Zelianivan Arkana
-- Project Team: Dicha Zelianivan Arkana, Davis Maulana Hermanto, Muhammad Baihaqi Aulia Asy'ari, Sri Kresna Maha Dewa, Steven Christian Susanto
+- Project Team: Dicha Zelianivan Arkana, Davis Maulana Hermanto, Muhammad Baihaqi Aulia Asy'ari, Sri Kresna Maha Dewa, Steven Christian Susanto, Yanuar Thaif Chalil Candra
 - Project Customers: State Polytechnic of Malang
 - Project Users: State Polytechnic of Malang staff, faculty, and students
 
