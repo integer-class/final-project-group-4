@@ -11,7 +11,7 @@ The implementation details of this project, including the tech stack, UI designs
 
 ## Members of the Project
 
-This project belongs to the group `anunya-anu` (please excuse the name, it's just some random words that we came up with). The members are listed as follows:
+This project belongs to group 4. The members are listed as follows:
 
 - Dicha Zelianivan Arkana (2241720002) - [@elianiva](https://github.com/elianiva)
 - Davis Maulana Hermanto (2241720255) - [@davismaulana](https://github.com/davismaulana)
