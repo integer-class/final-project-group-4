@@ -44,7 +44,7 @@ The purpose of the app is to streamline the process of managing the inventory of
 - Project Customers: State Polytechnic of Malang
 - Project Users: State Polytechnic of Malang staff, faculty, and students
 
-Please note that this project is just a final project for the 3rd semester, so the project sponsor is just a fictional entity.
+Please note that this project is just a final project for the 3rd semester, so things like project sponsor, project customer, etc, are just fictional entities.
 
 ## Project Deliverables
 
