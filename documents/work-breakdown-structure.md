@@ -1,4 +1,4 @@
 # Work Breakdown Structure
 
-## Project Phase / Major Deliverables
+![Work Breakdown Structure](./wbs.png)
 
