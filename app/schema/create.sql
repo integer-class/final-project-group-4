@@ -109,8 +109,8 @@ CREATE TABLE
     [UserID]       INT      NOT NULL,
     [BeforeUserID] INT      NULL,
     [AfterUserID]  INT      NULL,
-    -- 0 = requested, 1 = pending, 2 = approved, 3 = rejected
-    [Status]       INT      NOT NULL,
+    -- PENDING, APPROVED, REJECTED
+    [Status]       VARCHAR  NOT NULL,
     [CreatedAt]    DATETIME NOT NULL DEFAULT GETDATE(),
     [UpdatedAt]    DATETIME NOT NULL DEFAULT GETDATE(),
     [DeletedAt]    DATETIME NULL,
