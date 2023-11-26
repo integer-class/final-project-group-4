@@ -91,6 +91,8 @@ CREATE TABLE
     [UserID]      INT          NOT NULL,
     [Title]       VARCHAR(255) NOT NULL,
     [Description] VARCHAR(MAX) NOT NULL,
+    [StartsAt]    DATETIME     NOT NULL,
+    [EndsAt]      DATETIME     NOT NULL,
     [CreatedAt]   DATETIME     NOT NULL DEFAULT GETDATE(),
     [UpdatedAt]   DATETIME     NOT NULL DEFAULT GETDATE(),
     [DeletedAt]   DATETIME     NULL,
