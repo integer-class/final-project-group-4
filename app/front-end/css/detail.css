@@ -1,0 +1,58 @@
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 85vh;
+}
+
+.detail-card {
+    border-style: solid;
+    border-color: rgba(0, 0, 0, 0.305);
+    border-radius: 25px;
+    width: 75vw;
+    height: 80vh;
+}
+
+.card-head {
+    border-radius: 22px 22px 0 0;
+    display: flex;
+    flex-direction: column;
+    height: 50vh;
+    color: white;
+    padding: 1rem;
+    justify-content: space-between;
+    background-size: cover;
+}
+
+.back-btn svg {
+    display: flex;
+    height: 4rem;
+    stroke: white;
+}
+
+.card-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5rem;
+}
+
+.title-text h1 {
+    font-size: 4rem;
+    font-weight: 400;
+}
+
+.reserve-btn {
+    font-size: 1.5rem;
+    padding: 0.5rem 1rem;
+    color: white;
+    background-color: orange;
+    border-style: none;
+    border-radius: 15px;
+    height: fit-content;
+}
+
+th,
+td {
+    width: 50%;
+}
