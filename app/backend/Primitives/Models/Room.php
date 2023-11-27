@@ -1,6 +1,6 @@
 <?php
 
-namespace Primitives\Model;
+namespace Primitives\Models;
 
 class Room
 {

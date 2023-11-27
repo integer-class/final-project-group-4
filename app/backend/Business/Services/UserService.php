@@ -1,5 +1,7 @@
 <?php
 
+namespace Business\Services;
+
 use RepositoryInterfaces\IUserRepository;
 
 class UserService
@@ -8,7 +10,7 @@ class UserService
     {
     }
 
-    public function getUsers(): array
+    public function getAllUsers(): array
     {
         return $this->userRepository->getAllUsers();
     }

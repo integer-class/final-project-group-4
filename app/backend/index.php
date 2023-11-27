@@ -2,7 +2,10 @@
 
 require_once __DIR__ . "/autoload.php";
 
+use Business\Services\AuthService;
+use Business\Services\UserService;
 use Presentation\Http\Controllers\AppController;
+use Presentation\Http\Controllers\AuthController;
 use Presentation\Http\Controllers\UserController;
 use Presentation\Http\HttpPresenter;
 use Repository\MssqlClient;
@@ -39,15 +42,21 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     // repositories
     $user_repository = new UserRepository($db_client);
 
+    // services
+    $auth_service = new AuthService($user_repository);
+    $user_service = new UserService($user_repository);
+
     // controllers
     $app_controller = new AppController();
-    $user_controller = new UserController($user_repository);
+    $user_controller = new UserController($user_service);
+    $auth_controller = new AuthController($auth_service);
 
     $http_presenter = new HttpPresenter();
 
     // register controllers
     $http_presenter->register($user_controller);
     $http_presenter->register($app_controller);
+    $http_presenter->register($auth_controller);
 }
 
 // handle request

@@ -2,7 +2,10 @@
 
 namespace Primitives\Exceptions;
 
-class InvalidPasswordException
+class InvalidPasswordException extends \Exception
 {
-
+    public function __construct()
+    {
+        parent::__construct("Invalid password.");
+    }
 }
