@@ -8,6 +8,13 @@ class AppController extends Controller
 {
     #[Route('/', 'GET')]
     public function index() {
-        $this->ok(null, "Hello, 世界!");
+        $this->redirect('/login');
+    }
+
+    #[Route('/login', 'GET')]
+    public function login() {
+        $this->view('login', [
+            '__layout_title__' => 'Login'
+        ]);
     }
 }

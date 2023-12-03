@@ -1,0 +1,22 @@
+.app-title {
+    font-family: 'Jost', sans-serif;
+}
+
+.form {
+    max-width: 48rem;
+    width: 100%;
+}
+
+.submit-button {
+    font-family: 'Jost', sans-serif;
+    font-weight: bold;
+    color: white;
+    background-color: var(--color-primary);
+    border: none;
+    padding: 0.75rem 3rem;
+}
+
+.submit-button:hover {
+    background-color: var(--color-primary);
+    filter: brightness(0.9);
+}

@@ -16,6 +16,11 @@ abstract class Controller
         ]);
     }
 
+    protected function redirect(string $location): void
+    {
+        header("Location: $location");
+    }
+
     protected function badRequest(?string $message = "Bad Request"): void
     {
         http_response_code(400);
@@ -23,6 +28,15 @@ abstract class Controller
         echo json_encode([
             "message" => $message
         ]);
+    }
+
+    protected function view(string $view, array $data = []): void
+    {
+        $viewPath = realpath(dirname(__FILE__) . '/../Views');
+
+        require_once "$viewPath/Layout/head.page.php";
+        require_once "$viewPath/$view.page.php";
+        require_once "$viewPath/Layout/foot.page.php";
     }
 
     protected function unauthorized(?string $message = "Unauthorized"): void
@@ -59,10 +73,5 @@ abstract class Controller
         echo json_encode([
             "message" => $message
         ]);
-    }
-
-    protected function redirect(string $url): void
-    {
-        header("Location: $url");
     }
 }

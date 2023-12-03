@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/app/backend/schema/create.sql" dialect="TSQL" />
-    <file url="file://$PROJECT_DIR$/app/backend/schema/drop.sql" dialect="TSQL" />
-    <file url="file://$PROJECT_DIR$/app/backend/schema/seed.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/app/schema/create.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/app/schema/drop.sql" dialect="TSQL" />
+    <file url="file://$PROJECT_DIR$/app/schema/seed.sql" dialect="TSQL" />
+    <file url="PROJECT" dialect="TSQL" />
   </component>
 </project>

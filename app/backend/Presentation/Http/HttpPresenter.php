@@ -50,6 +50,18 @@ class HttpPresenter
             }
         }
 
+        // try to resolve asset path for any routes that is not registered
+        $asset_path = dirname(__FILE__) . '/Views/Assets' . $request_path;
+        if (file_exists($asset_path)) {
+            if (str_ends_with($asset_path, 'css')) {
+                header('Content-Type: text/css');
+            } else {
+                header('Content-Type: ' . mime_content_type($asset_path));
+            }
+            readfile($asset_path);
+            return;
+        }
+
         // by default send not found response if no route is found
         $this->notFound();
     }

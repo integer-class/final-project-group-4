@@ -4,7 +4,7 @@ namespace Presentation\Http\Controllers;
 
 use Business\Services\UserService;
 use Presentation\Http\Attributes\Route;
-use Primitives\Model\User;
+use Primitives\Models\User;
 
 class UserController extends Controller
 {
