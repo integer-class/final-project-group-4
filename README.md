@@ -13,9 +13,9 @@ The implementation details of this project, including the tech stack, UI designs
 
 This project belongs to group 4. The members are listed as follows:
 
-- Dicha Zelianivan Arkana (2241720002) - [@elianiva](https://github.com/elianiva)
-- Davis Maulana Hermanto (2241720255) - [@davismaulana](https://github.com/davismaulana)
-- Muhammad Baihaqi Aulia Asy'ari (2241720145) - [@g4ceneiz](https://github.com/g4ceneiz)
-- Sri Kresna Maha Dewa (2241720244) - [@srikresna](https://github.com/srikresna)
-- Steven Christian Susanto (2241720003) - [@fissureee](https://github.com/Fissureee)
-- Yanuar Thaif Chalil Candra (2241720004) - [@ThisIsElmira](https://github.com/ThisIsElmira)
+- Dicha Zelianivan Arkana (2241720002) - [@elianiva](https://github.com/elianiva) - Fullstack Developer
+- Davis Maulana Hermanto (2241720255) - [@davismaulana](https://github.com/davismaulana) - Frontend Developer
+- Muhammad Baihaqi Aulia Asy'ari (2241720145) - [@g4ceneiz](https://github.com/g4ceneiz) - System Analyst
+- Sri Kresna Maha Dewa (2241720244) - [@srikresna](https://github.com/srikresna) - UI/UX Designer
+- Steven Christian Susanto (2241720003) - [@fissureee](https://github.com/Fissureee) - Frontend Developer
+- Yanuar Thaif Chalil Candra (2241720004) - [@ThisIsElmira](https://github.com/ThisIsElmira) - UI/UX Designer
