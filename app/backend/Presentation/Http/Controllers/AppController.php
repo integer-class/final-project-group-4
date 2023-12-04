@@ -2,19 +2,55 @@
 
 namespace Presentation\Http\Controllers;
 
+use Presentation\Http\Attributes\Authenticated;
 use Presentation\Http\Attributes\Route;
+use Presentation\Http\Attributes\WithSession;
+use Presentation\Http\Helpers\Http;
+use Presentation\Http\Helpers\Session;
+use Primitives\Models\RoleName;
 
 class AppController extends Controller
 {
+    public function __construct(private readonly Session $session)
+    {
+    }
+
     #[Route('/', 'GET')]
-    public function index() {
-        $this->redirect('/login');
+    #[WithSession]
+    public function index(): void
+    {
+        $role = $this->session->getRole();
+        switch ($role) {
+            case RoleName::Administrator:
+                Http::redirect('/admin/dashboard');
+                break;
+            case RoleName::Lecturer:
+                Http::redirect('/lecturer/dashboard');
+                break;
+            case RoleName::Student:
+                Http::redirect('/dashboard');
+                break;
+            default:
+                Http::redirect('/login');
+                break;
+        }
     }
 
     #[Route('/login', 'GET')]
-    public function login() {
+    public function login()
+    {
         $this->view('login', [
             '__layout_title__' => 'Login'
+        ]);
+    }
+
+    #[Route('/admin/dashboard', 'GET')]
+    #[WithSession]
+    #[Authenticated(RoleName::Administrator)]
+    public function dashboard()
+    {
+        $this->view('dashboard', [
+            '__layout_title__' => 'Dashboard'
         ]);
     }
 }

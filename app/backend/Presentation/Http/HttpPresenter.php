@@ -2,8 +2,11 @@
 
 namespace Presentation\Http;
 
+use Presentation\Http\Attributes\Authenticated;
 use Presentation\Http\Attributes\Route;
+use Presentation\Http\Attributes\WithSession;
 use Presentation\Http\Controllers\Controller;
+use Presentation\Http\Helpers\Http;
 
 class HttpPresenter
 {
@@ -29,20 +32,36 @@ class HttpPresenter
                     $route = $attribute->newInstance();
                     if ($route->path === $request_path && $route->method === $request_method) {
                         try {
-                            if ($request_method === "POST" || $request_method === "PUT") {
-                                $body = $this->extractRequestBody();
-                                if ($body === null) {
-                                    $this->badRequest("Body can't be empty!");
+                            if ($request_method === "POST") {
+                                $parameters = $method->getParameters();
+                                // method doesn't have any parameters so just invoke it
+                                if (count($parameters) !== 1) {
+                                    $method->invoke($controller);
                                     return;
                                 }
-                                $dto = $method->getParameters()[0]->getType()->getName();
-                                $body = new $dto($body);
+                                $dto = $parameters[0]->getType()->getName();
+                                // create a new instance of the dto and pass the post data to it
+                                $body = new $dto($_POST);
                                 $method->invoke($controller, $body);
-                            } else {
-                                $method->invoke($controller);
+                                return;
                             }
+
+                            // execute the session attribute if the method has it
+                            $session_attributes = $method->getAttributes(WithSession::class);
+                            foreach ($session_attributes as $session_attribute) {
+                                $session_attribute->newInstance()->startSession();
+                            }
+
+                            // execute the authenticated attribute if the method has it to protect the route
+                            $authenticated_attributes = $method->getAttributes(Authenticated::class);
+                            foreach ($authenticated_attributes as $authenticated_attribute) {
+                                // this will redirect to login page if the user is not authenticated
+                                $authenticated_attribute->newInstance()->isAuthenticatedWithRole();
+                            }
+
+                            $method->invoke($controller);
                         } catch (\ReflectionException $e) {
-                            $this->internalServerError($e->getMessage());
+                            Http::internalServerError($e->getMessage());
                         }
                         return;
                     }
@@ -63,39 +82,6 @@ class HttpPresenter
         }
 
         // by default send not found response if no route is found
-        $this->notFound();
-    }
-
-    private function internalServerError(?string $message = "Internal Server Error"): void
-    {
-        http_response_code(500);
-        header('Content-Type: application/json');
-        echo json_encode([
-            "message" => $message
-        ]);
-    }
-
-    private function badRequest(?string $message = "Bad Request"): void
-    {
-        http_response_code(400);
-        header('Content-Type: application/json');
-        echo json_encode([
-            "message" => $message
-        ]);
-    }
-
-    private function notFound(?string $message = "Not Found"): void
-    {
-        http_response_code(404);
-        header('Content-Type: application/json');
-        echo json_encode([
-            "message" => $message
-        ]);
-    }
-
-    private function extractRequestBody(): mixed
-    {
-        $body = file_get_contents('php://input');
-        return json_decode($body, true);
+        Http::notFound();
     }
 }

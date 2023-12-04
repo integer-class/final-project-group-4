@@ -7,6 +7,7 @@ use Business\Services\UserService;
 use Presentation\Http\Controllers\AppController;
 use Presentation\Http\Controllers\AuthController;
 use Presentation\Http\Controllers\UserController;
+use Presentation\Http\Helpers\Session;
 use Presentation\Http\HttpPresenter;
 use Repository\MssqlClient;
 use Repository\UserRepository;
@@ -33,11 +34,15 @@ $http_presenter = null;
 if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     $_ENV["APP_HAS_INITIALISED"] = true;
 
-    $db_client = MssqlClient::getInstance(getenv("DB_HOST"),
-        getenv("DB_PORT"),
-        getenv("DB_DATABASE"),
-        getenv("DB_USERNAME"),
-        getenv("DB_PASSWORD"));
+    // singletons
+    $db_client = MssqlClient::getInstance(
+        host: getenv("DB_HOST"),
+        port: getenv("DB_PORT"),
+        database: getenv("DB_DATABASE"),
+        username: getenv("DB_USERNAME"),
+        password: getenv("DB_PASSWORD")
+    );
+    $session = Session::getInstance();
 
     // repositories
     $user_repository = new UserRepository($db_client);
@@ -47,9 +52,9 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     $user_service = new UserService($user_repository);
 
     // controllers
-    $app_controller = new AppController();
+    $app_controller = new AppController($session);
     $user_controller = new UserController($user_service);
-    $auth_controller = new AuthController($auth_service);
+    $auth_controller = new AuthController($auth_service, $session);
 
     $http_presenter = new HttpPresenter();
 

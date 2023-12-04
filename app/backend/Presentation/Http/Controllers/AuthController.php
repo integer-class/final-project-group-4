@@ -4,34 +4,61 @@ namespace Presentation\Http\Controllers;
 
 use Business\Services\AuthService;
 use Presentation\Http\Attributes\Route;
+use Presentation\Http\Attributes\WithSession;
 use Presentation\Http\DTO\LoginRequest;
+use Presentation\Http\Helpers\Http;
+use Presentation\Http\Helpers\Session;
 use Primitives\Exceptions\InvalidPasswordException;
 use Primitives\Exceptions\UserNotFoundException;
+use Primitives\Models\RoleName;
 
 class AuthController extends Controller
 {
-    public function __construct(private readonly AuthService $auth_service)
+    public function __construct(private readonly AuthService $auth_service,
+                                private readonly Session     $session)
     {
     }
 
-
     #[Route('/login', 'POST')]
-    public function login(LoginRequest $login_request)
+    public function login(LoginRequest $login_request): void
     {
         try {
-            $user_id = $this->auth_service->login($login_request->username, $login_request->password);
-            $this->ok([
-                "user_id" => $user_id
-            ], "Login successful");
+            $user = $this->auth_service->login($login_request->username, $login_request->password);
+            $this->session->startSession();
+            $this->session->user = [
+                'id' => $user->id,
+                'fullname' => $user->fullname,
+                'username' => $user->username,
+                'email' => $user->email,
+                'phone' => $user->phone,
+                'avatar' => $user->avatar,
+                'role' => $user->role->name
+            ];
+            switch ($user->role->name) {
+                case RoleName::Administrator:
+                    Http::redirect('/admin/dashboard');
+                    break;
+                case RoleName::Lecturer:
+                    Http::redirect('/lecturer/dashboard');
+                    break;
+                case RoleName::Student:
+                    Http::redirect('/dashboard');
+                    break;
+            }
         } catch (InvalidPasswordException $e) {
-            $this->badRequest("Invalid password");
+            error_log($e->getMessage());
+            Http::badRequest("Invalid password");
         } catch (UserNotFoundException $e) {
-            $this->badRequest("User not found");
+            error_log($e->getMessage());
+            Http::badRequest("User not found");
         }
     }
 
-    public function logout()
+    #[Route('/logout', 'POST')]
+    #[WithSession]
+    public function logout(): void
     {
-        $this->ok(null, "Logout successful");
+        $this->session->destroy();
+        Http::redirect('/login');
     }
 }

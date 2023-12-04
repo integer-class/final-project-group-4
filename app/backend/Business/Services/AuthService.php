@@ -4,6 +4,7 @@ namespace Business\Services;
 
 use Primitives\Exceptions\InvalidPasswordException;
 use Primitives\Exceptions\UserNotFoundException;
+use Primitives\Models\User;
 use RepositoryInterfaces\IUserRepository;
 
 class AuthService
@@ -16,17 +17,17 @@ class AuthService
      * @throws UserNotFoundException
      * @throws InvalidPasswordException
      */
-    public function login(string $usernameOrEmail, string $password): string
+    public function login(string $usernameOrEmail, string $password): User
     {
         $user = $this->userRepository->getUserByUsernameOrEmail($usernameOrEmail);
         if ($user === null) {
             throw new UserNotFoundException();
         }
 
-        if (!password_verify($password, $user->password)) {
+        if (!$user->comparePassword($password)) {
             throw new InvalidPasswordException();
         }
 
-        return $user->id;
+        return $user;
     }
 }

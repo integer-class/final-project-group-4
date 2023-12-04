@@ -4,10 +4,10 @@ namespace Primitives\Models;
 
 class Role
 {
-    public string $name;
+    public RoleName $name;
 
     public function __construct(string $name)
     {
-        $this->name = $name;
+        $this->name = RoleName::from($name);
     }
 }
