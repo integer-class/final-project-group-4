@@ -70,6 +70,11 @@ class HttpPresenter
         }
 
         // try to resolve asset path for any routes that is not registered
+        $this->handleStaticFiles($request_path);
+    }
+
+    private function handleStaticFiles(string $request_path): void
+    {
         $asset_path = dirname(__FILE__) . '/Views/Assets' . $request_path;
         if (file_exists($asset_path)) {
             if (str_ends_with($asset_path, 'css')) {

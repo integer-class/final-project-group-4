@@ -22,14 +22,9 @@
 
     <!--  load custom css according to route name, if any  -->
     <?php
-    $routeName = preg_replace('/\//', '.', $_SERVER['REQUEST_URI']);
-    $fileName = ltrim($routeName, '.');
-    $fullPath = realpath(dirname(__FILE__) . "/../Assets/css/$fileName.style.css");
-    if ($fullPath && file_exists($fullPath)) {
-        echo "<link rel='stylesheet' href='/css/$fileName.style.css'>";
-    }
+    \Presentation\Http\Helpers\View::autoloadCss();
     ?>
 </head>
 
-<body class="d-flex align-items-center justify-content-center h-100">
+<body class="h-100">
 

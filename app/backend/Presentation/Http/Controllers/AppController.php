@@ -43,14 +43,4 @@ class AppController extends Controller
             '__layout_title__' => 'Login'
         ]);
     }
-
-    #[Route('/admin/dashboard', 'GET')]
-    #[WithSession]
-    #[Authenticated(RoleName::Administrator)]
-    public function dashboard()
-    {
-        $this->view('dashboard', [
-            '__layout_title__' => 'Dashboard'
-        ]);
-    }
 }

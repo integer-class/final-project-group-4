@@ -1,6 +1,8 @@
 :root {
     --color-primary: #F99D1C;
     --color-secondary: #EFEFEF;
+    --color-white: #FFFFFF;
+    --color-black: #020617;
 }
 
 .input-text {
@@ -19,4 +21,104 @@
     outline: none;
     background-color: var(--color-secondary);
     border: 0.1rem solid var(--color-primary);
+}
+
+/* dashboard styles */
+.content-container {
+    display: flex;
+    justify-content: space-evenly;
+    padding-top: 3rem;
+}
+
+.sidenav {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+}
+
+.sidenav-logo {
+    width: 4rem;
+    height: 4rem;
+    margin-bottom: 4rem;
+}
+
+.sidenav-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidenav-item {
+    width: 4rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2rem;
+}
+
+.sidenav-item.active {
+    background-color: var(--color-primary);
+}
+
+.sidenav-item.active svg {
+    color: var(--color-white);
+}
+
+.sidenav-item svg {
+    width: 2.25rem;
+    height: 2.25rem;
+    color: var(--color-black);
+}
+
+.dashboard-main {
+    padding: 2rem 2rem 2rem 0;
+    flex: 1;
+}
+
+.searchbar {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-secondary);
+    padding: 0.75rem 1rem;
+    width: 100%;
+    border-radius: 1.5rem;
+}
+
+.searchbar svg {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.searchbar-input {
+    border: none;
+    font-size: 1rem;
+    padding-left: 1rem;
+    font-family: 'Open Sans', sans-serif;
+    background-color: var(--color-secondary);
+    width: 100%;
+}
+
+.searchbar-input:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: initial;
+}
+
+.topbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.5rem;
+}
+
+.topbar-profile {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 2rem;
+    object-fit: cover;
+    cursor: pointer;
 }

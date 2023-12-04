@@ -4,6 +4,7 @@ require_once __DIR__ . "/autoload.php";
 
 use Business\Services\AuthService;
 use Business\Services\UserService;
+use Presentation\Http\Controllers\AdminController;
 use Presentation\Http\Controllers\AppController;
 use Presentation\Http\Controllers\AuthController;
 use Presentation\Http\Controllers\UserController;
@@ -55,6 +56,7 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     $app_controller = new AppController($session);
     $user_controller = new UserController($user_service);
     $auth_controller = new AuthController($auth_service, $session);
+    $admin_controller = new AdminController($session);
 
     $http_presenter = new HttpPresenter();
 
@@ -62,6 +64,7 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     $http_presenter->register($user_controller);
     $http_presenter->register($app_controller);
     $http_presenter->register($auth_controller);
+    $http_presenter->register($admin_controller);
 }
 
 // handle request
