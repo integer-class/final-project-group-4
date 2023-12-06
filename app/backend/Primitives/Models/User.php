@@ -4,7 +4,7 @@ namespace Primitives\Models;
 
 class User
 {
-    public int $id;
+    public string $registration_number;
     public string $fullname;
     public string $username;
     public string $password;
@@ -13,7 +13,7 @@ class User
     public string $avatar;
     public Role $role;
 
-    public function __construct(int    $id,
+    public function __construct(string $registration_number,
                                 string $fullname,
                                 string $username,
                                 string $password,
@@ -22,7 +22,7 @@ class User
                                 string $avatar,
                                 Role   $role)
     {
-        $this->id = $id;
+        $this->registration_number = $registration_number;
         $this->fullname = $fullname;
         $this->username = $username;
         $this->password = $password;

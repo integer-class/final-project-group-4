@@ -5,7 +5,7 @@ namespace Presentation\Http\Controllers;
 use Business\Services\AuthService;
 use Presentation\Http\Attributes\Route;
 use Presentation\Http\Attributes\WithSession;
-use Presentation\Http\DTO\LoginRequest;
+use Presentation\Http\DTO\Auth\LoginRequest;
 use Presentation\Http\Helpers\Http;
 use Presentation\Http\Helpers\Session;
 use Primitives\Exceptions\InvalidPasswordException;
@@ -47,10 +47,10 @@ class AuthController extends Controller
             }
         } catch (InvalidPasswordException $e) {
             error_log($e->getMessage());
-            Http::badRequest("Invalid password");
+            Http::badRequest(['password' => 'Invalid password']);
         } catch (UserNotFoundException $e) {
             error_log($e->getMessage());
-            Http::badRequest("User not found");
+            Http::badRequest(['username' => 'User not found']);
         }
     }
 

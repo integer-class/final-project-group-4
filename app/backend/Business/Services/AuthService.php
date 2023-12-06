@@ -19,7 +19,7 @@ class AuthService
      */
     public function login(string $usernameOrEmail, string $password): User
     {
-        $user = $this->userRepository->getUserByUsernameOrEmail($usernameOrEmail);
+        $user = $this->userRepository->getByUsernameOrEmail($usernameOrEmail);
         if ($user === null) {
             throw new UserNotFoundException();
         }

@@ -1,16 +1,17 @@
 CREATE TABLE
     [dbo].[User]
 (
-    [ID]        INT          NOT NULL IDENTITY (1, 1),
-    [FullName]  VARCHAR(255) NOT NULL,
-    [Username]  VARCHAR(255) NOT NULL,
-    [Password]  VARCHAR(255) NOT NULL,
-    [Email]     VARCHAR(255) NOT NULL,
-    [Phone]     VARCHAR(255) NOT NULL,
-    [Avatar]    VARCHAR(255) NOT NULL,
-    [CreatedAt] DATETIME     NOT NULL DEFAULT GETDATE(),
-    [UpdatedAt] DATETIME     NOT NULL DEFAULT GETDATE(),
-    [DeletedAt] DATETIME     NULL,
+    [ID]                 INT          NOT NULL IDENTITY (1, 1),
+    [RegistrationNumber] VARCHAR(255) NULL, -- null if the user is not a student or a lecturer
+    [FullName]           VARCHAR(255) NOT NULL,
+    [Username]           VARCHAR(255) NOT NULL,
+    [Password]           VARCHAR(255) NOT NULL,
+    [Email]              VARCHAR(255) NOT NULL,
+    [Phone]              VARCHAR(255) NOT NULL,
+    [Avatar]             VARCHAR(255) NOT NULL,
+    [CreatedAt]          DATETIME     NOT NULL DEFAULT GETDATE(),
+    [UpdatedAt]          DATETIME     NOT NULL DEFAULT GETDATE(),
+    [DeletedAt]          DATETIME     NULL,
     CONSTRAINT [PK_User] PRIMARY KEY ([ID])
 );
 
