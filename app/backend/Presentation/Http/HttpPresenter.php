@@ -23,6 +23,11 @@ class HttpPresenter
         $request_path = $_SERVER['REQUEST_URI'];
         $request_method = $_SERVER['REQUEST_METHOD'];
 
+        // mock request method since we can't do anything other than POST or GET from the form action
+        if (isset($_POST['_method'])) {
+            $request_method = $_POST['_method'];
+        }
+
         foreach ($this->controllers as $controller) {
             $reflection = new \ReflectionClass($controller);
             $methods = $reflection->getMethods();
