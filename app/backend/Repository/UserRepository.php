@@ -32,6 +32,7 @@ class UserRepository implements IUserRepository
 
         return array_map(function ($user) {
             return new User(
+                $user['Id'],
                 $user['RegistrationNumber'],
                 $user['FullName'],
                 $user['Username'],
@@ -65,6 +66,7 @@ class UserRepository implements IUserRepository
         ", [$id])[0];
 
         return new User(
+            $row['Id'],
             $row['RegistrationNumber'],
             $row['FullName'],
             $row['Username'],
@@ -81,6 +83,7 @@ class UserRepository implements IUserRepository
         $rows = $this->databaseClient->executeQuery("
             SELECT
                 [User].Id as Id,
+                RegistrationNumber,
                 Username,
                 Password,
                 FullName,
@@ -98,6 +101,7 @@ class UserRepository implements IUserRepository
 
         $row = $rows[0];
         return new User(
+            $row['Id'],
             $row['RegistrationNumber'],
             $row['FullName'],
             $row['Username'],

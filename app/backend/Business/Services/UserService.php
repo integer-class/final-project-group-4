@@ -22,7 +22,7 @@ class UserService
         return $this->userRepository->getById($id);
     }
 
-    public function getUserByUsernameOrEmail(string $username_or_email): User | null
+    public function getUserByUsernameOrEmail(string $username_or_email): User|null
     {
         return $this->userRepository->getByUsernameOrEmail($username_or_email);
     }
@@ -31,6 +31,7 @@ class UserService
     {
         $hashed_password = password_hash($raw_user['password'], PASSWORD_DEFAULT);
         $user = new User(
+            id: null,
             registration_number: $raw_user['registration_number'],
             fullname: $raw_user['fullname'],
             username: $raw_user['username'],
@@ -50,6 +51,7 @@ class UserService
             $hashed_password = password_hash($raw_user['password'], PASSWORD_DEFAULT);
         }
         $user = new User(
+            id: $id,
             registration_number: $raw_user['registration_number'],
             fullname: $raw_user['fullname'],
             username: $raw_user['username'],

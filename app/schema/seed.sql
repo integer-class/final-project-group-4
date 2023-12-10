@@ -1,20 +1,20 @@
-INSERT INTO [User] (FullName, Username, Email, Password, Phone, Avatar)
-VALUES ('Administrator', 'administrator', 'admin@localhost.com',
+INSERT INTO [User] (FullName, RegistrationNumber, Username, Email, Password, Phone, Avatar)
+VALUES ('Administrator', NULL, 'administrator', 'admin@localhost.com',
         '$2a$12$rMd7.a71S0.tlVGi36cD9ODTEK52iANR2s5w5DgMOxD3LQPBOz5jG',
         '08123456789', 'default.png'),
-       ('Lecturer 1', 'lecturer1', 'lecturer1@localhost.com',
+       ('Lecturer 1', NULL, 'lecturer1', 'lecturer1@localhost.com',
         '$2a$12$rMd7.a71S0.tlVGi36cD9ODTEK52iANR2s5w5DgMOxD3LQPBOz5jG',
         '08123456789', 'default.png'),
-       ('Lecturer 2', 'lecturer2', 'lecturer2@localhost.com',
+       ('Lecturer 2', NULL, 'lecturer2', 'lecturer2@localhost.com',
         '$2a$12$rMd7.a71S0.tlVGi36cD9ODTEK52iANR2s5w5DgMOxD3LQPBOz5jG',
         '08123456789', 'default.png'),
-       ('Student 1', 'student1', 'student1@localhost.com',
+       ('Student 1', '2241720000', 'student1', 'student1@localhost.com',
         '$2a$12$rMd7.a71S0.tlVGi36cD9ODTEK52iANR2s5w5DgMOxD3LQPBOz5jG',
         '08123456789', 'default.png'),
-       ('Student 2', 'student2', 'student2@localhost.com',
+       ('Student 2', '2241720001', 'student2', 'student2@localhost.com',
         '$2a$12$rMd7.a71S0.tlVGi36cD9ODTEK52iANR2s5w5DgMOxD3LQPBOz5jG',
         '08123456789', 'default.png'),
-       ('Student 3', 'student3', 'student3@localhost.com',
+       ('Student 3', '2241720002', 'student3', 'student3@localhost.com',
         '$2a$12$rMd7.a71S0.tlVGi36cD9ODTEK52iANR2s5w5DgMOxD3LQPBOz5jG',
         '08123456789', 'default.png');
 

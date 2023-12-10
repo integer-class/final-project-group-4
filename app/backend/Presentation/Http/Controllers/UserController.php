@@ -18,14 +18,14 @@ class UserController extends Controller
     #[Route('/users', 'GET')]
     public function getUsers()
     {
-        /* @var $users User[] */
         $users = $this->user_service->getAllUsers();
         Http::ok($users, "Users retrieved successfully");
     }
 
     #[Route('/users', 'GET')]
-    public function getUserById(int $id)
+    public function getUserById()
     {
+        $id = Http::query('id');
         $user = $this->user_service->getUserById($id);
         Http::ok($user, "User retrieved successfully");
     }
@@ -49,8 +49,10 @@ class UserController extends Controller
     }
 
     #[Route('/users', 'PUT')]
-    public function updateUser(int $id, UpdateUserRequest $user)
+    public function updateUser(UpdateUserRequest $user)
     {
+        $id = Http::query('id');
+
         // update avatar if it's provided
         $avatar = null;
         if ($_FILES['avatar'] && $_FILES['avatar']['size'] > 0) {
@@ -70,8 +72,9 @@ class UserController extends Controller
     }
 
     #[Route('/users', 'DELETE')]
-    public function deleteUser(int $id)
+    public function deleteUser()
     {
+        $id = Http::query('id');
         $this->user_service->deleteUser($id);
         Http::ok(null, "User deleted successfully");
     }

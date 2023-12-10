@@ -3,14 +3,17 @@
 require_once __DIR__ . "/autoload.php";
 
 use Business\Services\AuthService;
+use Business\Services\RoomService;
 use Business\Services\UserService;
 use Presentation\Http\Controllers\AdminController;
 use Presentation\Http\Controllers\AppController;
 use Presentation\Http\Controllers\AuthController;
+use Presentation\Http\Controllers\RoomController;
 use Presentation\Http\Controllers\UserController;
 use Presentation\Http\Helpers\Session;
 use Presentation\Http\HttpPresenter;
 use Repository\MssqlClient;
+use Repository\RoomRepository;
 use Repository\UserRepository;
 
 // reads environment from .env file and sets it to the $_ENV superglobal
@@ -47,14 +50,17 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
 
     // repositories
     $user_repository = new UserRepository($db_client);
+    $room_repository = new RoomRepository($db_client);
 
     // services
     $auth_service = new AuthService($user_repository);
     $user_service = new UserService($user_repository);
+    $room_service = new RoomService($room_repository);
 
     // controllers
     $app_controller = new AppController($session);
     $user_controller = new UserController($user_service);
+    $room_controller = new RoomController($room_service);
     $auth_controller = new AuthController($auth_service, $session);
     $admin_controller = new AdminController($session);
 
@@ -65,6 +71,7 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     $http_presenter->register($app_controller);
     $http_presenter->register($auth_controller);
     $http_presenter->register($admin_controller);
+    $http_presenter->register($room_controller);
 }
 
 // handle request

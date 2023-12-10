@@ -29,4 +29,12 @@ class LoginRequest implements DtoRequestContract
 
         return $errors;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'username' => $this->username,
+            'password' => $this->password,
+        ];
+    }
 }
