@@ -1,7 +1,7 @@
 CREATE TABLE
     [dbo].[User]
 (
-    [ID]                 INT          NOT NULL IDENTITY (1, 1),
+    [Id]                 INT          NOT NULL IDENTITY (1, 1),
     [RegistrationNumber] VARCHAR(255) NULL, -- null if the user is not a student or a lecturer
     [FullName]           VARCHAR(255) NOT NULL,
     [Username]           VARCHAR(255) NOT NULL,
@@ -12,59 +12,59 @@ CREATE TABLE
     [CreatedAt]          DATETIME     NOT NULL DEFAULT GETDATE(),
     [UpdatedAt]          DATETIME     NOT NULL DEFAULT GETDATE(),
     [DeletedAt]          DATETIME     NULL,
-    CONSTRAINT [PK_User] PRIMARY KEY ([ID])
+    CONSTRAINT [PK_User] PRIMARY KEY ([Id])
 );
 
 CREATE TABLE
     [dbo].[StudyPrograms]
 (
-    [ID]        INT          NOT NULL IDENTITY (1, 1),
+    [Id]        INT          NOT NULL IDENTITY (1, 1),
     [Name]      VARCHAR(255) NOT NULL,
     [CreatedAt] DATETIME     NOT NULL DEFAULT GETDATE(),
     [UpdatedAt] DATETIME     NOT NULL DEFAULT GETDATE(),
     [DeletedAt] DATETIME     NULL,
-    CONSTRAINT [PK_StudyPrograms ] PRIMARY KEY ([ID])
+    CONSTRAINT [PK_StudyPrograms ] PRIMARY KEY ([Id])
 );
 
 CREATE TABLE
     [dbo].[User_StudyPrograms]
 (
-    [ID]             INT      NOT NULL IDENTITY (1, 1),
+    [Id]             INT      NOT NULL IDENTITY (1, 1),
     [UserID]         INT      NOT NULL,
     [StudyProgramID] INT      NOT NULL,
     [CreatedAt]      DATETIME NOT NULL DEFAULT GETDATE(),
     [UpdatedAt]      DATETIME NOT NULL DEFAULT GETDATE(),
     [DeletedAt]      DATETIME NULL,
-    CONSTRAINT [PK_User_StudyPrograms] PRIMARY KEY ([ID])
+    CONSTRAINT [PK_User_StudyPrograms] PRIMARY KEY ([Id])
 );
 
 CREATE TABLE
     [dbo].[Role]
 (
-    [ID]        INT          NOT NULL IDENTITY (1, 1),
+    [Id]        INT          NOT NULL IDENTITY (1, 1),
     [Name]      VARCHAR(255) NOT NULL,
     [CreatedAt] DATETIME     NOT NULL DEFAULT GETDATE(),
     [UpdatedAt] DATETIME     NOT NULL DEFAULT GETDATE(),
     [DeletedAt] DATETIME     NULL,
-    CONSTRAINT [PK_Role] PRIMARY KEY ([ID])
+    CONSTRAINT [PK_Role] PRIMARY KEY ([Id])
 );
 
 CREATE TABLE
     [dbo].[User_Role]
 (
-    [ID]        INT      NOT NULL IDENTITY (1, 1),
+    [Id]        INT      NOT NULL IDENTITY (1, 1),
     [UserID]    INT      NOT NULL,
     [RoleID]    INT      NOT NULL,
     [CreatedAt] DATETIME NOT NULL DEFAULT GETDATE(),
     [UpdatedAt] DATETIME NOT NULL DEFAULT GETDATE(),
     [DeletedAt] DATETIME NULL,
-    CONSTRAINT [PK_User_Role] PRIMARY KEY ([ID])
+    CONSTRAINT [PK_User_Role] PRIMARY KEY ([Id])
 );
 
 CREATE TABLE
     [dbo].[Room]
 (
-    [ID]             INT          NOT NULL IDENTITY (1, 1),
+    [Id]             INT          NOT NULL IDENTITY (1, 1),
     [Code]           CHAR(4)      NOT NULL,
     [Name]           VARCHAR(255) NOT NULL,
     [Floor]          INT          NOT NULL,
@@ -75,7 +75,7 @@ CREATE TABLE
     [CreatedAt]      DATETIME     NOT NULL DEFAULT GETDATE(),
     [UpdatedAt]      DATETIME     NOT NULL DEFAULT GETDATE(),
     [DeletedAt]      DATETIME     NULL,
-    CONSTRAINT [PK_Room] PRIMARY KEY ([ID])
+    CONSTRAINT [PK_Room] PRIMARY KEY ([Id])
 );
 
 -- REQUESTED means the event is requested by the user and is forwarded to the admin for checking
@@ -87,7 +87,7 @@ CREATE TABLE
 CREATE TABLE
     [dbo].[Event]
 (
-    [ID]          INT          NOT NULL IDENTITY (1, 1),
+    [Id]          INT          NOT NULL IDENTITY (1, 1),
     [RoomID]      INT          NOT NULL,
     [UserID]      INT          NOT NULL,
     [Title]       VARCHAR(255) NOT NULL,
@@ -97,13 +97,13 @@ CREATE TABLE
     [CreatedAt]   DATETIME     NOT NULL DEFAULT GETDATE(),
     [UpdatedAt]   DATETIME     NOT NULL DEFAULT GETDATE(),
     [DeletedAt]   DATETIME     NULL,
-    CONSTRAINT [PK_Room_User] PRIMARY KEY ([ID])
+    CONSTRAINT [PK_Room_User] PRIMARY KEY ([Id])
 );
 
 CREATE TABLE
     [dbo].[Event_Approver]
 (
-    [ID]           INT      NOT NULL IDENTITY (1, 1),
+    [Id]           INT      NOT NULL IDENTITY (1, 1),
     [EventID]      INT      NOT NULL,
     -- we use this to track who comes before and after this user in the approval process
     -- if it's null, it means this is the first or last approver
@@ -115,55 +115,55 @@ CREATE TABLE
     [CreatedAt]    DATETIME NOT NULL DEFAULT GETDATE(),
     [UpdatedAt]    DATETIME NOT NULL DEFAULT GETDATE(),
     [DeletedAt]    DATETIME NULL,
-    CONSTRAINT [PK_Event_Approver] PRIMARY KEY ([ID])
+    CONSTRAINT [PK_Event_Approver] PRIMARY KEY ([Id])
 );
 
 ALTER TABLE
     [dbo].[User_StudyPrograms]
     ADD CONSTRAINT [FK_User_StudyPrograms_User]
-        FOREIGN KEY ([UserID]) REFERENCES [dbo].[User] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE;
+        FOREIGN KEY ([UserID]) REFERENCES [dbo].[User] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE
     [dbo].[User_StudyPrograms]
     ADD CONSTRAINT [FK_User_StudyPrograms_StudyPrograms]
-        FOREIGN KEY ([StudyProgramID]) REFERENCES [dbo].[StudyPrograms] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE;
+        FOREIGN KEY ([StudyProgramID]) REFERENCES [dbo].[StudyPrograms] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE
     [dbo].[User_Role]
     ADD CONSTRAINT [FK_User_Role_User]
-        FOREIGN KEY ([UserID]) REFERENCES [dbo].[User] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE;
+        FOREIGN KEY ([UserID]) REFERENCES [dbo].[User] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE
     [dbo].[User_Role]
     ADD CONSTRAINT [FK_User_Role_Role]
-        FOREIGN KEY ([RoleID]) REFERENCES [dbo].[Role] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE;
+        FOREIGN KEY ([RoleID]) REFERENCES [dbo].[Role] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE
     [dbo].[Event]
     ADD CONSTRAINT [FK_Event_Room]
-        FOREIGN KEY ([RoomID]) REFERENCES [dbo].[Room] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE;
+        FOREIGN KEY ([RoomID]) REFERENCES [dbo].[Room] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE
     [dbo].[Event]
     ADD CONSTRAINT [FK_Event_User]
-        FOREIGN KEY ([UserID]) REFERENCES [dbo].[User] ([ID]) ON DELETE CASCADE ON UPDATE CASCADE;
+        FOREIGN KEY ([UserID]) REFERENCES [dbo].[User] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE
     [dbo].[Event_Approver]
     ADD CONSTRAINT [FK_Event_Approver_Event]
-        FOREIGN KEY ([EventID]) REFERENCES [dbo].[Event] ([ID]) ON DELETE NO ACTION ON UPDATE NO ACTION;
+        FOREIGN KEY ([EventID]) REFERENCES [dbo].[Event] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE
     [dbo].[Event_Approver]
     ADD CONSTRAINT [FK_Event_Approver_User]
-        FOREIGN KEY ([UserID]) REFERENCES [dbo].[User] ([ID]) ON DELETE NO ACTION ON UPDATE NO ACTION;
+        FOREIGN KEY ([UserID]) REFERENCES [dbo].[User] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE
     [dbo].[Event_Approver]
     ADD CONSTRAINT [FK_Event_Approver_BeforeUser]
-        FOREIGN KEY ([BeforeUserID]) REFERENCES [dbo].[User] ([ID]) ON DELETE NO ACTION ON UPDATE NO ACTION;
+        FOREIGN KEY ([BeforeUserID]) REFERENCES [dbo].[User] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 ALTER TABLE
     [dbo].[Event_Approver]
     ADD CONSTRAINT [FK_Event_Approver_AfterUser]
-        FOREIGN KEY ([AfterUserID]) REFERENCES [dbo].[User] ([ID]) ON DELETE NO ACTION ON UPDATE NO ACTION;
+        FOREIGN KEY ([AfterUserID]) REFERENCES [dbo].[User] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION;

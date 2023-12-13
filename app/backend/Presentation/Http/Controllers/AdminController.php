@@ -2,6 +2,7 @@
 
 namespace Presentation\Http\Controllers;
 
+use Business\Services\RoomService;
 use Business\Services\UserService;
 use Presentation\Http\Attributes\Authenticated;
 use Presentation\Http\Attributes\Route;
@@ -11,7 +12,11 @@ use Primitives\Models\RoleName;
 
 class AdminController extends Controller
 {
-    public function __construct(private readonly Session $session, private readonly UserService $userService)
+    public function __construct(
+        private readonly Session     $session,
+        private readonly UserService $userService,
+        private readonly RoomService $roomService
+    )
     {
     }
 
@@ -31,9 +36,11 @@ class AdminController extends Controller
     #[Authenticated(RoleName::Administrator)]
     public function roomList(): void
     {
+        $rooms = $this->roomService->getAllRooms();
         $this->view('admin.room-list', [
             '__layout_title__' => 'Room List',
-            'user' => $this->session->user
+            'user' => $this->session->user,
+            'rooms' => $rooms
         ]);
     }
 

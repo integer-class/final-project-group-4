@@ -62,7 +62,7 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     $user_controller = new UserController($userService);
     $room_controller = new RoomController($roomService);
     $auth_controller = new AuthController($auth_service, $session);
-    $admin_controller = new AdminController($session, $userService);
+    $admin_controller = new AdminController($session, $userService, $roomService);
 
     $http_presenter = new HttpPresenter();
 

@@ -3,7 +3,6 @@
 namespace Repository;
 
 use Primitives\Models\Room;
-use Primitives\Models\User;
 use RepositoryInterfaces\IRoomRepository;
 
 class RoomRepository implements IRoomRepository
@@ -14,9 +13,9 @@ class RoomRepository implements IRoomRepository
 
     public function getAll(): array
     {
-        $rows = $this->mssqlClient->executeQuery("
+        $rooms = $this->mssqlClient->executeQuery("
             SELECT
-                ID,
+                Id,
                 Code,
                 Name,
                 Floor,
@@ -27,14 +26,14 @@ class RoomRepository implements IRoomRepository
                 dbo.Room
         ");
 
-        return array_map(fn($user) => User::fromArray($user), $rows);
+        return array_map(fn($room) => Room::fromArray($room), $rooms);
     }
 
     public function getById(int $id): Room
     {
         $row = $this->mssqlClient->executeQuery("
             SELECT
-                ID,
+                Id,
                 Code,
                 Name,
                 Floor,
@@ -54,7 +53,7 @@ class RoomRepository implements IRoomRepository
     {
         $row = $this->mssqlClient->executeQuery("
             SELECT
-                ID,
+                Id,
                 Code,
                 Name,
                 Floor,
@@ -92,7 +91,7 @@ class RoomRepository implements IRoomRepository
         $this->mssqlClient->executeQuery("
             UPDATE dbo.Room
             SET Code = :code, Name = :name, Floor = :floor, FloorPlanIndex = :floor_plan_index, Capacity = :capacity, Side = :side
-            WHERE ID = :id
+            WHERE Id = :id
         ", [
             'id' => $room->id,
             'code' => $room->code,
