@@ -49,20 +49,20 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     $session = Session::getInstance();
 
     // repositories
-    $user_repository = new UserRepository($db_client);
-    $room_repository = new RoomRepository($db_client);
+    $userRepository = new UserRepository($db_client);
+    $roomRepository = new RoomRepository($db_client);
 
     // services
-    $auth_service = new AuthService($user_repository);
-    $user_service = new UserService($user_repository);
-    $room_service = new RoomService($room_repository);
+    $auth_service = new AuthService($userRepository);
+    $userService = new UserService($userRepository);
+    $roomService = new RoomService($roomRepository);
 
     // controllers
     $app_controller = new AppController($session);
-    $user_controller = new UserController($user_service);
-    $room_controller = new RoomController($room_service);
+    $user_controller = new UserController($userService);
+    $room_controller = new RoomController($roomService);
     $auth_controller = new AuthController($auth_service, $session);
-    $admin_controller = new AdminController($session);
+    $admin_controller = new AdminController($session, $userService);
 
     $http_presenter = new HttpPresenter();
 

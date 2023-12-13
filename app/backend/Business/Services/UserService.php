@@ -3,6 +3,8 @@
 namespace Business\Services;
 
 use Primitives\Models\Role;
+use Primitives\Models\RoleName;
+use Primitives\Models\StudyProgram;
 use Primitives\Models\User;
 use RepositoryInterfaces\IUserRepository;
 
@@ -32,7 +34,7 @@ class UserService
         $hashed_password = password_hash($raw_user['password'], PASSWORD_DEFAULT);
         $user = new User(
             id: null,
-            registration_number: $raw_user['registration_number'],
+            registrationNumber: $raw_user['registration_number'],
             fullname: $raw_user['fullname'],
             username: $raw_user['username'],
             password: $hashed_password,
@@ -40,6 +42,7 @@ class UserService
             phone: $raw_user['phone'],
             avatar: $raw_user['avatar'],
             role: new Role($raw_user['role']),
+            studyProgram: new StudyProgram(null, $raw_user['study_program'] ?? '')
         );
         return $this->userRepository->create($user);
     }
@@ -52,14 +55,15 @@ class UserService
         }
         $user = new User(
             id: $id,
-            registration_number: $raw_user['registration_number'],
+            registrationNumber: $raw_user['registration_number'],
             fullname: $raw_user['fullname'],
             username: $raw_user['username'],
             password: $hashed_password,
             email: $raw_user['email'],
             phone: $raw_user['phone'],
             avatar: $raw_user['avatar'],
-            role: $raw_user['role_id']
+            role: new Role($raw_user['role']),
+            studyProgram: new StudyProgram(null, $raw_user['study_program'] ?? ''),
         );
         return $this->userRepository->update($id, $user);
     }

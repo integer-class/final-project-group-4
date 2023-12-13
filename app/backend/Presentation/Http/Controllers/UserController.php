@@ -11,14 +11,14 @@ use Primitives\Models\User;
 
 class UserController extends Controller
 {
-    public function __construct(private readonly UserService $user_service)
+    public function __construct(private readonly UserService $userService)
     {
     }
 
     #[Route('/users', 'GET')]
     public function getUsers()
     {
-        $users = $this->user_service->getAllUsers();
+        $users = $this->userService->getAllUsers();
         Http::ok($users, "Users retrieved successfully");
     }
 
@@ -26,7 +26,7 @@ class UserController extends Controller
     public function getUserById()
     {
         $id = Http::query('id');
-        $user = $this->user_service->getUserById($id);
+        $user = $this->userService->getUserById($id);
         Http::ok($user, "User retrieved successfully");
     }
 
@@ -42,7 +42,7 @@ class UserController extends Controller
             return;
         }
 
-        $user = $this->user_service->createUser(array_merge($user->toArray(), [
+        $user = $this->userService->createUser(array_merge($user->toArray(), [
             'avatar' => $avatar,
         ]));
         Http::ok($user, "User created successfully");
@@ -65,7 +65,7 @@ class UserController extends Controller
             }
         }
 
-        $user = $this->user_service->updateUser($id, array_merge($user->toArray(), [
+        $user = $this->userService->updateUser($id, array_merge($user->toArray(), [
             'avatar' => $avatar,
         ]));
         Http::ok($user, "User updated successfully");
@@ -75,7 +75,7 @@ class UserController extends Controller
     public function deleteUser()
     {
         $id = Http::query('id');
-        $this->user_service->deleteUser($id);
+        $this->userService->deleteUser($id);
         Http::ok(null, "User deleted successfully");
     }
 }

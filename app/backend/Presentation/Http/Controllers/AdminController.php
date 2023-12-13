@@ -2,6 +2,7 @@
 
 namespace Presentation\Http\Controllers;
 
+use Business\Services\UserService;
 use Presentation\Http\Attributes\Authenticated;
 use Presentation\Http\Attributes\Route;
 use Presentation\Http\Attributes\WithSession;
@@ -10,7 +11,7 @@ use Primitives\Models\RoleName;
 
 class AdminController extends Controller
 {
-    public function __construct(private readonly Session $session)
+    public function __construct(private readonly Session $session, private readonly UserService $userService)
     {
     }
 
@@ -52,9 +53,11 @@ class AdminController extends Controller
     #[Authenticated(RoleName::Administrator)]
     public function userList(): void
     {
+        $users = $this->userService->getAllUsers();
         $this->view('admin.user-list', [
             '__layout_title__' => 'User List',
-            'user' => $this->session->user
+            'user' => $this->session->user,
+            'users' => $users
         ]);
     }
 }

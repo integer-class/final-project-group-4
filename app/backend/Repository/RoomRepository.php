@@ -3,6 +3,7 @@
 namespace Repository;
 
 use Primitives\Models\Room;
+use Primitives\Models\User;
 use RepositoryInterfaces\IRoomRepository;
 
 class RoomRepository implements IRoomRepository
@@ -26,17 +27,7 @@ class RoomRepository implements IRoomRepository
                 dbo.Room
         ");
 
-        return array_map(function ($room) {
-            return new Room(
-                $room['ID'],
-                $room['Code'],
-                $room['Name'],
-                $room['Floor'],
-                $room['FloorPlanIndex'],
-                $room['Capacity'],
-                $room['Side']
-            );
-        }, $rows);
+        return array_map(fn($user) => User::fromArray($user), $rows);
     }
 
     public function getById(int $id): Room
@@ -56,15 +47,7 @@ class RoomRepository implements IRoomRepository
                 ID = $id
         ")[0];
 
-        return new Room(
-            $row['ID'],
-            $row['Code'],
-            $row['Name'],
-            $row['Floor'],
-            $row['FloorPlanIndex'],
-            $row['Capacity'],
-            $row['Side']
-        );
+        return Room::fromArray($row);
     }
 
     public function getByCode(string $code): Room
@@ -84,15 +67,7 @@ class RoomRepository implements IRoomRepository
                 Code = '$code'
         ")[0];
 
-        return new Room(
-            $row['ID'],
-            $row['Code'],
-            $row['Name'],
-            $row['Floor'],
-            $row['FloorPlanIndex'],
-            $row['Capacity'],
-            $row['Side']
-        );
+        return Room::fromArray($row);
     }
 
     public function create(Room $room): Room
@@ -112,14 +87,14 @@ class RoomRepository implements IRoomRepository
         return $room;
     }
 
-    public function update(int $id, Room $room): Room
+    public function update(Room $room): Room
     {
         $this->mssqlClient->executeQuery("
             UPDATE dbo.Room
             SET Code = :code, Name = :name, Floor = :floor, FloorPlanIndex = :floor_plan_index, Capacity = :capacity, Side = :side
             WHERE ID = :id
         ", [
-            'id' => $id,
+            'id' => $room->id,
             'code' => $room->code,
             'name' => $room->name,
             'floor' => $room->floor,

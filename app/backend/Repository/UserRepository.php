@@ -3,6 +3,8 @@
 namespace Repository;
 
 use Primitives\Models\Role;
+use Primitives\Models\RoleName;
+use Primitives\Models\StudyProgram;
 use Primitives\Models\User;
 use RepositoryInterfaces\IUserRepository;
 
@@ -23,31 +25,22 @@ class UserRepository implements IUserRepository
                 Email,
                 Phone,
                 Avatar,
-                R.Name as Role
+                R.Name as Role,
+                SP.Name as StudyProgram
             FROM
-                 dbo.User
+                 dbo.[User]
             LEFT JOIN dbo.User_Role UR on [User].ID = UR.UserID
             LEFT JOIN dbo.Role R on UR.RoleID = R.ID
+            LEFT JOIN dbo.User_StudyPrograms USP on [User].ID = USP.UserID
+            LEFT JOIN dbo.StudyPrograms SP on USP.StudyProgramID = SP.ID
         ");
 
-        return array_map(function ($user) {
-            return new User(
-                $user['Id'],
-                $user['RegistrationNumber'],
-                $user['FullName'],
-                $user['Username'],
-                $user['Password'],
-                $user['Email'],
-                $user['Phone'],
-                $user['Avatar'],
-                new Role($user['Role'])
-            );
-        }, $users);
+        return array_map(fn($user) => User::fromArray($user), $users);
     }
 
     public function getById(int $id): User
     {
-        $row = $this->databaseClient->executeQuery("
+        $user = $this->databaseClient->executeQuery("
             SELECT
                 [User].Id as Id,
                 RegistrationNumber,
@@ -57,30 +50,23 @@ class UserRepository implements IUserRepository
                 Email,
                 Phone,
                 Avatar,
-                R.Name as Role
+                R.Name as Role,
+                SP.Name as StudyProgram
             FROM
                  dbo.User
             LEFT JOIN dbo.User_Role UR on [User].ID = UR.UserID
             LEFT JOIN dbo.Role R on UR.RoleID = R.ID
+            LEFT JOIN dbo.User_StudyPrograms USP on [User].ID = USP.UserID
+            LEFT JOIN dbo.StudyPrograms SP on USP.StudyProgramID = SP.ID
             WHERE [User].Id = ?
         ", [$id])[0];
 
-        return new User(
-            $row['Id'],
-            $row['RegistrationNumber'],
-            $row['FullName'],
-            $row['Username'],
-            $row['Password'],
-            $row['Email'],
-            $row['Phone'],
-            $row['Avatar'],
-            new Role($row['Role'])
-        );
+        return User::fromArray($user);
     }
 
-    public function getByUsernameOrEmail(string $username_or_email): User | null
+    public function getByUsernameOrEmail(string $username_or_email): User|null
     {
-        $rows = $this->databaseClient->executeQuery("
+        $users = $this->databaseClient->executeQuery("
             SELECT
                 [User].Id as Id,
                 RegistrationNumber,
@@ -97,20 +83,9 @@ class UserRepository implements IUserRepository
             LEFT JOIN dbo.Role R on UR.RoleID = R.ID
             WHERE Username = ? OR Email = ?
         ", [$username_or_email, $username_or_email]);
-        if (sizeof($rows) < 1) return null;
+        if (sizeof($users) < 1) return null;
 
-        $row = $rows[0];
-        return new User(
-            $row['Id'],
-            $row['RegistrationNumber'],
-            $row['FullName'],
-            $row['Username'],
-            $row['Password'],
-            $row['Email'],
-            $row['Phone'],
-            $row['Avatar'],
-            new Role($row['Role'])
-        );
+        return User::fromArray($users[0]);
     }
 
     public function create(User $user): User
@@ -121,7 +96,7 @@ class UserRepository implements IUserRepository
 
             SELECT SCOPE_IDENTITY() as Id;
         ", [
-            $user->registration_number,
+            $user->registrationNumber,
             $user->fullname,
             $user->username,
             $user->password,
@@ -142,7 +117,7 @@ class UserRepository implements IUserRepository
         return $user;
     }
 
-    public function update(int $id, User $user): User
+    public function update(User $user): User
     {
         // update user based on the available fields
         $this->databaseClient->executeNonQuery("
@@ -157,14 +132,14 @@ class UserRepository implements IUserRepository
                 Avatar = ?
             WHERE Id = ?
         ", [
-            $user->registration_number,
+            $user->registrationNumber,
             $user->fullname,
             $user->username,
             $user->password,
             $user->email,
             $user->phone,
             $user->avatar,
-            $id
+            $user->id
         ]);
 
         // update user role

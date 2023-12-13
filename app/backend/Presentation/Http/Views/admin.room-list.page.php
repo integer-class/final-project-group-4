@@ -6,5 +6,7 @@
         <?php
         require_once __DIR__ . '/Components/topbar.component.php';
         ?>
+
+
     </main>
 </div>
