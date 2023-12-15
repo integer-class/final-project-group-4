@@ -21,6 +21,10 @@ class HttpPresenter
     public function run(): void
     {
         $request_path = $_SERVER['REQUEST_URI'];
+        // strip query string from the request path
+        if (str_contains($request_path, '?')) {
+            $request_path = substr($request_path, 0, strpos($request_path, '?'));
+        }
         $request_method = $_SERVER['REQUEST_METHOD'];
 
         // mock request method since we can't do anything other than POST or GET from the form action

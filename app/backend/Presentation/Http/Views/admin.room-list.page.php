@@ -41,9 +41,9 @@
                         <td><?= $room->capacity ?></td>
                         <td><?= $room->floor ?></td>
                         <td><?= $room->side ?></td>
-                        <td class="text-center">
+                        <td class="text-center d-flex justify-content-center">
                             <button type="button" class="button button-delete">Delete</button>
-                            <button type="button" class="button button-edit">Edit</button>
+                            <a href="/admin/room?id=<?= $room->id ?>" class="button button-edit">Edit</a>
                         </td>
                     </tr>
                     <?php

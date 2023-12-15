@@ -72,6 +72,7 @@ CREATE TABLE
     -- should be east and west
     [Side]           VARCHAR(255) NOT NULL,
     [Capacity]       INT          NOT NULL,
+    [Image]          VARCHAR(255) NOT NULL,
     [CreatedAt]      DATETIME     NOT NULL DEFAULT GETDATE(),
     [UpdatedAt]      DATETIME     NOT NULL DEFAULT GETDATE(),
     [DeletedAt]      DATETIME     NULL,

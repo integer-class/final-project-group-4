@@ -7,6 +7,7 @@ use Business\Services\UserService;
 use Presentation\Http\Attributes\Authenticated;
 use Presentation\Http\Attributes\Route;
 use Presentation\Http\Attributes\WithSession;
+use Presentation\Http\Helpers\Http;
 use Presentation\Http\Helpers\Session;
 use Primitives\Models\RoleName;
 
@@ -41,6 +42,20 @@ class AdminController extends Controller
             '__layout_title__' => 'Room List',
             'user' => $this->session->user,
             'rooms' => $rooms
+        ]);
+    }
+
+    #[Route('/admin/room', 'GET')]
+    #[WithSession]
+    #[Authenticated(RoleName::Administrator)]
+    public function roomDetail(): void
+    {
+        $id = Http::query('id');
+        $room = $this->roomService->getRoomById($id);
+        $this->view('admin.room', [
+            '__layout_title__' => 'Room Detail',
+            'user' => $this->session->user,
+            'room' => $room
         ]);
     }
 

@@ -1,6 +1,8 @@
 .button {
-    width: 259px;
-    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
     border-radius: 50px;
     color: white;
     font-weight: bold;
