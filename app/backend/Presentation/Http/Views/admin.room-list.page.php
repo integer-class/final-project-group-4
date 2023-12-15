@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <table class="table">
+            <table class="table" id="rooms-table">
                 <thead>
                 <tr>
                     <th scope="col" class="name-row">Code</th>
@@ -54,3 +54,9 @@
         </div>
     </main>
 </div>
+
+<script>
+    $(function () {
+        const table = new DataTable('#rooms-table');
+    })
+</script>

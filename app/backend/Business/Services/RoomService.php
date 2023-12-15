@@ -29,12 +29,13 @@ class RoomService
     public function createRoom(array $raw_room): Room
     {
         $room = new Room(
+            id: null,
             code: $raw_room['code'],
             name: $raw_room['name'],
             floor: $raw_room['floor'],
             floor_plan_index: $raw_room['floor_plan_index'],
             capacity: $raw_room['capacity'],
-            side: $raw_room['side'],
+            side: $raw_room['side']
         );
         return $this->roomRepository->create($room);
     }
@@ -42,6 +43,7 @@ class RoomService
     public function updateRoom(string $id, array $raw_room): Room
     {
         $room = new Room(
+            id: $id,
             code: $raw_room['code'],
             name: $raw_room['name'],
             floor: $raw_room['floor'],
@@ -49,7 +51,7 @@ class RoomService
             capacity: $raw_room['capacity'],
             side: $raw_room['side'],
         );
-        return $this->roomRepository->update($id, $room);
+        return $this->roomRepository->update($room);
     }
 
     public function deleteRoom(string $id): void

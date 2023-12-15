@@ -19,7 +19,7 @@
                 </div>
             </div>
 
-            <table class="table">
+            <table class="table" id="users-table">
                 <thead>
                 <tr>
                     <th scope="col" class="name-row">Email</th>
@@ -54,3 +54,9 @@
         </div>
     </main>
 </div>
+
+<script>
+    $(function () {
+        const table = new DataTable('#users-table');
+    })
+</script>
