@@ -7,6 +7,9 @@ abstract class Controller
     {
         $viewPath = realpath(dirname(__FILE__) . '/../Views');
 
+        // expose data to view
+        extract($data);
+
         require_once "$viewPath/Layout/head.page.php";
         require_once "$viewPath/$view.page.php";
         require_once "$viewPath/Layout/foot.page.php";

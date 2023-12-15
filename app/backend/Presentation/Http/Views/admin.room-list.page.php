@@ -33,7 +33,7 @@
                 <tbody>
                 <?php
                 /** @var Room $room */
-                foreach ($data['rooms'] as $room) {
+                foreach ($rooms as $room) {
                     ?>
                     <tr>
                         <td><?= $room->code ?></td>

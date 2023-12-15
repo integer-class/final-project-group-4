@@ -33,7 +33,7 @@
                 <tbody>
                 <?php
                 /** @var User $user */
-                foreach ($data['users'] as $user) {
+                foreach ($users as $user) {
                     ?>
                     <tr>
                         <td><?= $user->email ?></td>
