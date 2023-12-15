@@ -57,6 +57,8 @@
 
 <script>
     $(function () {
-        const table = new DataTable('#rooms-table');
+        const table = new DataTable('#rooms-table', {
+            scrollY: '38rem'
+        });
     })
 </script>
