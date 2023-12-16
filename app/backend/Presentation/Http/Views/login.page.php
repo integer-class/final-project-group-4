@@ -12,6 +12,6 @@
             <label for="password-input" class="form-label">Password</label>
             <input type="password" class="input-text" id="password-input" name="password">
         </div>
-        <button type="submit" class="btn btn-primary mt-4 submit-button">Login</button>
+        <button type="submit" class="btn mt-4 primary-button">Login</button>
     </form>
 </div>

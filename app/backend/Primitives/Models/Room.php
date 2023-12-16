@@ -11,7 +11,8 @@ class Room
         public int    $floor,
         public int    $floor_plan_index,
         public int    $capacity,
-        public string $side
+        public string $side,
+        public string $image,
     )
     {
     }
@@ -25,7 +26,8 @@ class Room
             floor: $room['Floor'],
             floor_plan_index: $room['FloorPlanIndex'],
             capacity: $room['Capacity'],
-            side: $room['Side']
+            side: $room['Side'],
+            image: $room['Image'],
         );
     }
 }

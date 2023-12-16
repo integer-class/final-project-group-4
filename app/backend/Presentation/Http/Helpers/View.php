@@ -9,8 +9,10 @@ class View
      */
     public static function autoloadCss(): void
     {
+        // remove query parameters
+        $routeSegments = explode('?', $_SERVER['REQUEST_URI'])[0];
         // explode and remove the admin or lecturer prefix and empty string
-        $routeSegments = explode('/', $_SERVER['REQUEST_URI']);
+        $routeSegments = explode('/', $routeSegments);
         $routeSegments = array_filter($routeSegments, fn($segment) => $segment !== 'admin' && $segment !== 'lecturer' && $segment !== '');
         // use . as a path separator since we can't use / to use it as a file name
         $fileName = implode('.', $routeSegments);

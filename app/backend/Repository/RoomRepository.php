@@ -21,7 +21,8 @@ class RoomRepository implements IRoomRepository
                 Floor,
                 FloorPlanIndex,
                 Capacity,
-                Side
+                Side,
+                Image
             FROM
                 dbo.Room
         ");
@@ -39,7 +40,8 @@ class RoomRepository implements IRoomRepository
                 Floor,
                 FloorPlanIndex,
                 Capacity,
-                Side
+                Side,
+                Image
             FROM
                 dbo.Room
             WHERE
@@ -59,12 +61,13 @@ class RoomRepository implements IRoomRepository
                 Floor,
                 FloorPlanIndex,
                 Capacity,
-                Side
+                Side,
+                Image
             FROM
                 dbo.Room
             WHERE
-                Code = '$code'
-        ")[0];
+                Code = :code
+        ", [$code])[0];
 
         return Room::fromArray($row);
     }
@@ -72,15 +75,16 @@ class RoomRepository implements IRoomRepository
     public function create(Room $room): Room
     {
         $this->mssqlClient->executeQuery("
-            INSERT INTO dbo.Room (Code, Name, Floor, FloorPlanIndex, Capacity, Side)
-            VALUES (:code, :name, :floor, :floor_plan_index, :capacity, :side)
+            INSERT INTO dbo.Room (Code, Name, Floor, FloorPlanIndex, Capacity, Side, Image)
+            VALUES (:code, :name, :floor, :floor_plan_index, :capacity, :side, :image)
         ", [
             'code' => $room->code,
             'name' => $room->name,
             'floor' => $room->floor,
             'floor_plan_index' => $room->floor_plan_index,
             'capacity' => $room->capacity,
-            'side' => $room->side
+            'side' => $room->side,
+            'image' => $room->image
         ]);
 
         return $room;
@@ -90,7 +94,14 @@ class RoomRepository implements IRoomRepository
     {
         $this->mssqlClient->executeQuery("
             UPDATE dbo.Room
-            SET Code = :code, Name = :name, Floor = :floor, FloorPlanIndex = :floor_plan_index, Capacity = :capacity, Side = :side
+            SET 
+                Code = :code, 
+                Name = :name, 
+                Floor = :floor,
+                FloorPlanIndex = :floor_plan_index,
+                Capacity = :capacity,
+                Side = :side,
+                Image = :image
             WHERE Id = :id
         ", [
             'id' => $room->id,
@@ -99,7 +110,8 @@ class RoomRepository implements IRoomRepository
             'floor' => $room->floor,
             'floor_plan_index' => $room->floor_plan_index,
             'capacity' => $room->capacity,
-            'side' => $room->side
+            'side' => $room->side,
+            'image' => $room->image
         ]);
 
         return $room;
