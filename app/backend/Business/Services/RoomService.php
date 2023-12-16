@@ -2,6 +2,7 @@
 
 namespace Business\Services;
 
+use Presentation\Http\Helpers\Http;
 use Primitives\Models\Room;
 use RepositoryInterfaces\IRoomRepository;
 
@@ -26,8 +27,12 @@ class RoomService
         return $this->roomRepository->getByCode($code);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function createRoom(array $raw_room): Room
     {
+        $image = Http::handleUploadedImage('image', 'room');
         $room = new Room(
             id: null,
             code: $raw_room['code'],
@@ -35,7 +40,8 @@ class RoomService
             floor: $raw_room['floor'],
             floor_plan_index: $raw_room['floor_plan_index'],
             capacity: $raw_room['capacity'],
-            side: $raw_room['side']
+            side: $raw_room['side'],
+            image: $image,
         );
         return $this->roomRepository->create($room);
     }
@@ -50,6 +56,7 @@ class RoomService
             floor_plan_index: $raw_room['floor_plan_index'],
             capacity: $raw_room['capacity'],
             side: $raw_room['side'],
+            image: $raw_room['image']
         );
         return $this->roomRepository->update($room);
     }

@@ -35,7 +35,7 @@ class UserController extends Controller
     {
         $avatar = null;
         try {
-            $avatar = Http::getAsset('avatar');
+            $avatar = Http::handleUploadedImage('avatar');
         } catch (\Exception $e) {
             error_log($e->getMessage());
             Http::badRequest(['avatar' => $e->getMessage()]);
@@ -57,7 +57,7 @@ class UserController extends Controller
         $avatar = null;
         if ($_FILES['avatar'] && $_FILES['avatar']['size'] > 0) {
             try {
-                $avatar = Http::updateAsset('avatar', $user->avatar);
+                $avatar = Http::updateUploadedImage('avatar', $user->avatar);
             } catch (\Exception $e) {
                 error_log($e->getMessage());
                 Http::badRequest(['avatar' => $e->getMessage()]);

@@ -31,7 +31,7 @@ class Http
     /**
      * @throws Exception
      */
-    public static function getAsset(string $name): string
+    public static function handleUploadedImage(string $name, ?string $directory): string
     {
         $file = $_FILES[$name];
 
@@ -61,21 +61,24 @@ class Http
 
         $file_name_new = uniqid('', true) . '.' . $file_ext;
         $file_destination = __DIR__ . "/../Views/Assets/uploaded_images/$file_name_new";
+        if ($directory) {
+            $file_destination = __DIR__ . "/../Views/Assets/uploaded_images/$directory/$file_name_new";
+        }
 
         if (!move_uploaded_file($file_tmp, $file_destination)) {
             throw new Exception("Error moving file");
         }
 
-        return "/uploaded_images/$file_name_new";
+        return $file_name_new;
     }
 
     /**
      * @throws Exception
      */
-    public static function updateAsset(string $name, string $old_path): string
+    public static function updateUploadedImage(string $name, string $old_path, ?string $directory): string
     {
         unlink(__DIR__ . "/../Views/Assets/$old_path");
-        return self::getAsset($name);
+        return self::handleUploadedImage($name, $directory);
     }
 
     public static function created(mixed $data, ?string $message = "Created"): void

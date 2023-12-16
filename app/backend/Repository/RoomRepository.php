@@ -87,7 +87,7 @@ class RoomRepository implements IRoomRepository
             'image' => $room->image
         ]);
 
-        return $room;
+        return $this->getById($room->id);
     }
 
     public function update(Room $room): Room

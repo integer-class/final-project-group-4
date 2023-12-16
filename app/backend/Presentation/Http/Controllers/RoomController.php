@@ -10,14 +10,14 @@ use Presentation\Http\Helpers\Http;
 
 class RoomController extends Controller
 {
-    public function __construct(private RoomService $room_service)
+    public function __construct(private RoomService $roomService)
     {
     }
 
     #[Route('/rooms', 'GET')]
     public function getAll(): void
     {
-        $rooms = $this->room_service->getAllRooms();
+        $rooms = $this->roomService->getAllRooms();
         Http::ok($rooms, "Rooms retrieved successfully");
     }
 
@@ -25,37 +25,47 @@ class RoomController extends Controller
     public function getById(): void
     {
         $id = Http::query('id');
-        $room = $this->room_service->getRoomById($id);
+        $room = $this->roomService->getRoomById($id);
         Http::ok($room, "Room retrieved successfully");
     }
 
     #[Route('/rooms/{code}', 'GET')]
     public function getByCode(string $code): void
     {
-        $room = $this->room_service->getRoomByCode($code);
+        $room = $this->roomService->getRoomByCode($code);
         Http::ok($room, "Room retrieved successfully");
     }
 
     #[Route('/rooms', 'POST')]
     public function create(CreateRoomRequest $room): void
     {
-        $room = $this->room_service->createRoom($room->toArray());
+        try {
+            $room = $this->roomService->createRoom($room->toArray());
+            $_SESSION['success_message'] = "Room with an ID of {$room->id} has been created successfully";
+            Http::redirect($_SERVER['HTTP_REFERER']);
         Http::ok($room, "Room created successfully");
+        } catch (\Exception $e) {
+            $_SESSION['error_message'] = $e->getMessage();
+            Http::redirect($_SERVER['HTTP_REFERER']);
+        }
+
     }
 
     #[Route('/rooms', 'PUT')]
     public function update(UpdateRoomRequest $room): void
     {
         $id = Http::query('id');
-        $room = $this->room_service->updateRoom($id, $room->toArray());
-        Http::ok($room, "Room updated successfully");
+        $room = $this->roomService->updateRoom($id, $room->toArray());
+        $_SESSION['success_message'] = "Room with an ID of {$room->id} has been updated successfully";
+        Http::redirect($_SERVER['HTTP_REFERER']);
     }
 
     #[Route('/rooms', 'DELETE')]
     public function delete(): void
     {
         $id = Http::query('id');
-        $this->room_service->deleteRoom($id);
-        Http::ok(null, "Room deleted successfully");
+        $this->roomService->deleteRoom($id);
+        $_SESSION['success_message'] = "Room deleted successfully";
+        Http::redirect($_SERVER['HTTP_REFERER']);
     }
 }
