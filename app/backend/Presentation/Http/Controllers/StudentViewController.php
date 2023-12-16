@@ -11,30 +11,29 @@ use Presentation\Http\Helpers\Http;
 use Presentation\Http\Helpers\Session;
 use Primitives\Models\RoleName;
 
-class AdminController extends Controller
+class StudentViewController extends Controller
 {
     public function __construct(
         private readonly Session     $session,
-        private readonly UserService $userService,
         private readonly RoomService $roomService
     )
     {
     }
 
-    #[Route('/admin/dashboard', 'GET')]
+    #[Route('/student/dashboard', 'GET')]
     #[WithSession]
-    #[Authenticated(RoleName::Administrator)]
+    #[Authenticated(RoleName::Student)]
     public function dashboard(): void
     {
-        $this->view('admin.dashboard', [
+        $this->view('dashboard', [
             '__layout_title__' => 'Dashboard',
             'user' => $this->session->user
         ]);
     }
 
-    #[Route('/admin/room-list', 'GET')]
+    #[Route('/student/room-list', 'GET')]
     #[WithSession]
-    #[Authenticated(RoleName::Administrator)]
+    #[Authenticated(RoleName::Student)]
     public function roomList(): void
     {
         $rooms = $this->roomService->getAllRooms();
@@ -45,9 +44,9 @@ class AdminController extends Controller
         ]);
     }
 
-    #[Route('/admin/room', 'GET')]
+    #[Route('/student/room', 'GET')]
     #[WithSession]
-    #[Authenticated(RoleName::Administrator)]
+    #[Authenticated(RoleName::Student)]
     public function roomDetail(): void
     {
         $id = Http::query('id');
@@ -59,27 +58,14 @@ class AdminController extends Controller
         ]);
     }
 
-    #[Route('/admin/schedule', 'GET')]
+    #[Route('/student/schedule', 'GET')]
     #[WithSession]
-    #[Authenticated(RoleName::Administrator)]
+    #[Authenticated(RoleName::Student)]
     public function schedule(): void
     {
         $this->view('admin.schedule', [
             '__layout_title__' => 'Schedule',
             'user' => $this->session->user
-        ]);
-    }
-
-    #[Route('/admin/user-list', 'GET')]
-    #[WithSession]
-    #[Authenticated(RoleName::Administrator)]
-    public function userList(): void
-    {
-        $users = $this->userService->getAllUsers();
-        $this->view('admin.user-list', [
-            '__layout_title__' => 'User List',
-            'user' => $this->session->user,
-            'users' => $users
         ]);
     }
 }

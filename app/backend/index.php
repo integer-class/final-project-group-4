@@ -5,11 +5,12 @@ require_once __DIR__ . "/autoload.php";
 use Business\Services\AuthService;
 use Business\Services\RoomService;
 use Business\Services\UserService;
-use Presentation\Http\Controllers\AdminController;
+use Presentation\Http\Controllers\AdminViewController;
 use Presentation\Http\Controllers\AppController;
 use Presentation\Http\Controllers\AuthController;
 use Presentation\Http\Controllers\RoomController;
 use Presentation\Http\Controllers\UserController;
+use Presentation\Http\Controllers\StudentViewController;
 use Presentation\Http\Helpers\Session;
 use Presentation\Http\HttpPresenter;
 use Repository\MssqlClient;
@@ -33,13 +34,13 @@ date_default_timezone_set(getenv("TIMEZONE"));
 // initialise and register http presenter on first request, this is like a lazy singleton since we can't really execute
 // code before any request has been made
 
-$http_presenter = null;
+$httpPresenter = null;
 
 if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     $_ENV["APP_HAS_INITIALISED"] = true;
 
     // singletons
-    $db_client = MssqlClient::getInstance(
+    $dbClient = MssqlClient::getInstance(
         host: getenv("DB_HOST"),
         port: getenv("DB_PORT"),
         database: getenv("DB_DATABASE"),
@@ -49,30 +50,32 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     $session = Session::getInstance();
 
     // repositories
-    $userRepository = new UserRepository($db_client);
-    $roomRepository = new RoomRepository($db_client);
+    $userRepository = new UserRepository($dbClient);
+    $roomRepository = new RoomRepository($dbClient);
 
     // services
-    $auth_service = new AuthService($userRepository);
+    $authService = new AuthService($userRepository);
     $userService = new UserService($userRepository);
     $roomService = new RoomService($roomRepository);
 
     // controllers
-    $app_controller = new AppController($session);
-    $user_controller = new UserController($userService);
-    $room_controller = new RoomController($roomService);
-    $auth_controller = new AuthController($auth_service, $session);
-    $admin_controller = new AdminController($session, $userService, $roomService);
+    $appController = new AppController($session);
+    $userController = new UserController($userService);
+    $roomController = new RoomController($roomService);
+    $authController = new AuthController($authService, $session);
+    $adminViewController = new AdminViewController($session, $userService, $roomService);
+    $studentViewController = new StudentViewController($session, $roomService);
 
-    $http_presenter = new HttpPresenter();
+    $httpPresenter = new HttpPresenter();
 
     // register controllers
-    $http_presenter->register($user_controller);
-    $http_presenter->register($app_controller);
-    $http_presenter->register($auth_controller);
-    $http_presenter->register($admin_controller);
-    $http_presenter->register($room_controller);
+    $httpPresenter->register($userController);
+    $httpPresenter->register($appController);
+    $httpPresenter->register($authController);
+    $httpPresenter->register($roomController);
+    $httpPresenter->register($adminViewController);
+    $httpPresenter->register($studentViewController);
 }
 
 // handle request
-$http_presenter->run();
+$httpPresenter->run();

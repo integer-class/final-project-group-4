@@ -21,7 +21,7 @@
         <ul class="dropdown-menu">
             <li>
                 <span class="dropdown-item disabled">
-                    <?= $user['fullname'] ?>
+                    <strong><?= $user['fullname'] ?></strong>
                 </span>
             </li>
             <li>

@@ -28,7 +28,7 @@ class AppController extends Controller
                 Http::redirect('/lecturer/dashboard');
                 break;
             case RoleName::Student:
-                Http::redirect('/dashboard');
+                Http::redirect('/student/dashboard');
                 break;
             default:
                 Http::redirect('/login');

@@ -64,7 +64,7 @@ class UserRepository implements IUserRepository
         return User::fromArray($user);
     }
 
-    public function getByUsernameOrEmail(string $username_or_email): User|null
+    public function getByUsernameOrEmailOrRegistrationNumber(string $username): User|null
     {
         $users = $this->databaseClient->executeQuery("
             SELECT
@@ -81,8 +81,12 @@ class UserRepository implements IUserRepository
                  dbo.[User]
             LEFT JOIN dbo.User_Role UR on [User].ID = UR.UserID
             LEFT JOIN dbo.Role R on UR.RoleID = R.ID
-            WHERE Username = ? OR Email = ?
-        ", [$username_or_email, $username_or_email]);
+            WHERE Username = ? OR Email = ? OR RegistrationNumber = ?
+        ", [
+            $username,
+            $username,
+            $username
+        ]);
         if (sizeof($users) < 1) return null;
 
         return User::fromArray($users[0]);

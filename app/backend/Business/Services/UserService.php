@@ -26,7 +26,7 @@ class UserService
 
     public function getUserByUsernameOrEmail(string $username_or_email): User|null
     {
-        return $this->userRepository->getByUsernameOrEmail($username_or_email);
+        return $this->userRepository->getByUsernameOrEmailOrRegistrationNumber($username_or_email);
     }
 
     /**

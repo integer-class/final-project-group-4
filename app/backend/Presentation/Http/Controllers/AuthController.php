@@ -42,15 +42,17 @@ class AuthController extends Controller
                     Http::redirect('/lecturer/dashboard');
                     break;
                 case RoleName::Student:
-                    Http::redirect('/dashboard');
+                    Http::redirect('/user/dashboard');
                     break;
             }
         } catch (InvalidPasswordException $e) {
             error_log($e->getMessage());
-            Http::badRequest(['password' => 'Invalid password']);
+            $_SESSION['error_message'] = 'Invalid password';
+            Http::redirect($_SERVER['HTTP_REFERER']);
         } catch (UserNotFoundException $e) {
             error_log($e->getMessage());
-            Http::badRequest(['username' => 'User not found']);
+            $_SESSION['error_message'] = 'User was not found';
+            Http::redirect($_SERVER['HTTP_REFERER']);
         }
     }
 
