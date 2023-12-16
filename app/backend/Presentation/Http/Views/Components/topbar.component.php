@@ -7,7 +7,7 @@
         <input type="text" name="room_name" class="searchbar-input" placeholder="Search Rooms..." />
     </form>
     <div class="dropdown">
-        <img class="topbar-profile dropdown-toggle" src="/<?= $data['user']['avatar'] ?>" alt="profile"
+        <img class="topbar-profile dropdown-toggle" src="/uploaded_images/user/<?= $data['user']['avatar'] ?>" alt="profile"
              id="dropdownMenuButton1" data-bs-toggle="dropdown"
              aria-expanded="false">
         <ul class="dropdown-menu">
