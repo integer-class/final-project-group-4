@@ -2,7 +2,7 @@
 
 namespace Business\Services;
 
-use Presentation\Http\Helpers\Http;
+use Presentation\Http\Helpers\Storage;
 use Primitives\Models\Room;
 use RepositoryInterfaces\IRoomRepository;
 
@@ -32,7 +32,7 @@ class RoomService
      */
     public function createRoom(array $raw_room): Room
     {
-        $image = Http::handleUploadedImage('image', 'room');
+        $image = Storage::handleUploadedImage('image', 'room');
         $room = new Room(
             id: null,
             code: $raw_room['code'],
@@ -63,6 +63,8 @@ class RoomService
 
     public function deleteRoom(string $id): void
     {
+        $room = $this->roomRepository->getById($id);
+        Storage::removeStoredImage("room/$room->image");
         $this->roomRepository->delete($id);
     }
 }
