@@ -1,22 +1,22 @@
 INSERT INTO [User] (FullName, RegistrationNumber, Username, Email, Password, Phone, Avatar)
 VALUES ('Administrator', NULL, 'administrator', 'admin@localhost.com',
         '$2a$12$rMd7.a71S0.tlVGi36cD9ODTEK52iANR2s5w5DgMOxD3LQPBOz5jG',
-        '08123456789', 'default.png'),
+        '08123456789', 'profile_default_1.png'),
        ('Lecturer 1', '0010057308', 'lecturer1', 'lecturer1@localhost.com',
         '$2a$12$rMd7.a71S0.tlVGi36cD9ODTEK52iANR2s5w5DgMOxD3LQPBOz5jG',
-        '08123456789', 'default.png'),
+        '08123456789', 'profile_default_2.png'),
        ('Lecturer 2', '0010057309', 'lecturer2', 'lecturer2@localhost.com',
         '$2a$12$rMd7.a71S0.tlVGi36cD9ODTEK52iANR2s5w5DgMOxD3LQPBOz5jG',
-        '08123456789', 'default.png'),
+        '08123456789', 'profile_default_3.png'),
        ('Student 1', '2241720000', 'student1', 'student1@localhost.com',
         '$2a$12$rMd7.a71S0.tlVGi36cD9ODTEK52iANR2s5w5DgMOxD3LQPBOz5jG',
-        '08123456789', 'default.png'),
+        '08123456789', 'profile_default_4.png'),
        ('Student 2', '2241720001', 'student2', 'student2@localhost.com',
         '$2a$12$rMd7.a71S0.tlVGi36cD9ODTEK52iANR2s5w5DgMOxD3LQPBOz5jG',
-        '08123456789', 'default.png'),
+        '08123456789', 'profile_default_5.png'),
        ('Student 3', '2241720002', 'student3', 'student3@localhost.com',
         '$2a$12$rMd7.a71S0.tlVGi36cD9ODTEK52iANR2s5w5DgMOxD3LQPBOz5jG',
-        '08123456789', 'default.png');
+        '08123456789', 'profile_default_6.png');
 
 INSERT INTO [Role] (Name)
 VALUES ('Administrator'),

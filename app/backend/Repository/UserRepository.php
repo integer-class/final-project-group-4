@@ -53,7 +53,7 @@ class UserRepository implements IUserRepository
                 R.Name as Role,
                 SP.Name as StudyProgram
             FROM
-                 dbo.User
+                 dbo.[User]
             LEFT JOIN dbo.User_Role UR on [User].ID = UR.UserID
             LEFT JOIN dbo.Role R on UR.RoleID = R.ID
             LEFT JOIN dbo.User_StudyPrograms USP on [User].ID = USP.UserID
@@ -151,7 +151,7 @@ class UserRepository implements IUserRepository
             UPDATE dbo.User_Role
             SET RoleID = ?
             WHERE UserID = ?
-        ", [$role_id, $id]);
+        ", [$role_id, $user->id]);
 
         return $user;
     }
