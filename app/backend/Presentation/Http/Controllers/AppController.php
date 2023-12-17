@@ -41,6 +41,15 @@ class AppController extends Controller
     {
         $this->view('login', [
             '__layout_title__' => 'Login'
+        ], false);
+    }
+
+    #[Route('/profile', 'POST')]
+    #[Authenticated(RoleName::Administrator, RoleName::Approver, RoleName::Student)]
+    public function profile(): void
+    {
+        $this->view('profile', [
+            '__layout_title__' => 'Profile'
         ]);
     }
 }

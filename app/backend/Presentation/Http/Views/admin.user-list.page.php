@@ -1,64 +1,57 @@
-<div class="d-flex w-100 h-100">
-    <?php
+<?php
 
-    use Primitives\Models\User;
+use Primitives\Models\User;
 
-    /** @var User[] $users */
-
-    require_once __DIR__ . '/Components/sidenav.component.php';
-    ?>
-    <main class="dashboard-main">
-        <?php
-        require_once __DIR__ . '/Components/topbar.component.php';
-        ?>
-        <div class="container mt-5">
-            <div class="row mb-4">
-                <div class="col-6">
-                    <h1 class="list-title">List of All Users</h1>
-                </div>
-                <div class="col-6">
-                    <button type="button" class="button button-add float-end">+ Add New User</button>
-                </div>
-            </div>
-
-            <table class="table" id="users-table">
-                <thead>
-                <tr>
-                    <th scope="col" class="name-row">Email</th>
-                    <th scope="col">NIM</th>
-                    <th scope="col">Fullname</th>
-                    <th scope="col">Study Program</th>
-                    <th scope="col">Role</th>
-                    <th scope="col" class="text-center">Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($users as $user) { ?>
-                    <tr>
-                        <td><?= $user->email ?></td>
-                        <td><?= $user->registrationNumber ?></td>
-                        <td><?= $user->fullname ?></td>
-                        <td><?= $user->studyProgram->name ?></td>
-                        <td><?= $user->role->name->value ?></td>
-                        <td class="text-center">
-                            <?php if ($_SESSION['user']['id'] !== $user->id) { ?>
-                                <button
-                                        type="button" class="button button-delete"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#deleteUserModal"
-                                        data-bs-room-id="<?= $user->id ?>"
-                                >
-                                    Delete
-                                </button>
-                            <?php } ?>
-                            <button type="button" class="button button-edit">Edit</button>
-                        </td>
-                    </tr>
-                <?php } ?>
-                </tbody>
-            </table>
+/** @var User[] $users */
+?>
+<div class="container mt-5">
+    <div class="row mb-4">
+        <div class="col-6">
+            <h1 class="list-title">List of All Users</h1>
         </div>
-    </main>
+        <div class="col-6">
+            <button type="button" class="button button-add float-end">+ Add New User</button>
+        </div>
+    </div>
+
+    <table class="table" id="users-table">
+        <thead>
+        <tr>
+            <th scope="col" class="name-row">Email</th>
+            <th scope="col">NIM</th>
+            <th scope="col">Fullname</th>
+            <th scope="col">Study Program</th>
+            <th scope="col">Role</th>
+            <th scope="col" class="text-center">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($users as $user) { ?>
+            <tr>
+                <td><?= $user->email ?></td>
+                <td><?= $user->registrationNumber ?></td>
+                <td><?= $user->fullname ?></td>
+                <td><?= $user->studyProgram->name ?></td>
+                <td><?= $user->role->name->value ?></td>
+                <td class="text-center">
+                    <?php if ($_SESSION['user']['id'] !== $user->id) { ?>
+                        <button
+                                type="button" class="button button-delete"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteUserModal"
+                                data-bs-room-id="<?= $user->id ?>"
+                        >
+                            Delete
+                        </button>
+                    <?php } ?>
+                    <button type="button" class="button button-edit">Edit</button>
+                </td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
+</div>
+</main>
 </div>
 
 <div

@@ -33,6 +33,9 @@
                 <hr class="dropdown-divider">
             </li>
             <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li>
                 <form method="post" action="/logout">
                     <button class="dropdown-item">Logout</button>
                 </form>

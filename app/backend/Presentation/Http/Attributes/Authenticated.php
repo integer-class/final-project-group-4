@@ -9,8 +9,16 @@ use Primitives\Models\RoleName;
 #[\Attribute]
 class Authenticated
 {
-    public function __construct(private readonly ?RoleName $role)
+    /** @var RoleName[] $allowedRoles */
+    private array $allowedRoles = [];
+
+    public function __construct(...$role)
     {
+        foreach ($role as $r) {
+            if ($r instanceof RoleName) {
+                $this->allowedRoles[] = $r;
+            }
+        }
     }
 
     public function isAuthenticatedWithRole(): void
@@ -23,9 +31,10 @@ class Authenticated
         $role = $session->getRole();
 
         // ignore checking the role if we don't add the role to this attribute
-        if ($this->role === null) return;
+        if (count($this->allowedRoles) <= 0) return;
+
         // redirect to home page if the user's role is not the same as the role in this attribute
-        if ($role != $this->role) {
+        if (!in_array($role, $this->allowedRoles)) {
             Http::redirect('/');
         }
     }
