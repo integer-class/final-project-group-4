@@ -2,6 +2,7 @@
 
 namespace Presentation\Http\Controllers;
 
+use Business\Services\EventService;
 use Business\Services\RoomService;
 use Business\Services\UserService;
 use Presentation\Http\Attributes\Authenticated;
@@ -14,9 +15,10 @@ use Primitives\Models\RoleName;
 class AdminViewController extends Controller
 {
     public function __construct(
-        private readonly Session     $session,
-        private readonly UserService $userService,
-        private readonly RoomService $roomService
+        private readonly Session      $session,
+        private readonly UserService  $userService,
+        private readonly RoomService  $roomService,
+        private readonly EventService $eventService
     )
     {
     }
@@ -26,9 +28,19 @@ class AdminViewController extends Controller
     #[Authenticated(RoleName::Administrator)]
     public function dashboard(): void
     {
-        $this->view('dashboard', [
+        $usersCount = $this->userService->getUsersCount();
+        $roomsCount = $this->roomService->getRoomsCount();
+        $pendingEventsCount = $this->eventService->getPendingEventsCount();
+        $approvedEventsCount = $this->eventService->getApprovedEventsCount();
+        $rejectedEventsCount = $this->eventService->getRejectedEventsCount();
+        $this->view('admin.dashboard', [
             '__layout_title__' => 'Dashboard',
-            'user' => $this->session->user
+            'user' => $this->session->user,
+            'usersCount' => $usersCount,
+            'roomsCount' => $roomsCount,
+            'pendingEventsCount' => $pendingEventsCount,
+            'approvedEventsCount' => $approvedEventsCount,
+            'rejectedEventsCount' => $rejectedEventsCount
         ]);
     }
 

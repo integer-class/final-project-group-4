@@ -31,8 +31,8 @@ use Primitives\Models\User;
                 <td><?= $user->email ?></td>
                 <td><?= $user->registrationNumber ?></td>
                 <td><?= $user->fullname ?></td>
-                <td><?= $user->studyProgram->name ?></td>
-                <td><?= $user->role->name->value ?></td>
+                <td><?= $user->studyProgram?->name ?? '-' ?></td>
+                <td><?= $user->role->name ?></td>
                 <td class="text-center">
                     <?php if ($_SESSION['user']['id'] !== $user->id) { ?>
                         <button

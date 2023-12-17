@@ -32,13 +32,28 @@ class EventService
         return $this->eventRepository->create($event);
     }
 
-    public function updateEvent(array $event): array
+    public function updateApprover(array $event): array
     {
-        return $this->eventRepository->updateEvent($event);
+        return $this->eventRepository->updateApprover($event);
     }
 
     public function deleteEvent(int $id): array
     {
-        return $this->eventRepository->deleteEvent($id);
+        $this->eventRepository->delete($id);
+    }
+
+    public function getPendingEventsCount(): int
+    {
+        return $this->eventRepository->getPendingEventsCount();
+    }
+
+    public function getApprovedEventsCount(): int
+    {
+        return $this->eventRepository->getApprovedEventsCount();
+    }
+
+    public function getRejectedEventsCount(): int
+    {
+        return $this->eventRepository->getRejectedEventsCount();
     }
 }

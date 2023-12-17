@@ -13,4 +13,7 @@ interface IEventRepository
     public function updateApprover(Event $event, array $approvers): Event;
     public function updateStatus(Event $event, int $userId, string $eventStatus): Event;
     public function delete(int $id): void;
+    public function getPendingEventsCount(): int;
+    public function getApprovedEventsCount(): int;
+    public function getRejectedEventsCount(): int;
 }

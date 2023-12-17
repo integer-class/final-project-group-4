@@ -12,4 +12,5 @@ interface IRoomRepository
     public function create(Room $room): Room;
     public function update(Room $room): Room;
     public function delete(int $id): void;
+    public function getCount(): int;
 }

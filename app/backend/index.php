@@ -64,11 +64,13 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     $eventService = new EventService($eventRepository);
 
     // controllers
-    $appController = new AppController($session);
     $userController = new UserController($userService);
     $roomController = new RoomController($roomService);
     $authController = new AuthController($authService, $session);
-    $adminViewController = new AdminViewController($session, $userService, $roomService);
+
+    // view controllers
+    $appController = new AppController($session);
+    $adminViewController = new AdminViewController($session, $userService, $roomService, $eventService);
     $studentViewController = new StudentViewController($session, $roomService, $eventService);
     $approverViewController = new ApproverViewController($session, $roomService, $eventService);
 

@@ -79,4 +79,9 @@ class UserService
         Storage::removeStoredImage("user/$user->avatar");
         $this->userRepository->delete($id);
     }
+
+    public function getUsersCount(): int
+    {
+        return $this->userRepository->getCount();
+    }
 }

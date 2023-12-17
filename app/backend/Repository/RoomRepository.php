@@ -126,4 +126,12 @@ class RoomRepository implements IRoomRepository
             'id' => $id
         ]);
     }
+
+    public function getCount(): int
+    {
+        return $this->mssqlClient->executeQuery("
+            SELECT COUNT(*) AS Count
+            FROM dbo.Room
+        ")[0]['Count'];
+    }
 }

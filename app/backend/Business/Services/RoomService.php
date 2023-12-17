@@ -67,4 +67,9 @@ class RoomService
         Storage::removeStoredImage("room/$room->image");
         $this->roomRepository->delete($id);
     }
+
+    public function getRoomsCount(): int
+    {
+        return $this->roomRepository->getCount();
+    }
 }

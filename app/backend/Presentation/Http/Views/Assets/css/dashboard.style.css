@@ -1,0 +1,35 @@
+.statistics-container {
+    padding-top: 4rem;
+    box-sizing: border-box;
+}
+
+.statistics-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    font-family: 'Jost', sans-serif;
+}
+
+.statistic-item {
+    box-sizing: border-box;
+    border-radius: 1.5rem;
+    border: 1px solid var(--color-secondary);
+    display: flex;
+    align-items: center;
+    padding-inline: 2rem;
+    padding-block: 1rem;
+    gap: 1rem;
+}
+
+.statistic-label {
+    font-family: 'Jost', sans-serif;
+    display: flex;
+    align-items: center;
+    flex: 1rem;
+}
+
+.statistic-item-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}

@@ -12,4 +12,5 @@ interface IUserRepository
     public function create(User $user): User;
     public function update(User $user): User;
     public function delete(int $id): void;
+    public function getCount(): int;
 }

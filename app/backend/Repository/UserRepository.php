@@ -139,4 +139,11 @@ class UserRepository implements IUserRepository
             DELETE FROM dbo.[User] WHERE Id = ?
         ", [$id]);
     }
+
+    public function getCount(): int
+    {
+        return $this->databaseClient->executeQuery("
+            SELECT COUNT(Id) as Count FROM dbo.[User]
+        ")[0]['Count'];
+    }
 }

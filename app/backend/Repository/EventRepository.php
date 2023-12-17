@@ -228,4 +228,70 @@ class EventRepository implements IEventRepository
     {
         // TODO: Implement updateStatus() method.
     }
+
+    public function getPendingEventsCount(): int
+    {
+        $events = $this->client->executeQuery("
+        SELECT
+            Event.Title AS Title,
+            SUM(IIF(Status = 'PENDING', 1, 0)) AS PendingCount,
+            SUM(IIF(Status = 'APPROVED', 1, 0)) AS ApprovedCount,
+            SUM(IIF(Status = 'REJECTED', 1, 0)) AS RejectedCount
+        FROM
+            dbo.[Event]
+        LEFT JOIN dbo.Event_Approver EA on Event.Id = EA.EventID
+        GROUP BY
+            Event.Id, Event.Title
+        ");
+
+        $pendingEvents = array_filter($events, function ($event) {
+            return $event['PendingCount'] > 0;
+        });
+
+        return count($pendingEvents);
+    }
+
+    public function getApprovedEventsCount(): int
+    {
+        $events = $this->client->executeQuery("
+        SELECT
+            Event.Title AS Title,
+            SUM(IIF(Status = 'PENDING', 1, 0)) AS PendingCount,
+            SUM(IIF(Status = 'APPROVED', 1, 0)) AS ApprovedCount,
+            SUM(IIF(Status = 'REJECTED', 1, 0)) AS RejectedCount
+        FROM
+            dbo.[Event]
+        LEFT JOIN dbo.Event_Approver EA on Event.Id = EA.EventID
+        GROUP BY
+            Event.Id, Event.Title
+        ");
+
+        $approvedEvents = array_filter($events, function ($event) {
+            return $event['ApprovedCount'] > 0 && $event['PendingCount'] === 0 && $event['RejectedCount'] === 0;
+        });
+
+        return count($approvedEvents);
+    }
+
+    public function getRejectedEventsCount(): int
+    {
+        $events = $this->client->executeQuery("
+        SELECT
+            Event.Title AS Title,
+            SUM(IIF(Status = 'PENDING', 1, 0)) AS PendingCount,
+            SUM(IIF(Status = 'APPROVED', 1, 0)) AS ApprovedCount,
+            SUM(IIF(Status = 'REJECTED', 1, 0)) AS RejectedCount
+        FROM
+            dbo.[Event]
+        LEFT JOIN dbo.Event_Approver EA on Event.Id = EA.EventID
+        GROUP BY
+            Event.Id, Event.Title
+        ");
+
+        $rejectedEvents = array_filter($events, function ($event) {
+            return $event['RejectedCount'] > 0;
+        });
+
+        return count($rejectedEvents);
+    }
 }
