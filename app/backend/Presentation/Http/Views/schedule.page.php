@@ -5,7 +5,7 @@ use Primitives\Models\Event;
 /** @var Event[] $events */
 ?>
 
-<div class="container mt-5">
+<div class="container mt-2">
     <div class="row mb-4">
         <div class="col-6">
             <h1 class="list-title">List of All Events</h1>
