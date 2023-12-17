@@ -74,4 +74,18 @@ class ApproverViewController extends Controller
             'events' => $events
         ]);
     }
+
+    #[Route('/approver/event', 'GET')]
+    #[WithSession]
+    #[Authenticated(RoleName::Approver, RoleName::Administrator)]
+    public function eventDetail(): void
+    {
+        $id = Http::query('id');
+        $event = $this->eventService->getEventById($id);
+        $this->view('event-detail', [
+            '__layout_title__' => 'Schedule',
+            'user' => $this->session->user,
+            'event' => $event
+        ]);
+    }
 }

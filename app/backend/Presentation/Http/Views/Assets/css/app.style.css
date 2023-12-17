@@ -3,6 +3,7 @@
     --color-secondary: #EFEFEF;
     --color-white: #FFFFFF;
     --color-black: #020617;
+    --color-danger: #FF0000;
 }
 
 .input-text {
@@ -124,8 +125,8 @@
     cursor: pointer;
 }
 
-.primary-button,
-.secondary-button {
+.button,
+.button {
     font-family: 'Jost', sans-serif;
     font-weight: bold;
     border: none;
@@ -134,8 +135,8 @@
     border-radius: 0.5rem;
 }
 
-.primary-button:hover,
-.secondary-button:hover {
+.button:hover,
+.button:hover {
     filter: brightness(0.9);
 }
 
@@ -155,4 +156,13 @@
 
 .secondary-button:hover {
     background-color: var(--color-secondary);
+}
+
+.danger-button {
+    color: white;
+    background-color: var(--color-danger);
+}
+
+.danger-button:hover {
+    background-color: var(--color-danger);
 }

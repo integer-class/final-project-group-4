@@ -50,8 +50,8 @@ use Primitives\Models\Room;
                 <input type="file" class="input-text" id="image-input" name="image" required>
             </div>
             <div class="row mx-auto" style="gap: 1rem; max-width: 30rem">
-                <button class="col secondary-button">Cancel</button>
-                <button class="col primary-button">Save</button>
+                <button class="col button secondary-button">Cancel</button>
+                <button class="col button primary-button">Save</button>
             </div>
         </div>
     </form>
