@@ -57,7 +57,7 @@
         }
 
         window.addEventListener('load', function () {
-            for (var c = 0; c < executeLater.length; c++) {
+            for (let c = 0; c < executeLater.length; c++) {
                 executeLater[c]();
             }
         })
@@ -71,11 +71,13 @@
 
 <body class="h-100">
 
+<?php if ($withLayout): ?>
 <div class="d-flex w-100 h-100">
     <?php
-    require_once __DIR__ . '/Components/sidenav.component.php';
+    require_once __DIR__ . '/../Components/sidenav.component.php';
     ?>
     <main class="dashboard-main">
         <?php
-        require_once __DIR__ . '/Components/topbar.component.php';
+        require_once __DIR__ . '/../Components/topbar.component.php';
         ?>
+<?php endif; ?>

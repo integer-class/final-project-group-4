@@ -14,7 +14,7 @@ use Primitives\Models\RoleName;
 
 class AuthController extends Controller
 {
-    public function __construct(private readonly AuthService $auth_service,
+    public function __construct(private readonly AuthService $authService,
                                 private readonly Session     $session)
     {
     }
@@ -23,18 +23,19 @@ class AuthController extends Controller
     public function login(LoginRequest $login_request): void
     {
         try {
-            $user = $this->auth_service->login($login_request->username, $login_request->password);
+            $user = $this->authService->login($login_request->username, $login_request->password);
             $this->session->startSession();
             $this->session->user = [
                 'id' => $user->id,
+                'registration_number' => $user->registrationNumber,
                 'fullname' => $user->fullname,
                 'username' => $user->username,
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'avatar' => $user->avatar,
-                'role' => $user->role->name
+                'role' => $user->role
             ];
-            switch ($user->role->name) {
+            switch ($user->role) {
                 case RoleName::Administrator:
                     Http::redirect('/admin/dashboard');
                     break;

@@ -10,11 +10,6 @@ abstract class Controller
         // expose data to view
         extract($data);
 
-        if (!$withLayout) {
-            require_once "$viewPath/$view.page.php";
-            return;
-        }
-
         require_once "$viewPath/Layout/head.page.php";
         require_once "$viewPath/$view.page.php";
         require_once "$viewPath/Layout/foot.page.php";

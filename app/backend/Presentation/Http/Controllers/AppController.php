@@ -44,12 +44,13 @@ class AppController extends Controller
         ], false);
     }
 
-    #[Route('/profile', 'POST')]
+    #[Route('/profile', 'GET')]
     #[Authenticated(RoleName::Administrator, RoleName::Approver, RoleName::Student)]
     public function profile(): void
     {
         $this->view('profile', [
-            '__layout_title__' => 'Profile'
+            '__layout_title__' => 'Profile',
+            'user' => $this->session->user,
         ]);
     }
 }

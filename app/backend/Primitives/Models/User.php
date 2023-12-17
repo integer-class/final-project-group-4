@@ -36,7 +36,7 @@ class User
             phone: $user['Phone'],
             avatar: $user['Avatar'],
             role: RoleName::from($user['Role']),
-            studyProgram: $user['StudyProgram'] ? new StudyProgram($user['StudyProgram']) : null,
+            studyProgram: isset($user['StudyProgram']) ? new StudyProgram($user['StudyProgram']) : null,
         );
     }
 }

@@ -9,7 +9,7 @@ class Session
     const SESSION_STARTED = true;
     const SESSION_NOT_STARTED = false;
     private bool $sessionState = self::SESSION_NOT_STARTED;
-    private static $instance;
+    private static Session $instance;
 
     private function __construct()
     {
