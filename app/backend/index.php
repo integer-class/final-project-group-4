@@ -8,6 +8,7 @@ use Business\Services\RoomService;
 use Business\Services\UserService;
 use Presentation\Http\Controllers\AdminViewController;
 use Presentation\Http\Controllers\AppController;
+use Presentation\Http\Controllers\ApproverViewController;
 use Presentation\Http\Controllers\AuthController;
 use Presentation\Http\Controllers\RoomController;
 use Presentation\Http\Controllers\UserController;
@@ -69,6 +70,7 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     $authController = new AuthController($authService, $session);
     $adminViewController = new AdminViewController($session, $userService, $roomService);
     $studentViewController = new StudentViewController($session, $roomService, $eventService);
+    $approverViewController = new ApproverViewController($session, $roomService, $eventService);
 
     $httpPresenter = new HttpPresenter();
 
@@ -79,6 +81,7 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     $httpPresenter->register($roomController);
     $httpPresenter->register($adminViewController);
     $httpPresenter->register($studentViewController);
+    $httpPresenter->register($approverViewController);
 }
 
 // handle request
