@@ -18,6 +18,7 @@ class ApproverViewController extends Controller
         private readonly Session      $session,
         private readonly RoomService  $roomService,
         private readonly EventService $eventService,
+        private readonly UserService  $userService
     )
     {
     }
@@ -68,7 +69,7 @@ class ApproverViewController extends Controller
     public function schedule(): void
     {
         $events = $this->eventService->getAllEventsNeedingApprovalFromCurrentUser();
-        $this->view('admin.schedule', [
+        $this->view('schedule', [
             '__layout_title__' => 'Schedule',
             'user' => $this->session->user,
             'events' => $events
@@ -82,10 +83,12 @@ class ApproverViewController extends Controller
     {
         $id = Http::query('id');
         $event = $this->eventService->getEventById($id);
+        $approvers = $this->userService->getAllApprovers();
         $this->view('event-detail', [
             '__layout_title__' => 'Schedule',
             'user' => $this->session->user,
-            'event' => $event
+            'event' => $event,
+            'approvers' => $approvers
         ]);
     }
 }

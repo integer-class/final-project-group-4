@@ -83,6 +83,27 @@ class UserRepository implements IUserRepository
         return User::fromArray($users[0]);
     }
 
+    public function getAllByRole(RoleName $role): array
+    {
+        $users = $this->databaseClient->executeQuery("
+            SELECT
+                [User].Id as Id,
+                RegistrationNumber,
+                Username,
+                Password,
+                FullName,
+                Email,
+                Phone,
+                Avatar,
+                Role
+            FROM
+                 dbo.[User]
+            WHERE Role = :role
+        ", ['role' => $role->value]);
+
+        return array_map(fn($user) => User::fromArray($user), $users);
+    }
+
     public function create(User $user): User
     {
         $this->databaseClient->executeNonQuery("

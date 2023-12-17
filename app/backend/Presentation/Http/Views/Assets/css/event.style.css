@@ -12,8 +12,7 @@
     position: relative;
     color: white;
     display: flex;
-    padding: 2rem;
-    padding-top: 3rem;
+    padding: 3rem 2rem 2rem;
     gap: 2rem;
 }
 
@@ -103,4 +102,10 @@
 
 .event-description p {
     font-size: 1.15rem;
+}
+
+.event-approver {
+    font-family: 'Jost', sans-serif;
+    font-size: 1.25rem;
+    margin-bottom: 3rem;
 }

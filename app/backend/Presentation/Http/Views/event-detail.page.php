@@ -2,8 +2,10 @@
 
 use Primitives\Models\Event;
 use Primitives\Models\RoleName;
+use Primitives\Models\User;
 
 /** @var Event $event */
+/** @var User[] $approvers */
 
 $prefix = $_SESSION['user']['role'] == RoleName::Administrator ? 'admin' : 'approver';
 ?>
@@ -56,6 +58,16 @@ $prefix = $_SESSION['user']['role'] == RoleName::Administrator ? 'admin' : 'appr
                     <?= $event->description ?>
                 </p>
             </div>
+            <!-- Dynamic Form to add approver using a dropdown select -->
+            <div class="event-approver">
+                <span>Approver</span>
+                <select name="approver" id="approver" class="input-text">
+                    <?php foreach ($approvers as $approver): ?>
+                        <option value="<?= $approver->id ?>"><?= $approver->fullname ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
             <div class="row mx-auto" style="gap: 1rem; max-width: 30rem">
                 <button class="col button danger-button">Reject</button>
                 <button class="col button primary-button">Approve</button>

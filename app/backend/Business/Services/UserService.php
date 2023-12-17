@@ -25,6 +25,11 @@ class UserService
         return $this->userRepository->getById($id);
     }
 
+    public function getAllApprovers(): array
+    {
+        return $this->userRepository->getAllByRole(RoleName::Approver);
+    }
+
     public function getUserByUsernameOrEmail(string $username_or_email): User|null
     {
         return $this->userRepository->getByUsernameOrEmailOrRegistrationNumber($username_or_email);
