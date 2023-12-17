@@ -38,8 +38,8 @@ class AuthController extends Controller
                 case RoleName::Administrator:
                     Http::redirect('/admin/dashboard');
                     break;
-                case RoleName::Lecturer:
-                    Http::redirect('/lecturer/dashboard');
+                case RoleName::Approver:
+                    Http::redirect('/approver/dashboard');
                     break;
                 case RoleName::Student:
                     Http::redirect('/user/dashboard');

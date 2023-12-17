@@ -2,6 +2,7 @@
 
 namespace Presentation\Http\Controllers;
 
+use Business\Services\EventService;
 use Business\Services\RoomService;
 use Business\Services\UserService;
 use Presentation\Http\Attributes\Authenticated;
@@ -14,8 +15,9 @@ use Primitives\Models\RoleName;
 class StudentViewController extends Controller
 {
     public function __construct(
-        private readonly Session     $session,
-        private readonly RoomService $roomService
+        private readonly Session      $session,
+        private readonly RoomService  $roomService,
+        private readonly EventService $eventService,
     )
     {
     }
@@ -51,10 +53,12 @@ class StudentViewController extends Controller
     {
         $id = Http::query('id');
         $room = $this->roomService->getRoomById($id);
-        $this->view('admin.room', [
+        $events = $this->eventService->getEventsByRoomId($id);
+        $this->view('student.room', [
             '__layout_title__' => 'Room Detail',
             'user' => $this->session->user,
-            'room' => $room
+            'room' => $room,
+            'events' => $events
         ]);
     }
 

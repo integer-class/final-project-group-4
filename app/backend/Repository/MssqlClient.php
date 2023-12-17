@@ -60,4 +60,9 @@ class MssqlClient
         $statement = $this->pdo->prepare($query);
         $statement->execute($parameters);
     }
+
+    public function getLastInsertedId(): int
+    {
+        return $this->pdo->lastInsertId();
+    }
 }

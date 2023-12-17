@@ -1,0 +1,67 @@
+<div class="d-flex w-100 h-100">
+    <?php
+
+    use Primitives\Models\Event;
+    use Primitives\Models\Room;
+
+    /** @var Room $room */
+    /** @var Event[] $events */
+
+    require_once __DIR__ . '/Components/sidenav.component.php';
+    ?>
+    <main class="dashboard-main">
+        <?php
+        require_once __DIR__ . '/Components/topbar.component.php';
+        ?>
+        <div class="container mx-auto form-container">
+            <div class="cover-image-container" style="height: 28rem">
+                <img
+                        class="cover-image" src="/uploaded_images/room/<?= $room->image ?>" alt="<?= $room->name ?>"
+                        style="top: 0"
+                />
+                <div class="white-shadow"></div>
+                <a class="back-button" href="/student/room-list">
+                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="material-symbols:arrow-back">
+                            <path
+                                    id="Vector"
+                                    d="M15.65 26L26.85 37.2L24 40L8 24L24 8L26.85 10.8L15.65 22H40V26H15.65Z"
+                                    fill="white"
+                            />
+                        </g>
+                    </svg>
+                </a>
+                <div class="room-detail" style="margin-top: 16rem">
+                    <h1><?= $room->code ?>: <?= $room->name ?></h1>
+                    <div class="d-flex text-capitalize" style="gap: 1rem">
+                        <p><strong>Capacity:</strong> <?= $room->capacity ?></p>
+                        <p><strong>Floor:</strong> <?= $room->floor ?></p>
+                        <p><strong>Side:</strong> <?= $room->side ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="bordered-container">
+                <table class="table" id="rooms-table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Starts At</th>
+                        <th scope="col">Ends At</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($events as $event): ?>
+                        <tr>
+                            <td><?= $event->title ?></td>
+                            <td><?= $event->description ?></td>
+                            <td><?= $event->startsAt->format('d-m-Y H:i:s') ?></td>
+                            <td><?= $event->endsAt->format('d-m-Y H:i:s') ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>

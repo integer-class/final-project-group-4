@@ -13,8 +13,8 @@ function route(string $path): string
             case RoleName::Administrator:
                 $prefix = "/admin";
                 break;
-            case RoleName::Lecturer:
-                $prefix = "/lecturer";
+            case RoleName::Approver:
+                $prefix = "/approver";
                 break;
             case RoleName::Student:
                 $prefix = "/student";

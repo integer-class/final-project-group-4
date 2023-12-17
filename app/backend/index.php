@@ -3,6 +3,7 @@
 require_once __DIR__ . "/autoload.php";
 
 use Business\Services\AuthService;
+use Business\Services\EventService;
 use Business\Services\RoomService;
 use Business\Services\UserService;
 use Presentation\Http\Controllers\AdminViewController;
@@ -13,6 +14,7 @@ use Presentation\Http\Controllers\UserController;
 use Presentation\Http\Controllers\StudentViewController;
 use Presentation\Http\Helpers\Session;
 use Presentation\Http\HttpPresenter;
+use Repository\EventRepository;
 use Repository\MssqlClient;
 use Repository\RoomRepository;
 use Repository\UserRepository;
@@ -52,11 +54,13 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     // repositories
     $userRepository = new UserRepository($dbClient);
     $roomRepository = new RoomRepository($dbClient);
+    $eventRepository = new EventRepository($dbClient);
 
     // services
     $authService = new AuthService($userRepository);
     $userService = new UserService($userRepository);
     $roomService = new RoomService($roomRepository);
+    $eventService = new EventService($eventRepository);
 
     // controllers
     $appController = new AppController($session);
@@ -64,7 +68,7 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     $roomController = new RoomController($roomService);
     $authController = new AuthController($authService, $session);
     $adminViewController = new AdminViewController($session, $userService, $roomService);
-    $studentViewController = new StudentViewController($session, $roomService);
+    $studentViewController = new StudentViewController($session, $roomService, $eventService);
 
     $httpPresenter = new HttpPresenter();
 

@@ -4,6 +4,7 @@ namespace Business\Services;
 
 use Presentation\Http\Helpers\Storage;
 use Primitives\Models\Role;
+use Primitives\Models\RoleName;
 use Primitives\Models\StudyProgram;
 use Primitives\Models\User;
 use RepositoryInterfaces\IUserRepository;
@@ -45,7 +46,7 @@ class UserService
             email: $raw_user['email'],
             phone: $raw_user['phone'],
             avatar: $avatar,
-            role: new Role($raw_user['role']),
+            role: RoleName::from($raw_user['role']),
             studyProgram: new StudyProgram($raw_user['study_program'] ?? '')
         );
         return $this->userRepository->create($user);
@@ -66,7 +67,7 @@ class UserService
             email: $raw_user['email'],
             phone: $raw_user['phone'],
             avatar: $raw_user['avatar'],
-            role: new Role($raw_user['role']),
+            role: RoleName::from($raw_user['role']),
             studyProgram: new StudyProgram($raw_user['study_program'] ?? ''),
         );
         return $this->userRepository->update($user);

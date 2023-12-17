@@ -1,6 +1,7 @@
 <div class="d-flex w-100 h-100">
     <?php
 
+    use Primitives\Models\RoleName;
     use Primitives\Models\Room;
 
     /** @var Room[] $rooms */
@@ -33,7 +34,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <?php foreach ($rooms as $room) { ?>
+                <?php foreach ($rooms as $room): ?>
                     <tr>
                         <td><?= $room->code ?></td>
                         <td><?= $room->name ?></td>
@@ -41,18 +42,22 @@
                         <td><?= $room->floor ?></td>
                         <td><?= $room->side ?></td>
                         <td class="text-center d-flex justify-content-center">
-                            <button
-                                    type="button" class="button button-delete"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#deleteRoomModal"
-                                    data-bs-room-id="<?= $room->id ?>"
-                            >
-                                Delete
-                            </button>
-                            <a href="/admin/room?id=<?= $room->id ?>" class="button button-edit">Edit</a>
+                            <?php if ($_SESSION['user']['role'] == RoleName::Student): ?>
+                                <a href="/student/room?id=<?= $room->id ?>" class="button button-edit">Detail</a>
+                            <?php else: ?>
+                                <button
+                                        type="button" class="button button-delete"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#deleteRoomModal"
+                                        data-bs-room-id="<?= $room->id ?>"
+                                >
+                                    Delete
+                                </button>
+                                <a href="/admin/room?id=<?= $room->id ?>" class="button button-edit">Edit</a>
+                            <?php endif; ?>
                         </td>
                     </tr>
-                <?php } ?>
+                <?php endforeach; ?>
                 </tbody>
             </table>
         </div>

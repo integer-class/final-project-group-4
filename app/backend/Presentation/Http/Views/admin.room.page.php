@@ -32,7 +32,7 @@
                     </div>
                 </div>
             </div>
-            <form class="form">
+            <form class="bordered-container">
                 <h1 class="form-title">Edit Room Details</h1>
                 <div class="input-container">
                     <div class="mb-4 w-100">
