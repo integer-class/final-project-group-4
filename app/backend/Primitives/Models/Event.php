@@ -32,7 +32,7 @@ class Event
     public function isApproved(): bool
     {
         foreach ($this->approvers as $approver) {
-            if ($approver->status->value != ApproverStatus::APPROVED) {
+            if ($approver->status->value != ApproverStatus::Approved) {
                 return false;
             }
         }
@@ -44,6 +44,7 @@ class Event
      */
     public static function fromArray(array $data, array $approvers): Event
     {
+        $hasApprover = array_key_exists('ApproverId', $data) && $data['ApproverId'] != null;
         return new Event(
             id: $data['Id'],
             title: $data['Title'],
@@ -71,7 +72,7 @@ class Event
                 role: RoleName::from($data['PicRole']),
                 studyProgram: null,
             ),
-            approvers: array_map(fn($approver) => new Approver(
+            approvers: !$hasApprover ? [] : array_map(fn($approver) => new Approver(
                 user: new User(
                     id: $approver['ApproverId'],
                     registrationNumber: $approver['ApproverRegistrationNumber'],

@@ -2,13 +2,14 @@
 
 namespace Business\Services;
 
+use Presentation\Http\Helpers\Session;
 use Primitives\Models\Event;
 use Repository\EventRepository;
 
 class EventService
 {
     public function __construct(
-        private EventRepository $eventRepository
+        private readonly EventRepository $eventRepository,
     ) {
     }
 
@@ -55,5 +56,11 @@ class EventService
     public function getRejectedEventsCount(): int
     {
         return $this->eventRepository->getRejectedEventsCount();
+    }
+
+    public function getAllEventsNeedingApprovalFromCurrentUser(): array
+    {
+        $session = Session::getInstance();
+        return $this->eventRepository->getAllEventsNeedingApprovalFrom($session->user['id']);
     }
 }

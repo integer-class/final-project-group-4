@@ -47,14 +47,20 @@ use Primitives\Models\Room;
             </tr>
             </thead>
             <tbody>
-            <?php foreach ($events as $event): ?>
+            <?php if (empty($events)): ?>
                 <tr>
-                    <td><?= $event->title ?></td>
-                    <td><?= $event->description ?></td>
-                    <td><?= $event->startsAt->format('d-m-Y H:i:s') ?></td>
-                    <td><?= $event->endsAt->format('d-m-Y H:i:s') ?></td>
+                    <td colspan="4" class="text-center" style="padding-block: 1.5rem">No events for this room</td>
                 </tr>
-            <?php endforeach; ?>
+            <?php else: ?>
+                <?php foreach ($events as $event): ?>
+                    <tr>
+                        <td><?= $event->title ?></td>
+                        <td><?= $event->description ?></td>
+                        <td><?= $event->startsAt->format('d-m-Y H:i:s') ?></td>
+                        <td><?= $event->endsAt->format('d-m-Y H:i:s') ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php endif; ?>
             </tbody>
         </table>
     </div>

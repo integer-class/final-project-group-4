@@ -39,7 +39,7 @@ class ApproverViewController extends Controller
     public function roomList(): void
     {
         $rooms = $this->roomService->getAllRooms();
-        $this->view('admin.room-list', [
+        $this->view('room-list', [
             '__layout_title__' => 'Room List',
             'user' => $this->session->user,
             'rooms' => $rooms
@@ -67,9 +67,11 @@ class ApproverViewController extends Controller
     #[Authenticated(RoleName::Approver)]
     public function schedule(): void
     {
+        $events = $this->eventService->getAllEventsNeedingApprovalFromCurrentUser();
         $this->view('admin.schedule', [
             '__layout_title__' => 'Schedule',
-            'user' => $this->session->user
+            'user' => $this->session->user,
+            'events' => $events
         ]);
     }
 }

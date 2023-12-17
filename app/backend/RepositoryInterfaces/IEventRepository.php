@@ -9,6 +9,7 @@ interface IEventRepository
     public function getAll(): array;
     public function getById(int $id): Event;
     public function getByRoomId(int $roomId): array;
+    public function getAllEventsNeedingApprovalFrom(int $userId): array;
     public function create(array $event): Event;
     public function updateApprover(Event $event, array $approvers): Event;
     public function updateStatus(Event $event, int $userId, string $eventStatus): Event;

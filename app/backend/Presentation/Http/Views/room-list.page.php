@@ -70,8 +70,6 @@ use Primitives\Models\Room;
         </tbody>
     </table>
 </div>
-</main>
-</div>
 
 <div
         class="modal fade"

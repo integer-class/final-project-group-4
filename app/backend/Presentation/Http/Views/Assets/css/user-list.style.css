@@ -33,5 +33,7 @@
 }
 
 .list-title {
-    font-weight: bold;
+    font-weight: 600;
+    font-family: 'Jost', sans-serif;
+    font-size: 2rem;
 }

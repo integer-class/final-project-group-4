@@ -87,9 +87,11 @@ class AdminViewController extends Controller
     #[Authenticated(RoleName::Administrator)]
     public function schedule(): void
     {
+        $events = $this->eventService->getAllEvents();
         $this->view('admin.schedule', [
             '__layout_title__' => 'Schedule',
-            'user' => $this->session->user
+            'user' => $this->session->user,
+            'events' => $events
         ]);
     }
 
