@@ -85,11 +85,9 @@ class UserRepository implements IUserRepository
 
     public function create(User $user): User
     {
-        $user_id = $this->databaseClient->executeQuery("
+        $this->databaseClient->executeNonQuery("
             INSERT INTO dbo.[User] (RegistrationNumber, FullName, Username, Password, Email, Phone, Avatar, Role)
             VALUES (:registration_number, :fullname, :username, :password, :email, :phone, :avatar, :role);
-
-            SELECT SCOPE_IDENTITY() as Id;
         ", [
             'registration_number' => $user->registrationNumber,
             'fullname' => $user->fullname,
@@ -99,9 +97,9 @@ class UserRepository implements IUserRepository
             'phone' => $user->phone,
             'avatar' => $user->avatar,
             'role' => $user->role->name
-        ])[0]['Id'];
+        ]);
 
-        return $user;
+        return $this->getById($this->databaseClient->getLastInsertedId());
     }
 
     public function update(User $user): User

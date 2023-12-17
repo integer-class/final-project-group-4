@@ -71,6 +71,17 @@ class AdminViewController extends Controller
         ]);
     }
 
+    #[Route('/admin/add-room', 'GET')]
+    #[WithSession]
+    #[Authenticated(RoleName::Administrator)]
+    public function addRoom(): void
+    {
+        $this->view('admin.add-room', [
+            '__layout_title__' => 'Add Room',
+            'user' => $this->session->user
+        ]);
+    }
+
     #[Route('/admin/schedule', 'GET')]
     #[WithSession]
     #[Authenticated(RoleName::Administrator)]

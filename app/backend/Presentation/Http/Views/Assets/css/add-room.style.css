@@ -1,21 +1,21 @@
 .form-container {
     border-radius: 1rem;
     margin-block: 2rem;
-    padding: 0;
+    border: 1px solid var(--color-secondary);
+    padding: 2rem;
 }
 
-.bordered-container {
-    border-left: 1px solid #c9c9c9;
-    border-right: 1px solid #c9c9c9;
-    border-bottom: 1px solid #c9c9c9;
-    border-bottom-left-radius: 1rem;
-    border-bottom-right-radius: 1rem;
-    padding: 2rem;
+.cover-image-container {
+    padding-bottom: 2rem;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    gap: 2rem;
+    color: var(--color-black);
 }
 
 .room-detail h1,
 .room-detail p {
-    text-shadow: 0 0 1rem rgba(0, 0, 0, 0.75);
     font-family: 'Jost', sans-serif;
 }
 

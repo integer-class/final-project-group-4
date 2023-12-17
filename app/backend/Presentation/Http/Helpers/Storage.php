@@ -63,6 +63,6 @@ class Storage
 
     public static function removeStoredImage(string $path): void
     {
-        unlink(__DIR__ . "/../Views/Assets/$path");
+        unlink(__DIR__ . "/../Views/Assets/uploaded_images/$path");
     }
 }

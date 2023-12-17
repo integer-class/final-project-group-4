@@ -6,12 +6,12 @@
     >
         <img src="/jti-logo.png" alt="jti_logo" class="mb-4">
         <h1 class="mb-4 app-title">Room Reservation</h1>
-        <?php
-        if (isset($_SESSION['error_message'])) {
-            echo '<div class="alert alert-danger w-100" role="alert">' . $_SESSION['error_message'] . '</div>';
-            unset($_SESSION['error_message']);
-        }
-        ?>
+        <?php if (isset($_SESSION['error_message'])): ?>
+            <div class="w-100 alert alert-danger alert-dismissible fade show" role="alert">
+                <?= $_SESSION['error_message'] ?>
+                <?php unset($_SESSION['error_message']) ?>
+            </div>
+        <?php endif; ?>
         <div class="mb-4 w-100">
             <label for="username-input" class="form-label">Username / Email / Registration Number</label>
             <input type="text" class="input-text" id="username-input" name="username">

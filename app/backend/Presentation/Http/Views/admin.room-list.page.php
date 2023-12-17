@@ -4,8 +4,6 @@ use Primitives\Models\RoleName;
 use Primitives\Models\Room;
 
 /** @var Room[] $rooms */
-
-require_once __DIR__ . '/Components/sidenav.component.php';
 ?>
 <div class="container mt-5">
     <div class="row mb-4">
@@ -13,9 +11,23 @@ require_once __DIR__ . '/Components/sidenav.component.php';
             <h1 class="list-title">List of All Rooms</h1>
         </div>
         <div class="col-6">
-            <button type="button" class="button button-add float-end">+ Add New Room</button>
+            <a type="button" class="button button-add float-end" href="/admin/add-room">+ Add New Room</a>
         </div>
     </div>
+
+    <?php if (isset($_SESSION['success_message'])): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= $_SESSION['success_message'] ?>
+            <?php unset($_SESSION['success_message']) ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['error_message'])): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= $_SESSION['error_message'] ?>
+            <?php unset($_SESSION['error_message']) ?>
+        </div>
+    <?php endif; ?>
 
     <table class="table" id="rooms-table">
         <thead>

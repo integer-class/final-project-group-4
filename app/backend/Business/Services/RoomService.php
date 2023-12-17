@@ -38,12 +38,16 @@ class RoomService
             code: $raw_room['code'],
             name: $raw_room['name'],
             floor: $raw_room['floor'],
-            floor_plan_index: $raw_room['floor_plan_index'],
             capacity: $raw_room['capacity'],
             side: $raw_room['side'],
             image: $image,
         );
-        return $this->roomRepository->create($room);
+        try {
+            return $this->roomRepository->create($room);
+        } catch (\Exception $ex) {
+            Storage::removeStoredImage("room/$image");
+            throw new \Exception($ex->getMessage());
+        }
     }
 
     public function updateRoom(string $id, array $raw_room): Room
@@ -53,7 +57,6 @@ class RoomService
             code: $raw_room['code'],
             name: $raw_room['name'],
             floor: $raw_room['floor'],
-            floor_plan_index: $raw_room['floor_plan_index'],
             capacity: $raw_room['capacity'],
             side: $raw_room['side'],
             image: $raw_room['image']

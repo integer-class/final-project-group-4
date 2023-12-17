@@ -51,7 +51,7 @@ class MssqlClient
     {
         $statement = $this->pdo->prepare($query);
         $statement->execute($parameters);
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $statement->fetchAll();
     }
 
     public function executeNonQuery(string $query,

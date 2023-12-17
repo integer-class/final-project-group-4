@@ -19,7 +19,6 @@ class RoomRepository implements IRoomRepository
                 Code,
                 Name,
                 Floor,
-                FloorPlanIndex,
                 Capacity,
                 Side,
                 Image
@@ -38,7 +37,6 @@ class RoomRepository implements IRoomRepository
                 Code,
                 Name,
                 Floor,
-                FloorPlanIndex,
                 Capacity,
                 Side,
                 Image
@@ -59,7 +57,6 @@ class RoomRepository implements IRoomRepository
                 Code,
                 Name,
                 Floor,
-                FloorPlanIndex,
                 Capacity,
                 Side,
                 Image
@@ -74,31 +71,28 @@ class RoomRepository implements IRoomRepository
 
     public function create(Room $room): Room
     {
-        $this->mssqlClient->executeQuery("
-            INSERT INTO dbo.Room (Code, Name, Floor, FloorPlanIndex, Capacity, Side, Image)
-            VALUES (:code, :name, :floor, :floor_plan_index, :capacity, :side, :image)
+        $this->mssqlClient->executeNonQuery("
+            INSERT INTO dbo.Room (Code, Name, Floor, Capacity, Side, Image)
+            VALUES (:code, :name, :floor, :capacity, :side, :image)
         ", [
             'code' => $room->code,
             'name' => $room->name,
             'floor' => $room->floor,
-            'floor_plan_index' => $room->floor_plan_index,
             'capacity' => $room->capacity,
             'side' => $room->side,
             'image' => $room->image
         ]);
-
-        return $this->getById($room->id);
+        return $this->getById($this->mssqlClient->getLastInsertedId());
     }
 
     public function update(Room $room): Room
     {
-        $this->mssqlClient->executeQuery("
+        $this->mssqlClient->executeNonQuery("
             UPDATE dbo.Room
             SET 
                 Code = :code, 
                 Name = :name, 
                 Floor = :floor,
-                FloorPlanIndex = :floor_plan_index,
                 Capacity = :capacity,
                 Side = :side,
                 Image = :image
@@ -108,7 +102,6 @@ class RoomRepository implements IRoomRepository
             'code' => $room->code,
             'name' => $room->name,
             'floor' => $room->floor,
-            'floor_plan_index' => $room->floor_plan_index,
             'capacity' => $room->capacity,
             'side' => $room->side,
             'image' => $room->image

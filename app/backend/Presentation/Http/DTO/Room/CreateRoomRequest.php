@@ -9,7 +9,6 @@ class CreateRoomRequest implements DtoRequestContract
     public string $name;
     public string $code;
     public int $floor;
-    public int $floor_plan_index;
     public int $capacity;
     public string $side;
 
@@ -18,7 +17,6 @@ class CreateRoomRequest implements DtoRequestContract
         $this->name = $raw['name'];
         $this->code = $raw['code'];
         $this->floor = $raw['floor'];
-        $this->floor_plan_index = $raw['floor_plan_index'];
         $this->capacity = $raw['capacity'];
         $this->side = $raw['side'];
     }
@@ -39,10 +37,6 @@ class CreateRoomRequest implements DtoRequestContract
             $errors['floor'] = 'Floor is required';
         }
 
-        if (empty($this->floor_plan_index)) {
-            $errors['floor_plan_index'] = 'Floor plan index is required';
-        }
-
         if (empty($this->capacity)) {
             $errors['capacity'] = 'Capacity is required';
         }
@@ -60,7 +54,6 @@ class CreateRoomRequest implements DtoRequestContract
             'name' => $this->name,
             'code' => $this->code,
             'floor' => $this->floor,
-            'floor_plan_index' => $this->floor_plan_index,
             'capacity' => $this->capacity,
             'side' => $this->side,
         ];

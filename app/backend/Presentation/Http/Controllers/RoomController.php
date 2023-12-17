@@ -41,12 +41,11 @@ class RoomController extends Controller
     {
         try {
             $room = $this->roomService->createRoom($room->toArray());
-            $_SESSION['success_message'] = "Room with an ID of {$room->id} has been created successfully";
-            Http::redirect($_SERVER['HTTP_REFERER']);
-        Http::ok($room, "Room created successfully");
+            $_SESSION['success_message'] = "Room with the name of {$room->name} has been created successfully";
+            Http::redirect("/admin/room-list");
         } catch (\Exception $e) {
             $_SESSION['error_message'] = $e->getMessage();
-            Http::redirect($_SERVER['HTTP_REFERER']);
+            Http::redirect('/admin/room-list');
         }
 
     }
