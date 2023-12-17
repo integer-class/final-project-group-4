@@ -39,7 +39,7 @@ class StudentViewController extends Controller
     public function roomList(): void
     {
         $rooms = $this->roomService->getAllRooms();
-        $this->view('admin.room-list', [
+        $this->view('room-list', [
             '__layout_title__' => 'Room List',
             'user' => $this->session->user,
             'rooms' => $rooms
@@ -59,6 +59,20 @@ class StudentViewController extends Controller
             'user' => $this->session->user,
             'room' => $room,
             'events' => $events
+        ]);
+    }
+
+    #[Route('/student/room/reserve', 'GET')]
+    #[WithSession]
+    #[Authenticated(RoleName::Student)]
+    public function roomReservation(): void
+    {
+        $id = Http::query('id');
+        $room = $this->roomService->getRoomById($id);
+        $this->view('student.room-reservation', [
+            '__layout_title__' => 'Room Reservation',
+            'user' => $this->session->user,
+            'room' => $room,
         ]);
     }
 

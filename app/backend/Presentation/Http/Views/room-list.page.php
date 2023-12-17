@@ -10,9 +10,11 @@ use Primitives\Models\Room;
         <div class="col-6">
             <h1 class="list-title">List of All Rooms</h1>
         </div>
-        <div class="col-6">
-            <a type="button" class="button button-add float-end" href="/admin/add-room">+ Add New Room</a>
-        </div>
+        <?php if ($_SESSION['user']['role'] == RoleName::Administrator): ?>
+            <div class="col-6">
+                <a type="button" class="button button-add float-end" href="/admin/add-room">+ Add New Room</a>
+            </div>
+        <?php endif; ?>
     </div>
 
     <?php if (isset($_SESSION['success_message'])): ?>

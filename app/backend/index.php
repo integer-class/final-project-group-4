@@ -10,6 +10,7 @@ use Presentation\Http\Controllers\AdminViewController;
 use Presentation\Http\Controllers\AppController;
 use Presentation\Http\Controllers\ApproverViewController;
 use Presentation\Http\Controllers\AuthController;
+use Presentation\Http\Controllers\EventController;
 use Presentation\Http\Controllers\RoomController;
 use Presentation\Http\Controllers\UserController;
 use Presentation\Http\Controllers\StudentViewController;
@@ -67,6 +68,7 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     $userController = new UserController($userService);
     $roomController = new RoomController($roomService);
     $authController = new AuthController($authService, $session);
+    $eventController = new EventController($eventService);
 
     // view controllers
     $appController = new AppController($session);
@@ -81,6 +83,7 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     $httpPresenter->register($appController);
     $httpPresenter->register($authController);
     $httpPresenter->register($roomController);
+    $httpPresenter->register($eventController);
     $httpPresenter->register($adminViewController);
     $httpPresenter->register($studentViewController);
     $httpPresenter->register($approverViewController);

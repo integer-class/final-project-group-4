@@ -2,6 +2,8 @@
 
 namespace Repository;
 
+use DateTime;
+use Exception;
 use Primitives\Models\Event;
 use RepositoryInterfaces\IEventRepository;
 
@@ -173,9 +175,32 @@ class EventRepository implements IEventRepository
         }, $events);
     }
 
+    /**
+     * @throws Exception
+     */
     public function create(array $event): Event
     {
-        $this->client->executeQuery('
+        $existingEvent = $this->client->executeQuery('
+        SELECT
+            Event.Id as Id
+        FROM 
+            Event
+        WHERE
+            Event.RoomID = :room_id AND
+            (
+                (:starts_at BETWEEN Event.StartsAt AND Event.EndsAt) OR
+                (:ends_at BETWEEN Event.StartsAt AND Event.EndsAt)
+            )
+        ', [
+            'room_id' => $event['room_id'],
+            'starts_at' => (new DateTime($event['start_date']))->format('Ymd'),
+            'ends_at' => (new DateTime($event['end_date']))->format('Ymd')
+        ]);
+        if (count($existingEvent) > 0) {
+            throw new Exception('Event already exists');
+        }
+
+        $this->client->executeNonQuery('
         INSERT INTO Event
         (
             Title,
@@ -196,8 +221,8 @@ class EventRepository implements IEventRepository
         )', [
             'title' => $event['title'],
             'description' => $event['description'],
-            'starts_at' => $event['starts_at']->format('Ymd'),
-            'ends_at' => $event['ends_at']->format('Ymd'),
+            'starts_at' => (new DateTime($event['start_date']))->format('Ymd'),
+            'ends_at' => (new DateTime($event['end_date']))->format('Ymd'),
             'room_id' => $event['room_id'],
             'user_id' => $event['user_id']
         ]);

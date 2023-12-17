@@ -50,7 +50,7 @@ class AdminViewController extends Controller
     public function roomList(): void
     {
         $rooms = $this->roomService->getAllRooms();
-        $this->view('admin.room-list', [
+        $this->view('room-list', [
             '__layout_title__' => 'Room List',
             'user' => $this->session->user,
             'rooms' => $rooms

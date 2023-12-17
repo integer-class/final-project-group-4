@@ -24,13 +24,16 @@ use Primitives\Models\Room;
                 </g>
             </svg>
         </a>
-        <div class="room-detail" style="margin-top: 16rem">
-            <h1><?= $room->code ?>: <?= $room->name ?></h1>
-            <div class="d-flex text-capitalize" style="gap: 1rem">
-                <p><strong>Capacity:</strong> <?= $room->capacity ?></p>
-                <p><strong>Floor:</strong> <?= $room->floor ?></p>
-                <p><strong>Side:</strong> <?= $room->side ?></p>
+        <div class="room-detail-container">
+            <div class="room-detail">
+                <h1><?= $room->code ?>: <?= $room->name ?></h1>
+                <div class="d-flex text-capitalize" style="gap: 1rem">
+                    <p><strong>Capacity:</strong> <?= $room->capacity ?></p>
+                    <p><strong>Floor:</strong> <?= $room->floor ?></p>
+                    <p><strong>Side:</strong> <?= $room->side ?></p>
+                </div>
             </div>
+            <a href="/student/room/reserve?id=<?= $room->id ?>" class="primary-button">Book</a>
         </div>
     </div>
     <div class="bordered-container">

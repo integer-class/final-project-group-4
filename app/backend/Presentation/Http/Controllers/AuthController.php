@@ -43,7 +43,7 @@ class AuthController extends Controller
                     Http::redirect('/approver/dashboard');
                     break;
                 case RoleName::Student:
-                    Http::redirect('/user/dashboard');
+                    Http::redirect('/student/dashboard');
                     break;
             }
         } catch (InvalidPasswordException $e) {
