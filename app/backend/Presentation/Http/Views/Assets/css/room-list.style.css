@@ -1,38 +1,9 @@
 .button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
+    height: 46px;
     border-radius: 50px;
     color: white;
     font-weight: bold;
-    background-color: #00A3FF;
     border: none;
-    padding: 0.75rem 3rem;
-}
-
-.button:hover {
-    filter: brightness(0.8);
-}
-
-.button-delete {
-    width: 120px;
-    height: 41px;
-    border-radius: 50px;
-    color: white;
-    font-weight: bold;
-    margin: 0px 10px;
-    background-color: #FF0000;
-}
-
-.button-edit {
-    width: 120px;
-    height: 41px;
-    border-radius: 50px;
-    color: white;
-    font-weight: bold;
-    margin: 0px 10px;
-    background-color: #F99D1C;
 }
 
 .list-title {

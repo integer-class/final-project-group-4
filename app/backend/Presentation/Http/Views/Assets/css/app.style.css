@@ -4,6 +4,7 @@
     --color-white: #FFFFFF;
     --color-black: #020617;
     --color-danger: #FF0000;
+    --color-info: #00A3FF;
 }
 
 .input-text {
@@ -131,17 +132,16 @@
     cursor: pointer;
 }
 
-.button,
 .button {
     font-family: 'Jost', sans-serif;
     font-weight: bold;
     border: none;
-    padding: 0.75rem 3rem;
+    padding: 0.75rem 2rem;
     cursor: pointer;
     border-radius: 0.5rem;
+    text-decoration: none;
 }
 
-.button:hover,
 .button:hover {
     filter: brightness(0.9);
 }
@@ -171,4 +171,9 @@
 
 .danger-button:hover {
     background-color: var(--color-danger);
+}
+
+.info-button {
+    color: white;
+    background-color: var(--color-info);
 }

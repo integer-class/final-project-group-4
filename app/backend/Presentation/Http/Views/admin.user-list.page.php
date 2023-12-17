@@ -10,7 +10,7 @@ use Primitives\Models\User;
             <h1 class="list-title">List of All Users</h1>
         </div>
         <div class="col-6">
-            <button type="button" class="button button-add float-end">+ Add New User</button>
+            <button type="button" class="button info-button float-end">+ Add New User</button>
         </div>
     </div>
 
@@ -33,10 +33,10 @@ use Primitives\Models\User;
                 <td><?= $user->fullname ?></td>
                 <td><?= $user->studyProgram?->name ?? '-' ?></td>
                 <td><?= $user->role->name ?></td>
-                <td class="text-center">
+                <td class="text-center d-flex justify-content-center" style="gap: 0.5rem">
                     <?php if ($_SESSION['user']['id'] !== $user->id) { ?>
                         <button
-                                type="button" class="button button-delete"
+                                type="button" class="button danger-button"
                                 data-bs-toggle="modal"
                                 data-bs-target="#deleteUserModal"
                                 data-bs-room-id="<?= $user->id ?>"
@@ -44,7 +44,7 @@ use Primitives\Models\User;
                             Delete
                         </button>
                     <?php } ?>
-                    <button type="button" class="button button-edit">Edit</button>
+                    <button type="button" class="button primary-button">Edit</button>
                 </td>
             </tr>
         <?php } ?>

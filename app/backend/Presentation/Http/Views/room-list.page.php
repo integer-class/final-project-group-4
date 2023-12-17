@@ -12,7 +12,7 @@ use Primitives\Models\Room;
         </div>
         <?php if ($_SESSION['user']['role'] == RoleName::Administrator): ?>
             <div class="col-6">
-                <a type="button" class="button button-add float-end" href="/admin/add-room">+ Add New Room</a>
+                <a type="button" class="button info-button float-end" href="/admin/add-room">+ Add New Room</a>
             </div>
         <?php endif; ?>
     </div>
@@ -50,19 +50,19 @@ use Primitives\Models\Room;
                 <td><?= $room->capacity ?></td>
                 <td><?= $room->floor ?></td>
                 <td><?= $room->side ?></td>
-                <td class="text-center d-flex justify-content-center">
+                <td class="text-center d-flex justify-content-center" style="gap: 0.5rem">
                     <?php if ($_SESSION['user']['role'] == RoleName::Student): ?>
-                        <a href="/student/room?id=<?= $room->id ?>" class="button button-edit">Detail</a>
+                        <a href="/student/room?id=<?= $room->id ?>" class="button primary-button">Detail</a>
                     <?php else: ?>
                         <button
-                                type="button" class="button button-delete"
+                                type="button" class="button danger-button"
                                 data-bs-toggle="modal"
                                 data-bs-target="#deleteRoomModal"
                                 data-bs-room-id="<?= $room->id ?>"
                         >
                             Delete
                         </button>
-                        <a href="/admin/room?id=<?= $room->id ?>" class="button button-edit">Edit</a>
+                        <a href="/admin/room?id=<?= $room->id ?>" class="button primary-button">Edit</a>
                     <?php endif; ?>
                 </td>
             </tr>
