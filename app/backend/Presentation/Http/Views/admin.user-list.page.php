@@ -11,7 +11,7 @@ use Primitives\Models\User;
             <h1 class="list-title">List of All Users</h1>
         </div>
         <div class="col-6">
-            <button type="button" class="button info-button float-end">+ Add New User</button>
+            <a href="/admin/add-user" type="button" class="button info-button float-end">+ Add New User</a>
         </div>
     </div>
 

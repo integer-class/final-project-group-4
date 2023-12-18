@@ -107,4 +107,15 @@ class AdminViewController extends Controller
             'users' => $users
         ]);
     }
+
+    #[Route('/admin/add-user', 'GET')]
+    #[WithSession]
+    #[Authenticated(RoleName::Administrator)]
+    public function addUser(): void
+    {
+        $this->view('admin.add-user', [
+            '__layout_title__' => 'Add User',
+            'user' => $this->session->user,
+        ]);
+    }
 }
