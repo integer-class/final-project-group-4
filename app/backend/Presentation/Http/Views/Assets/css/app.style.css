@@ -7,6 +7,41 @@
     --color-info: #00A3FF;
 }
 
+body {
+    view-transition-name: body;
+}
+
+::view-transition-old(body),
+::view-transition-new(body) {
+    animation-duration: 100ms;
+}
+
+@keyframes fade-out {
+    to { opacity: 0 }
+}
+
+@keyframes fade-in {
+    from { opacity: 0 }
+}
+
+@keyframes slide-to-bottom {
+    to { transform: translateY(-10rem); }
+}
+
+@keyframes slide-from-bottom {
+    from { transform: translateY(10rem) }
+}
+
+::view-transition-old(body) {
+    animation: 90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+        250ms cubic-bezier(0.4, 0, 1, 1) both slide-to-bottom;
+}
+
+::view-transition-new(body) {
+    animation: 90ms cubic-bezier(0.4, 0, 1, 1) 90ms both fade-in,
+        250ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-bottom;
+}
+
 .input-text {
     border-radius: 0.5rem;
     padding: 0.75rem 1rem;
@@ -37,6 +72,7 @@
     display: flex;
     flex-direction: column;
     padding: 2rem;
+    view-transition-name: sidenav;
 }
 
 .sidenav-logo {
@@ -154,6 +190,7 @@
     justify-content: space-between;
     gap: 1.5rem;
     padding: 2rem;
+    view-transition-name: topbar;
 }
 
 .topbar-profile {
