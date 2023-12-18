@@ -93,9 +93,9 @@ use Primitives\Models\Room;
                 </p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="button secondary-button" data-bs-dismiss="modal">Close</button>
                 <form id="form" action="/rooms" method="post">
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="button danger-button">Delete</button>
                 </form>
             </div>
         </div>
