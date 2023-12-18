@@ -52,7 +52,6 @@ class UserService
             phone: $raw_user['phone'],
             avatar: $avatar,
             role: RoleName::from($raw_user['role']),
-            studyProgram: new StudyProgram($raw_user['study_program'] ?? '')
         );
         return $this->userRepository->create($user);
     }

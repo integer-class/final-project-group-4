@@ -7,7 +7,7 @@ use Presentation\Http\DTO\DtoRequestContract;
 class CreateUserRequest implements DtoRequestContract
 {
     // same field as the User class
-    public string $registration_number;
+    public string $registrationNumber;
     public string $fullname;
     public string $username;
     public string $password;
@@ -18,7 +18,7 @@ class CreateUserRequest implements DtoRequestContract
 
     public function __construct(array $raw)
     {
-        $this->registration_number = $raw['registration_number'];
+        $this->registrationNumber = $raw['registration_number'];
         $this->fullname = $raw['fullname'];
         $this->username = $raw['username'];
         $this->password = $raw['password'];
@@ -31,11 +31,11 @@ class CreateUserRequest implements DtoRequestContract
     {
         $errors = [];
 
-        if (empty($this->registration_number)) {
+        if (empty($this->registrationNumber)) {
             $errors['registration_number'] = 'Registration number is required';
         }
 
-        if (sizeof($this->registration_number) !== 10) {
+        if (sizeof($this->registrationNumber) !== 10) {
             $errors['registration_number'] = 'Registration number must be 10 characters long';
         }
 
@@ -77,7 +77,7 @@ class CreateUserRequest implements DtoRequestContract
     public function toArray(): array
     {
         return [
-            'registration_number' => $this->registration_number,
+            'registration_number' => $this->registrationNumber,
             'fullname' => $this->fullname,
             'username' => $this->username,
             'password' => $this->password,

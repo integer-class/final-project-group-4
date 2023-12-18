@@ -61,7 +61,9 @@
 
 #image-preview {
     display: none;
-    object-fit: contain;
+    object-fit: cover;
+    width: 12rem;
+    height: 12rem;
     transition: filter 0.2s ease-out;
 }
 

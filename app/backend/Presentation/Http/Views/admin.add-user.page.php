@@ -7,7 +7,7 @@ use Primitives\Models\User;
 
 <div class="container mx-auto form-container">
     <div class="cover-image-container">
-        <a class="back-button" href="/admin/room-list">
+        <a class="back-button" href="/admin/user-list">
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="material-symbols:arrow-back">
                     <path
@@ -18,7 +18,7 @@ use Primitives\Models\User;
             </svg>
         </a>
     </div>
-    <form class="bordered-container">
+    <form class="bordered-container" method="POST" action="/users">
         <h1 class="form-title">Add New User</h1>
         <div class="input-container">
             <div class="mb-4 image-input">
@@ -35,7 +35,7 @@ use Primitives\Models\User;
             </div>
             <div class="mb-4 w-100">
                 <label for="name-input" class="form-label">Full Name</label>
-                <input type="text" class="input-text" id="name-input" name="name">
+                <input type="text" class="input-text" id="name-input" name="fullname">
             </div>
             <div class="mb-4 w-100">
                 <label for="registration-number-input" class="form-label">Registration Number</label>
@@ -44,7 +44,8 @@ use Primitives\Models\User;
                         class="input-text"
                         id="registration-number-input"
                         name="registration_number"
-                        readonly
+                        min="10"
+                        max="10"
                 >
             </div>
             <div class="mb-4 w-100">
