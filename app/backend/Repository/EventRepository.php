@@ -288,15 +288,7 @@ class EventRepository implements IEventRepository
         return $this->getById($this->client->getLastInsertedId());
     }
 
-    public function delete(int $id): void
-    {
-        $this->client->executeQuery('
-            DELETE FROM Event
-            WHERE Id = :id
-        ', ['id' => $id]);
-    }
-
-    public function updateApprover(Event $event, array $approvers): Event
+    public function assignApprover(int $id, array $approvers): Event
     {
         $query = 'INSERT INTO Event_Approver (EventID, UserID, BeforeUserID, AfterUserID, Status) VALUES';
         // append prepared statement template to the query
@@ -306,11 +298,57 @@ class EventRepository implements IEventRepository
                 $query .= ',';
             }
         }
+
+        $arguments = [];
+        foreach ($approvers as $index => $approver) {
+            $arguments["event_id$index"] = $id;
+            $arguments["user_id$index"] = $approver;
+            $arguments["before_user_id$index"] = $approvers[$index - 1] ?? null;
+            $arguments["after_user_id$index"] = $approvers[$index + 1] ?? null;
+            $arguments["status$index"] = ApproverStatus::Pending->value;
+        }
+
+        $this->client->executeNonQuery($query, $arguments);
+        return $this->getById($id);
     }
 
-    public function updateStatus(Event $event, int $userId, string $eventStatus): Event
+    public function delete(int $id): void
     {
-        // TODO: Implement updateStatus() method.
+        $this->client->executeQuery('
+            DELETE FROM Event
+            WHERE Id = :id
+        ', ['id' => $id]);
+    }
+
+    public function approve(int $id, int $approverId): Event
+    {
+        $this->client->executeNonQuery('
+            UPDATE Event_Approver
+            SET Status = :status
+            WHERE EventID = :event_id AND UserID = :user_id
+        ', [
+            'status' => ApproverStatus::Approved->value,
+            'event_id' => $id,
+            'user_id' => $approverId
+        ]);
+
+        return $this->getById($id);
+    }
+
+    public function reject(int $id, int $approverId, string $reason): Event
+    {
+        $this->client->executeNonQuery('
+            UPDATE Event_Approver
+            SET Status = :status, Reason = :reason
+            WHERE EventID = :event_id AND UserID = :user_id
+        ', [
+            'status' => ApproverStatus::Rejected->value,
+            'reason' => $reason,
+            'event_id' => $id,
+            'user_id' => $approverId
+        ]);
+
+        return $this->getById($id);
     }
 
     public function getPendingEventsCount(): int

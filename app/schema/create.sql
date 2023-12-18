@@ -42,17 +42,17 @@ CREATE TABLE
 CREATE TABLE
     [dbo].[Room]
 (
-    [Id]             INT          NOT NULL IDENTITY (1, 1),
-    [Code]           CHAR(4)      NOT NULL,
-    [Name]           VARCHAR(255) NOT NULL,
-    [Floor]          INT          NOT NULL,
+    [Id]        INT          NOT NULL IDENTITY (1, 1),
+    [Code]      CHAR(4)      NOT NULL,
+    [Name]      VARCHAR(255) NOT NULL,
+    [Floor]     INT          NOT NULL,
     -- should be east and west
-    [Side]           VARCHAR(255) NOT NULL,
-    [Capacity]       INT          NOT NULL,
-    [Image]          VARCHAR(255) NOT NULL,
-    [CreatedAt]      DATETIME     NOT NULL DEFAULT GETDATE(),
-    [UpdatedAt]      DATETIME     NOT NULL DEFAULT GETDATE(),
-    [DeletedAt]      DATETIME     NULL,
+    [Side]      VARCHAR(255) NOT NULL,
+    [Capacity]  INT          NOT NULL,
+    [Image]     VARCHAR(255) NOT NULL,
+    [CreatedAt] DATETIME     NOT NULL DEFAULT GETDATE(),
+    [UpdatedAt] DATETIME     NOT NULL DEFAULT GETDATE(),
+    [DeletedAt] DATETIME     NULL,
     CONSTRAINT [PK_Room] PRIMARY KEY ([Id])
 );
 
@@ -81,18 +81,20 @@ CREATE TABLE
 CREATE TABLE
     [dbo].[Event_Approver]
 (
-    [Id]           INT        NOT NULL IDENTITY (1, 1),
-    [EventID]      INT        NOT NULL,
+    [Id]           INT          NOT NULL IDENTITY (1, 1),
+    [EventID]      INT          NOT NULL,
     -- we use this to track who comes before and after this user in the approval process
     -- if it's null, it means this is the first or last approver
-    [UserID]       INT        NOT NULL,
-    [BeforeUserID] INT        NULL,
-    [AfterUserID]  INT        NULL,
+    [UserID]       INT          NOT NULL,
+    [BeforeUserID] INT          NULL,
+    [AfterUserID]  INT          NULL,
     -- PENDING, APPROVED, REJECTED
-    [Status]       VARCHAR(8) NOT NULL,
-    [CreatedAt]    DATETIME   NOT NULL DEFAULT GETDATE(),
-    [UpdatedAt]    DATETIME   NOT NULL DEFAULT GETDATE(),
-    [DeletedAt]    DATETIME   NULL,
+    [Status]       VARCHAR(8)   NOT NULL,
+    -- Reason if rejected
+    [Reason]       VARCHAR(255) NULL,
+    [CreatedAt]    DATETIME     NOT NULL DEFAULT GETDATE(),
+    [UpdatedAt]    DATETIME     NOT NULL DEFAULT GETDATE(),
+    [DeletedAt]    DATETIME     NULL,
     CONSTRAINT [PK_Event_Approver] PRIMARY KEY ([Id])
 );
 

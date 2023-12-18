@@ -33,9 +33,19 @@ class EventService
         return $this->eventRepository->create($event);
     }
 
-    public function updateApprover(array $event): array
+    public function assignApprover(int $id, array $approvers): Event
     {
-        return $this->eventRepository->updateApprover($event);
+        return $this->eventRepository->assignApprover($id, $approvers);
+    }
+
+    public function approve(int $id, int $approverId): Event
+    {
+        return $this->eventRepository->approve($id, $approverId);
+    }
+
+    public function reject(int $id, int $approverId, string $reason): Event
+    {
+        return $this->eventRepository->reject($id, $approverId, $reason);
     }
 
     public function deleteEvent(int $id): array

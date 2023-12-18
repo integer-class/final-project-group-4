@@ -1,5 +1,6 @@
 <?php
 
+use Primitives\Models\ApproverStatus;
 use Primitives\Models\Event;
 use Primitives\Models\RoleName;
 use Primitives\Models\User;
@@ -33,59 +34,78 @@ $prefix = $_SESSION['user']['role'] == RoleName::Administrator ? 'admin' : 'appr
             </div>
         </div>
     </div>
-    <form class="bordered-container" method="post" action="/event/assign-approver">
+    <form class="bordered-container" method="post"
+          action="/event/<?= $_SESSION['user']['role'] == RoleName::Administrator ? 'assign-approver' : 'approve' ?>?id=<?= $event->id ?>">
         <h1 class="form-title">Event Details</h1>
         <div class="input-container">
             <div class="event-detail-item">
-                <span>Full Name</span>
+                <span class="event-detail-label">Full Name</span>
                 <span><?= $event->pic->fullname ?></span>
             </div>
             <div class="event-detail-item">
-                <span>Event Name</span>
+                <span class="event-detail-label">Event Name</span>
                 <span><?= $event->title ?></span>
             </div>
             <div class="event-detail-item">
-                <span>Starts At</span>
+                <span class="event-detail-label">Starts At</span>
                 <span><?= $event->startsAt->format('D, d M Y H:i:s') ?></span>
             </div>
             <div class="event-detail-item">
-                <span>Ends At</span>
+                <span class="event-detail-label">Ends At</span>
                 <span><?= $event->endsAt->format('D, d M Y H:i:s') ?></span>
             </div>
             <div class="event-detail-item event-description">
-                <span>Event Details</span>
+                <span class="event-detail-label">Event Details</span>
                 <p>
                     <?= $event->description ?>
                 </p>
             </div>
-            <!-- Dynamic Form to add approver using a dropdown select -->
-            <div class="event-approver">
-                <label for="select-approver">Approver</label>
-                <div class="event-approver-input">
-                    <select name="approver" id="select-approver" class="input-text">
-                        <?php foreach ($approvers as $approver): ?>
-                            <option value="<?= $approver->id ?>"><?= $approver->fullname ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    <button class="button primary-button" id="event-approver-button" type="button" style="font-size: 1rem">
-                        Add
-                    </button>
+            <?php if ($_SESSION['user']['role'] == RoleName::Administrator): ?>
+                <!-- Dynamic Form to add approver using a dropdown select -->
+                <div class="event-approver">
+                    <label for="select-approver" class="event-detail-label">Approver</label>
+                    <?php if (count($event->approvers) <= 0): ?>
+                        <div class="event-approver-input">
+                            <select name="approver" id="select-approver" class="input-text">
+                                <?php foreach ($approvers as $approver): ?>
+                                    <option value="<?= $approver->id ?>"><?= $approver->fullname ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <button class="button primary-button" id="event-approver-button" type="button"
+                                    style="font-size: 1rem">
+                                Add
+                            </button>
+                        </div>
+                        <small>This will be requested in the order they're added</small>
+                    <?php endif; ?>
+                    <div class="approver-list" id="approver-list">
+                        <?php if (count($event->approvers) > 0): ?>
+                            <?php foreach ($event->approvers as $approver): ?>
+                                <div class="approver-item">
+                                    <span><?= $approver->user->fullname ?></span>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
                 </div>
-                <small>This will be requested in the order they're added</small>
-                <div class="approver-list" id="approver-list"></div>
-            </div>
+            <?php endif; ?>
 
-            <div class="row mx-auto" style="gap: 1rem; max-width: 30rem">
-                <button
-                        type="button" class="col button danger-button"
-                        data-bs-toggle="modal"
-                        data-bs-target="#rejectRequestModal"
-                        data-bs-event-id="<?= $event->id ?>"
-                >
-                    Reject
-                </button>
-                <button class="col button primary-button">Approve</button>
-            </div>
+            <?php if (count($event->approvers) <= 0 ||
+                // the user is an approver and the event is pending for their approval
+                array_filter($event->approvers, fn($approver) => $approver->user->id === $_SESSION['user']['id'] && $approver->status === ApproverStatus::Pending)):
+                ?>
+                <div class="row mx-auto" style="gap: 1rem; max-width: 30rem">
+                    <button
+                            type="button" class="col button danger-button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#rejectRequestModal"
+                            data-bs-event-id="<?= $event->id ?>"
+                    >
+                        Reject
+                    </button>
+                    <button class="col button primary-button">Approve</button>
+                </div>
+            <?php endif; ?>
         </div>
     </form>
 </div>
@@ -100,7 +120,7 @@ $prefix = $_SESSION['user']['role'] == RoleName::Administrator ? 'admin' : 'appr
         aria-hidden="true"
 >
     <div class="modal-dialog">
-        <form class="modal-content" action="/event/reject-request" id="form" method="post">
+        <form class="modal-content" action="/event/reject" id="form" method="post">
             <div class="modal-header">
                 <h1 class="modal-title fs-5" id="rejectRequestModalLabel">Reject Request</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -160,7 +180,7 @@ $prefix = $_SESSION['user']['role'] == RoleName::Administrator ? 'admin' : 'appr
             const button = event.relatedTarget
             const roomId = button.getAttribute('data-bs-event-id')
             const modalForm = deleteUserModal.querySelector('#form')
-            modalForm.action = `/event/reject-request?id=${roomId}&_method=DELETE`
+            modalForm.action = `/event/reject?id=${roomId}`
         })
     })
 </script>
