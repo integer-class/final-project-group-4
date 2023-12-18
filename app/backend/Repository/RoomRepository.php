@@ -49,9 +49,9 @@ class RoomRepository implements IRoomRepository
         return Room::fromArray($row);
     }
 
-    public function getByCode(string $code): Room
+    public function search(string $query): array
     {
-        $row = $this->mssqlClient->executeQuery("
+        $rooms = $this->mssqlClient->executeQuery("
             SELECT
                 Id,
                 Code,
@@ -63,10 +63,16 @@ class RoomRepository implements IRoomRepository
             FROM
                 dbo.Room
             WHERE
-                Code = :code
-        ", [$code])[0];
+                Name LIKE CONCAT('%', :name, '%') OR
+                Code LIKE CONCAT('%', :code, '%') OR
+                Side = :side
+        ", [
+            'name' => $query,
+            'code' => $query,
+            'side' => $query
+        ]);
 
-        return Room::fromArray($row);
+        return array_map(fn($room) => Room::fromArray($room), $rooms);
     }
 
     public function create(Room $room): Room

@@ -29,11 +29,12 @@ class RoomController extends Controller
         Http::ok($room, "Room retrieved successfully");
     }
 
-    #[Route('/rooms/{code}', 'GET')]
-    public function getByCode(string $code): void
+    #[Route('/rooms/search', 'GET')]
+    public function searchRoom(): void
     {
-        $room = $this->roomService->getRoomByCode($code);
-        Http::ok($room, "Room retrieved successfully");
+        $query = Http::query('query');
+        $rooms = $this->roomService->searchRoom($query);
+        Http::ok($rooms, "Room retrieved successfully");
     }
 
     #[Route('/rooms', 'POST')]

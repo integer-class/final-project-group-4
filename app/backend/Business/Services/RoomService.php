@@ -22,9 +22,9 @@ class RoomService
         return $this->roomRepository->getById($id);
     }
 
-    public function getRoomByCode(string $code): Room
+    public function searchRoom(string $query): array
     {
-        return $this->roomRepository->getByCode($code);
+        return $this->roomRepository->search($query);
     }
 
     /**

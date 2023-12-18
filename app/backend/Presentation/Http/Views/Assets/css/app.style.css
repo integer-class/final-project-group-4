@@ -90,6 +90,7 @@
     padding: 0.75rem 1rem;
     width: 100%;
     border-radius: 2rem;
+    position: relative;
 }
 
 .searchbar svg {
@@ -110,6 +111,36 @@
     outline: none;
     box-shadow: none;
     border-color: initial;
+}
+
+.search-results {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    background-color: var(--color-secondary);
+    padding: 1rem;
+    border-radius: 1.5rem;
+    display: none;
+    max-height: 20rem;
+    overflow-y: auto;
+}
+
+.search-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: 'Jost', sans-serif;
+}
+
+.search-item:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
 }
 
 .topbar {

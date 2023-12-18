@@ -10,6 +10,7 @@
             />
         </svg>
         <input type="text" name="room_name" class="searchbar-input" placeholder="Search Rooms..."/>
+        <div class="search-results"></div>
     </form>
     <div class="dropdown">
         <img
@@ -40,3 +41,46 @@
         </ul>
     </div>
 </div>
+
+<script>
+    $(function () {
+        const searchInput = $('.searchbar-input');
+        const searchResults = $('.search-results');
+
+        let debounce = null;
+        searchInput.on('input', function (e) {
+                clearTimeout(debounce);
+                const query = e.target.value;
+
+                if (query.length === 0) {
+                    searchResults.css('display', 'none');
+                    return;
+                }
+
+                debounce = setTimeout(() => {
+                    $.ajax({
+                        url: '/rooms/search',
+                        method: 'GET',
+                        data: {
+                            query: query
+                        },
+                        success: function (response) {
+                            searchResults.css('display', 'block');
+                            searchResults.innerHTML = '';
+                            response.data.forEach(function (room) {
+                                const searchItem = document.createElement('a');
+                                searchItem.href = `/room?id=${room.id}`;
+                                searchItem.classList.add('search-item');
+                                searchItem.innerHTML = `
+                                    <span>[${room.code}]: ${room.name}</span>
+                                    <span>${room.floor}th Floor | ${room.capacity} People</span>
+                                `;
+                                searchResults.append(searchItem);
+                            })
+                        }
+                    })
+                }, 250);
+            }
+        )
+    })
+</script>
