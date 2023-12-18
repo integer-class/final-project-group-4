@@ -11,6 +11,7 @@ use Presentation\Http\Helpers\Session;
 use Primitives\Exceptions\InvalidPasswordException;
 use Primitives\Exceptions\UserNotFoundException;
 use Primitives\Models\RoleName;
+use Primitives\Models\User;
 
 class AuthController extends Controller
 {
@@ -25,16 +26,18 @@ class AuthController extends Controller
         try {
             $user = $this->authService->login($login_request->username, $login_request->password);
             $this->session->startSession();
-            $this->session->user = [
-                'id' => $user->id,
-                'registration_number' => $user->registrationNumber,
-                'fullname' => $user->fullname,
-                'username' => $user->username,
-                'email' => $user->email,
-                'phone' => $user->phone,
-                'avatar' => $user->avatar,
-                'role' => $user->role
-            ];
+            $this->session->user = new User(
+                id: $user->id,
+                registrationNumber: $user->registrationNumber,
+                fullname: $user->fullname,
+                username: $user->username,
+                password: null,
+                email: $user->email,
+                phone: $user->phone,
+                avatar: $user->avatar,
+                role: $user->role,
+                studyProgram: $user->studyProgram,
+            );
             switch ($user->role) {
                 case RoleName::Administrator:
                     Http::redirect('/admin/dashboard');

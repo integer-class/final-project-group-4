@@ -136,6 +136,8 @@
     cursor: pointer;
     font-weight: 500;
     font-family: 'Jost', sans-serif;
+    text-decoration: none;
+    color: var(--color-black);
 }
 
 .search-item:hover {

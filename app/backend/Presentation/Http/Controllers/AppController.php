@@ -19,8 +19,7 @@ class AppController extends Controller
     #[WithSession]
     public function index(): void
     {
-        $role = $this->session->getRole();
-        switch ($role) {
+        switch ($this->session->user?->role) {
             case RoleName::Administrator:
                 Http::redirect('/admin/dashboard');
                 break;

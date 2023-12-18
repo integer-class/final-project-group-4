@@ -7,8 +7,9 @@ use Primitives\Models\User;
 
 /** @var Event $event */
 /** @var User[] $approvers */
+/** @var User $user */
 
-$prefix = $_SESSION['user']['role'] == RoleName::Administrator ? 'admin' : 'approver';
+$prefix = $user->role == RoleName::Administrator ? 'admin' : 'approver';
 ?>
 <div class="container mx-auto form-container">
     <div class="cover-image-container">
@@ -35,7 +36,7 @@ $prefix = $_SESSION['user']['role'] == RoleName::Administrator ? 'admin' : 'appr
         </div>
     </div>
     <form class="bordered-container" method="post"
-          action="/event/<?= $_SESSION['user']['role'] == RoleName::Administrator ? 'assign-approver' : 'approve' ?>?id=<?= $event->id ?>">
+          action="/event/<?= $user->role == RoleName::Administrator ? 'assign-approver' : 'approve' ?>?id=<?= $event->id ?>">
         <h1 class="form-title">Event Details</h1>
         <div class="input-container">
             <div class="event-detail-item">
@@ -60,7 +61,7 @@ $prefix = $_SESSION['user']['role'] == RoleName::Administrator ? 'admin' : 'appr
                     <?= $event->description ?>
                 </p>
             </div>
-            <?php if ($_SESSION['user']['role'] == RoleName::Administrator): ?>
+            <?php if ($user->role == RoleName::Administrator): ?>
                 <!-- Dynamic Form to add approver using a dropdown select -->
                 <div class="event-approver">
                     <label for="select-approver" class="event-detail-label">Approver</label>
@@ -92,7 +93,7 @@ $prefix = $_SESSION['user']['role'] == RoleName::Administrator ? 'admin' : 'appr
 
             <?php if (count($event->approvers) <= 0 ||
                 // the user is an approver and the event is pending for their approval
-                array_filter($event->approvers, fn($approver) => $approver->user->id === $_SESSION['user']['id'] && $approver->status === ApproverStatus::Pending)):
+                array_filter($event->approvers, fn($approver) => $approver->user->id === $user->id && $approver->status === ApproverStatus::Pending)):
                 ?>
                 <div class="row mx-auto" style="gap: 1rem; max-width: 30rem">
                     <button

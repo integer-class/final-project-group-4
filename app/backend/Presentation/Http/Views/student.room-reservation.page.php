@@ -2,9 +2,11 @@
 
 use Primitives\Models\Event;
 use Primitives\Models\Room;
+use Primitives\Models\User;
 
 /** @var Room $room */
 /** @var Event[] $events */
+/** @var User $user */
 ?>
 <div class="container mx-auto form-container">
     <div class="cover-image-container">
@@ -57,7 +59,7 @@ use Primitives\Models\Room;
             </div>
             <div class="">
                 <input type="text" value="<?= $room->id ?>" name="room_id" hidden>
-                <input type="text" value="<?= $_SESSION['user']['id'] ?>" name="user_id" hidden>
+                <input type="text" value="<?= $user->id ?>" name="user_id" hidden>
                 <div class="mb-4 w-100">
                     <label for="title-input" class="form-label">Event Title</label>
                     <input type="text" class="input-text" id="title-input" name="title" required>

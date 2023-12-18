@@ -2,15 +2,17 @@
 
 use Primitives\Models\RoleName;
 use Primitives\Models\Room;
+use Primitives\Models\User;
 
 /** @var Room[] $rooms */
+/** @var User $user */
 ?>
 <div class="container mt-2">
     <div class="row mb-4">
         <div class="col-6">
             <h1 class="list-title">List of All Rooms</h1>
         </div>
-        <?php if ($_SESSION['user']['role'] == RoleName::Administrator): ?>
+        <?php if ($user->role == RoleName::Administrator): ?>
             <div class="col-6">
                 <a type="button" class="button info-button float-end" href="/admin/add-room">+ Add New Room</a>
             </div>
@@ -51,7 +53,7 @@ use Primitives\Models\Room;
                 <td><?= $room->floor ?></td>
                 <td><?= $room->side ?></td>
                 <td class="text-center d-flex justify-content-center" style="gap: 0.5rem">
-                    <?php if ($_SESSION['user']['role'] == RoleName::Student): ?>
+                    <?php if ($user->role == RoleName::Student): ?>
                         <a href="/student/room?id=<?= $room->id ?>" class="button primary-button">Detail</a>
                     <?php else: ?>
                         <button

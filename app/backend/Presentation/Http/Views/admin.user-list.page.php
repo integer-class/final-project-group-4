@@ -3,6 +3,7 @@
 use Primitives\Models\User;
 
 /** @var User[] $users */
+/** @var User $user */
 ?>
 <div class="container mt-2">
     <div class="row mb-4">
@@ -26,20 +27,20 @@ use Primitives\Models\User;
         </tr>
         </thead>
         <tbody>
-        <?php foreach ($users as $user) { ?>
+        <?php foreach ($users as $u) { ?>
             <tr>
-                <td><?= $user->email ?></td>
-                <td><?= $user->registrationNumber ?></td>
-                <td><?= $user->fullname ?></td>
-                <td><?= $user->studyProgram?->name ?? '-' ?></td>
-                <td><?= $user->role->name ?></td>
+                <td><?= $u->email ?></td>
+                <td><?= $u->registrationNumber ?></td>
+                <td><?= $u->fullname ?></td>
+                <td><?= $u->studyProgram?->name ?? '-' ?></td>
+                <td><?= $u->role->name ?></td>
                 <td class="text-center d-flex justify-content-center" style="gap: 0.5rem">
-                    <?php if ($_SESSION['user']['id'] !== $user->id) { ?>
+                    <?php if ($user->id !== $u->id) { ?>
                         <button
                                 type="button" class="button danger-button"
                                 data-bs-toggle="modal"
                                 data-bs-target="#deleteUserModal"
-                                data-bs-room-id="<?= $user->id ?>"
+                                data-bs-room-id="<?= $u->id ?>"
                         >
                             Delete
                         </button>

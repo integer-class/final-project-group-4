@@ -1,6 +1,10 @@
 <div class="topbar">
     <?php
-    /** @var array $user */
+
+    use Primitives\Models\User as User;
+
+    /** @var User $user */
+
     ?>
     <form action="/" method="get" class="searchbar">
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -14,7 +18,7 @@
     </form>
     <div class="dropdown">
         <img
-                class="topbar-profile dropdown-toggle" src="/uploaded_images/user/<?= $user['avatar'] ?>"
+                class="topbar-profile dropdown-toggle" src="/uploaded_images/user/<?= $user->avatar ?>"
                 alt="profile"
                 id="dropdownMenuButton1" data-bs-toggle="dropdown"
                 aria-expanded="false"
@@ -22,12 +26,12 @@
         <ul class="dropdown-menu">
             <li>
                 <span class="dropdown-item disabled">
-                    <strong><?= $user['fullname'] ?></strong>
+                    <strong><?= $user->fullname ?></strong>
                 </span>
             </li>
             <li>
                 <span class="dropdown-item disabled">
-                    <?= $user['email'] ?>
+                    <?= $user->email ?>
                 </span>
             </li>
             <li>

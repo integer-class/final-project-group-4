@@ -28,7 +28,7 @@ class Authenticated
             Http::redirect('/login');
         }
 
-        $role = $session->getRole();
+        $role = $session->user?->role;
 
         // ignore checking the role if we don't add the role to this attribute
         if (count($this->allowedRoles) <= 0) return;
