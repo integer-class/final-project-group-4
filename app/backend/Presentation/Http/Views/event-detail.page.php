@@ -33,7 +33,7 @@ $prefix = $_SESSION['user']['role'] == RoleName::Administrator ? 'admin' : 'appr
             </div>
         </div>
     </div>
-    <form class="bordered-container">
+    <form class="bordered-container" method="post" action="/event/assign-approver">
         <h1 class="form-title">Event Details</h1>
         <div class="input-container">
             <div class="event-detail-item">
@@ -60,18 +60,107 @@ $prefix = $_SESSION['user']['role'] == RoleName::Administrator ? 'admin' : 'appr
             </div>
             <!-- Dynamic Form to add approver using a dropdown select -->
             <div class="event-approver">
-                <span>Approver</span>
-                <select name="approver" id="approver" class="input-text">
-                    <?php foreach ($approvers as $approver): ?>
-                        <option value="<?= $approver->id ?>"><?= $approver->fullname ?></option>
-                    <?php endforeach; ?>
-                </select>
+                <label for="select-approver">Approver</label>
+                <div class="event-approver-input">
+                    <select name="approver" id="select-approver" class="input-text">
+                        <?php foreach ($approvers as $approver): ?>
+                            <option value="<?= $approver->id ?>"><?= $approver->fullname ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <button class="button primary-button" id="event-approver-button" type="button" style="font-size: 1rem">
+                        Add
+                    </button>
+                </div>
+                <small>This will be requested in the order they're added</small>
+                <div class="approver-list" id="approver-list"></div>
             </div>
 
             <div class="row mx-auto" style="gap: 1rem; max-width: 30rem">
-                <button class="col button danger-button">Reject</button>
+                <button
+                        type="button" class="col button danger-button"
+                        data-bs-toggle="modal"
+                        data-bs-target="#rejectRequestModal"
+                        data-bs-event-id="<?= $event->id ?>"
+                >
+                    Reject
+                </button>
                 <button class="col button primary-button">Approve</button>
             </div>
         </div>
     </form>
 </div>
+
+<div
+        class="modal fade"
+        id="rejectRequestModal"
+        tabindex="-1"
+        aria-labelledby="rejectRequestModalLabel"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        aria-hidden="true"
+>
+    <div class="modal-dialog">
+        <form class="modal-content" action="/event/reject-request" id="form" method="post">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="rejectRequestModalLabel">Reject Request</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="w-100">
+                    <label for="reason-input" class="form-label">Reason for Rejection</label>
+                    <textarea class="input-text" id="reason-input" name="reason" required rows="6"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="button secondary-button" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="button danger-button">Reject</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        // append approver
+        const addButton = $('#event-approver-button');
+        const approverList = $('#approver-list');
+        const selectApprover = $('#select-approver');
+
+        addButton.click(function () {
+            const approverId = selectApprover.val();
+            const approverName = selectApprover.find(`option[value="${approverId}"]`).text();
+            const approver = $(`
+                <div class="approver-item">
+                    <input type="hidden" name="approvers[]" value="${approverId}">
+                    <span>${approverName}</span>
+                    <button class="button-small danger-button" type="button">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <g id="material-symbols:close">
+                                <path id="Vector"
+                                      d="M18 6L12 12L18 18L16.8 19.2L12 14.4L7.2 19.2L6 18L12 12L6 6L7.2 4.8L12 9.6L16.8 4.8L18 6Z"
+                                      fill="white"/>
+                            </g>
+                        </svg>
+                    </button>
+                </div>
+            `);
+            approver.find('button').click(function () {
+                approver.remove();
+                // restore approver to select
+                selectApprover.append(`<option value="${approverId}">${approverName}</option>`);
+            });
+            approverList.append(approver);
+            // remove approver from select
+            selectApprover.find(`option[value="${approverId}"]`).remove();
+        });
+
+        const deleteUserModal = document.getElementById('rejectRequestModal')
+        deleteUserModal.addEventListener('show.bs.modal', event => {
+            const button = event.relatedTarget
+            const roomId = button.getAttribute('data-bs-event-id')
+            const modalForm = deleteUserModal.querySelector('#form')
+            modalForm.action = `/event/reject-request?id=${roomId}&_method=DELETE`
+        })
+    })
+</script>

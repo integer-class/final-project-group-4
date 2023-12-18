@@ -108,4 +108,38 @@
     font-family: 'Jost', sans-serif;
     font-size: 1.25rem;
     margin-bottom: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.event-approver small {
+    font-size: 0.9rem;
+}
+
+.event-approver-input {
+    display: flex;
+    gap: 1rem;
+}
+
+.approver-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.approver-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.form-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 1.25rem;
+}
+
+.modal-title {
+    font-family: 'Jost', sans-serif;
+    font-size: 1.5rem;
 }
