@@ -2,6 +2,7 @@
 
 namespace Business\Services;
 
+use Exception;
 use Presentation\Http\Helpers\Storage;
 use Primitives\Models\Room;
 use RepositoryInterfaces\IRoomRepository;
@@ -28,7 +29,7 @@ class RoomService
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function createRoom(array $raw_room): Room
     {
@@ -44,23 +45,27 @@ class RoomService
         );
         try {
             return $this->roomRepository->create($room);
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             Storage::removeStoredImage("room/$image");
-            throw new \Exception($ex->getMessage());
+            throw new Exception($ex->getMessage());
         }
     }
 
-    public function updateRoom(string $id, array $raw_room): Room
+    /**
+     * @throws Exception
+     */
+    public function updateRoom(array $raw_room): Room
     {
-        $room = new Room(
-            id: $id,
-            code: $raw_room['code'],
-            name: $raw_room['name'],
-            floor: $raw_room['floor'],
-            capacity: $raw_room['capacity'],
-            side: $raw_room['side'],
-            image: $raw_room['image']
-        );
+        $room = $this->roomRepository->getById($raw_room['id']);
+        $image = Storage::updateUploadedImage('image', $room->image, 'room');
+        $room->updateWith([
+            'code' => $raw_room['code'],
+            'name' => $raw_room['name'],
+            'floor' => $raw_room['floor'],
+            'capacity' => $raw_room['capacity'],
+            'side' => $raw_room['side'],
+            'image' => $image,
+        ]);
         return $this->roomRepository->update($room);
     }
 

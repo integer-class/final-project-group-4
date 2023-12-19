@@ -6,6 +6,7 @@ use Presentation\Http\DTO\DtoRequestContract;
 
 class UpdateRoomRequest implements DtoRequestContract
 {
+    public string $id;
     public string $name;
     public string $code;
     public int $floor;
@@ -14,6 +15,7 @@ class UpdateRoomRequest implements DtoRequestContract
 
     public function __construct(array $raw)
     {
+        $this->id = $raw['id'];
         $this->name = $raw['name'];
         $this->code = $raw['code'];
         $this->floor = $raw['floor'];
@@ -24,6 +26,10 @@ class UpdateRoomRequest implements DtoRequestContract
     public function validate(): array
     {
         $errors = [];
+
+        if (empty($this->id)) {
+            $errors['id'] = 'Id is required';
+        }
 
         if (empty($this->name)) {
             $errors['name'] = 'Name is required';
@@ -51,6 +57,7 @@ class UpdateRoomRequest implements DtoRequestContract
     public function toArray(): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'code' => $this->code,
             'floor' => $this->floor,

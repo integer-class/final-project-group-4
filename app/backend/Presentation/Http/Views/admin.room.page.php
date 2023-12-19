@@ -27,23 +27,33 @@ use Primitives\Models\Room;
             </div>
         </div>
     </div>
-    <form class="bordered-container">
+    <form class="bordered-container" method="post" action="/rooms?_method=PUT" enctype="multipart/form-data">
         <h1 class="form-title">Edit Room Details</h1>
+        <input type="text" name="id" value="<?= $room->id ?>" hidden/>
         <div class="input-container">
             <div class="mb-4 w-100">
                 <label for="name-input" class="form-label">Name</label>
-                <input type="text" class="input-text" id="name-input" name="name" value="<?= $room->name ?>">
+                <input type="text" class="input-text" id="name-input" name="name" value="<?= $room->name ?>" required>
             </div>
             <div class="mb-4 w-100">
                 <label for="code-input" class="form-label">Code</label>
-                <input type="text" class="input-text" id="code-input" name="code" value="<?= $room->code ?>">
+                <input
+                        type="text"
+                        class="input-text"
+                        id="code-input"
+                        name="code"
+                        value="<?= $room->code ?>"
+                        required
+                        maxlength="4"
+                >
             </div>
             <div class="row">
                 <div class="col mb-4 w-100">
                     <label for="floor-input" class="form-label">Floor</label>
                     <input
                             type="number" class="input-text" id="floor-input" name="floor"
-                            value="<?= $room->capacity ?>"
+                            value="<?= $room->floor ?>"
+                            required
                     >
                 </div>
                 <div class="col mb-4 w-100">
@@ -51,6 +61,7 @@ use Primitives\Models\Room;
                     <input
                             type="text" class="input-text" id="side-input" name="side"
                             value="<?= $room->side ?>"
+                            required
                     >
                 </div>
                 <div class="col mb-4 w-100">
@@ -58,6 +69,7 @@ use Primitives\Models\Room;
                     <input
                             type="number" class="input-text" id="capacity-input" name="capacity"
                             value="<?= $room->capacity ?>"
+                            required
                     >
                 </div>
             </div>

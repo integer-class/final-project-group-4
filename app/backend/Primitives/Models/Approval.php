@@ -2,11 +2,11 @@
 
 namespace Primitives\Models;
 
-class Approver
+class Approval
 {
     public function __construct(
         public User           $user,
-        public ApproverStatus $status,
+        public ApprovalStatus $status,
         public ?int           $previousApproverId,
         public ?int           $nextApproverId,
         public ?string        $reason,
