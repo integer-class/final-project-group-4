@@ -1,8 +1,10 @@
 <?php
 
+use Primitives\Models\RoleName;
 use Primitives\Models\User;
 
 /** @var User $user */
+/** @var User $userDetail */
 ?>
 
 <div class="container mx-auto form-container">
@@ -37,21 +39,28 @@ use Primitives\Models\User;
                 <label for="select-approver" class="event-detail-label form-label">Role</label>
                 <select name="role" id="select-approver" class="input-text">
                     <option value="">Select Role</option>
-                    <option value="STUDENT">Student</option>
-                    <option value="APPROVER">Approver</option>
+                    <option value="STUDENT" <?= $userDetail->role == RoleName::Student ? 'selected' : '' ?>>
+                        Student
+                    </option>
+                    <option value="APPROVER" <?= $userDetail->role == RoleName::Approver ? 'selected' : '' ?>>
+                        Approver
+                    </option>
                 </select>
             </div>
             <div class="mb-4 w-100">
                 <label for="fullname-input" class="form-label">Full Name</label>
-                <input type="text" class="input-text" id="fullname-input" name="fullname" required>
+                <input type="text" class="input-text" id="fullname-input" name="fullname" required
+                       value="<?= $userDetail->fullname ?>">
             </div>
             <div class="mb-4 w-100">
                 <label for="username-input" class="form-label">Username</label>
-                <input type="text" class="input-text" id="username-input" name="username" required>
+                <input type="text" class="input-text" id="username-input" name="username" required
+                       value="<?= $userDetail->username ?>">
             </div>
             <div class="mb-4 w-100">
                 <label for="phone-input" class="form-label">Phone</label>
-                <input type="phone" class="input-text" id="phone-input" name="phone" required>
+                <input type="phone" class="input-text" id="phone-input" name="phone" required
+                       value="<?= $userDetail->phone ?>">
             </div>
             <div class="mb-4 w-100">
                 <label for="registration-number-input" class="form-label">Registration Number</label>
@@ -63,18 +72,26 @@ use Primitives\Models\User;
                         minlength="10"
                         maxlength="10"
                         required
+                        value="<?= $userDetail->registrationNumber ?>"
                 >
             </div>
             <div class="mb-4 w-100">
                 <label for="email-input" class="form-label">Email</label>
-                <input type="text" class="input-text" id="email-input" name="email">
+                <input type="text" class="input-text" id="email-input" name="email"
+                       value="<?= $userDetail->email ?>">
             </div>
             <div class="row">
                 <div class="col mb-4 w-100">
                     <label for="password-input" class="form-label">Password</label>
                     <div class="button-group">
-                        <input type="password" class="input-text input-text-left" id="password-input" name="password"
-                               required minlength="8">
+                        <input
+                                type="password"
+                                class="input-text input-text-left"
+                                id="password-input"
+                                name="password"
+                                required
+                                minlength="8"
+                        >
                         <button id="toggle-password" class="button-small button-right" type="button">
                             <svg id="eye-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                  viewBox="0 0 24 24" style="display: none">
@@ -98,9 +115,15 @@ use Primitives\Models\User;
                 <div class="col mb-4 w-100">
                     <label for="confirm-password-input" class="form-label">Confirm Password</label>
                     <div class="button-group">
-                        <input type="password" class="input-text input-text-left" id="password-input2"
-                               name="confirm_password" required minlength="8">
-                        <button id="toggle-password2" class="button-small button-right" type="button">
+                        <input
+                                type="password"
+                                class="input-text input-text-left"
+                                id="confirm-password-input"
+                                name="confirm_password"
+                                required
+                                minlength="8"
+                        >
+                        <button id="toggle-confirm-password" class="button-small button-right" type="button">
                             <svg id="eye-open" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                  viewBox="0 0 24 24" style="display: none">
                                 <g fill="none" stroke="#888888" stroke-linecap="round" stroke-linejoin="round"
@@ -167,9 +190,9 @@ use Primitives\Models\User;
 
         // ====================
         const togglePassword = $('#toggle-password');
-        const togglePassword2 = $('#toggle-password2');
+        const toggleConfirmPassword = $('#toggle-confirm-password');
         const passwordInput = $('#password-input');
-        const passwordInput2 = $('#password-input2');
+        const confirmPasswordInput = $('#confirm-password-input');
 
         togglePassword.on('click', function () {
             const eyeOpen = togglePassword.find('#eye-open');
@@ -185,15 +208,15 @@ use Primitives\Models\User;
             }
         });
 
-        togglePassword2.on('click', function () {
-            const eyeOpen = togglePassword2.find('#eye-open');
-            const eyeClosed = togglePassword2.find('#eye-closed');
-            if (passwordInput2.attr('type') === 'password') {
-                passwordInput2.attr('type', 'text');
+        toggleConfirmPassword.on('click', function () {
+            const eyeOpen = toggleConfirmPassword.find('#eye-open');
+            const eyeClosed = toggleConfirmPassword.find('#eye-closed');
+            if (confirmPasswordInput.attr('type') === 'password') {
+                confirmPasswordInput.attr('type', 'text');
                 eyeOpen.show();
                 eyeClosed.hide();
             } else {
-                passwordInput2.attr('type', 'password');
+                confirmPasswordInput.attr('type', 'password');
                 eyeClosed.show();
                 eyeOpen.hide();
             }

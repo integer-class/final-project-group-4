@@ -57,7 +57,7 @@ use Primitives\Models\User;
                             Delete
                         </button>
                     <?php } ?>
-                    <button type="button" class="button primary-button">Edit</button>
+                    <a type="button" class="button primary-button" href="/admin/user?id=<?= $u->id ?>">Edit</a>
                 </td>
             </tr>
         <?php } ?>

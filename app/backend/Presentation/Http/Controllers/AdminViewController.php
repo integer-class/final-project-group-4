@@ -119,6 +119,20 @@ class AdminViewController extends Controller
         ]);
     }
 
+    #[Route('/admin/user', 'GET')]
+    #[WithSession]
+    #[Authenticated(RoleName::Administrator)]
+    public function userDetail(): void
+    {
+        $id = Http::query('id');
+        $user = $this->userService->getUserById($id);
+        $this->view('admin.user', [
+            '__layout_title__' => 'User Detail',
+            'user' => $this->session->user,
+            'userDetail' => $user
+        ]);
+    }
+
     #[Route('/admin/event', 'GET')]
     #[WithSession]
     #[Authenticated(RoleName::Administrator)]
