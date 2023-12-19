@@ -3,10 +3,13 @@
 namespace Presentation\Http\Controllers;
 
 use Business\Services\RoomService;
+use Presentation\Http\Attributes\Authenticated;
 use Presentation\Http\Attributes\Route;
+use Presentation\Http\Attributes\WithSession;
 use Presentation\Http\DTO\Room\CreateRoomRequest;
 use Presentation\Http\DTO\Room\UpdateRoomRequest;
 use Presentation\Http\Helpers\Http;
+use Primitives\Models\RoleName;
 
 class RoomController extends Controller
 {
@@ -15,6 +18,8 @@ class RoomController extends Controller
     }
 
     #[Route('/rooms/search', 'GET')]
+    #[WithSession]
+    #[Authenticated(RoleName::Administrator)]
     public function searchRoom(): void
     {
         $query = Http::query('query');
@@ -23,6 +28,8 @@ class RoomController extends Controller
     }
 
     #[Route('/rooms', 'POST')]
+    #[WithSession]
+    #[Authenticated(RoleName::Administrator)]
     public function create(CreateRoomRequest $room): void
     {
         try {
@@ -37,6 +44,8 @@ class RoomController extends Controller
     }
 
     #[Route('/rooms', 'PUT')]
+    #[WithSession]
+    #[Authenticated(RoleName::Administrator)]
     public function update(UpdateRoomRequest $room): void
     {
         try {
@@ -50,6 +59,8 @@ class RoomController extends Controller
     }
 
     #[Route('/rooms', 'DELETE')]
+    #[WithSession]
+    #[Authenticated(RoleName::Administrator)]
     public function delete(): void
     {
         try {

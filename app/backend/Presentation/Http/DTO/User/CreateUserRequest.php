@@ -6,7 +6,6 @@ use Presentation\Http\DTO\DtoRequestContract;
 
 class CreateUserRequest implements DtoRequestContract
 {
-    // same field as the User class
     public string $registrationNumber;
     public string $fullname;
     public string $username;

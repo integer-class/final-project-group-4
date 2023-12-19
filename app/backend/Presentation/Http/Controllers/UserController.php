@@ -3,11 +3,16 @@
 namespace Presentation\Http\Controllers;
 
 use Business\Services\UserService;
+use Couchbase\Role;
+use Exception;
+use Presentation\Http\Attributes\Authenticated;
 use Presentation\Http\Attributes\Route;
+use Presentation\Http\Attributes\WithSession;
 use Presentation\Http\DTO\User\CreateUserRequest;
 use Presentation\Http\DTO\User\UpdateUserRequest;
 use Presentation\Http\Helpers\Http;
 use Presentation\Http\Helpers\Storage;
+use Primitives\Models\RoleName;
 use Primitives\Models\User;
 
 class UserController extends Controller
@@ -16,71 +21,54 @@ class UserController extends Controller
     {
     }
 
-    #[Route('/users', 'GET')]
-    public function getUserById()
-    {
-        $id = Http::query('id');
-        $user = $this->userService->getUserById($id);
-        Http::ok($user, "User retrieved successfully");
-    }
-
     #[Route('/users', 'POST')]
+    #[WithSession]
+    #[Authenticated(RoleName::Administrator)]
     public function createUser(CreateUserRequest $user)
     {
-        $avatar = null;
         try {
-            $avatar = Storage::handleUploadedImage('avatar', 'user');
-        } catch (\Exception $e) {
-            error_log($e->getMessage());
-            $_SESSION['old'] = $_POST;
-            $_SESSION['errors'] = ['avatar' => $e->getMessage()];
-            Http::redirect('/admin/add-user');
-            return;
-        }
-
-        try {
-            $user = $this->userService->createUser(array_merge($user->toArray(), [
-                'avatar' => $avatar,
-            ]));
-            $_SESSION['success_message'] = "User created successfully";
+            $user = $this->userService->createUser($user->toArray());
+            $_SESSION['success_message'] = "User with an email of {$user->email} has been created successfully";
             Http::redirect('/admin/user-list');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             error_log($e->getMessage());
             $_SESSION['old'] = $_POST;
             $_SESSION['error_message'] = $e->getMessage();
             Http::redirect('/admin/add-user');
-            return;
         }
     }
 
     #[Route('/users', 'PUT')]
+    #[WithSession]
+    #[Authenticated(RoleName::Administrator)]
     public function updateUser(UpdateUserRequest $user)
     {
-        $id = Http::query('id');
-
-        // update avatar if it's provided
-        $avatar = null;
-        if ($_FILES['avatar'] && $_FILES['avatar']['size'] > 0) {
-            try {
-                $avatar = Http::updateUploadedImage('avatar', $user->avatar);
-            } catch (\Exception $e) {
-                error_log($e->getMessage());
-                Http::badRequest(['avatar' => $e->getMessage()]);
-                return;
-            }
+        try {
+            $user = $this->userService->updateUser($user->toArray());
+            $_SESSION['success_message'] = "User with an email of {$user->email} has been updated successfully";
+            Http::redirect('/admin/user-list');
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            $_SESSION['old'] = $_POST;
+            $_SESSION['error_message'] = $e->getMessage();
+            Http::redirect('/admin/edit-user?id=' . $user->id);
         }
-
-        $user = $this->userService->updateUser($id, array_merge($user->toArray(), [
-            'avatar' => $avatar,
-        ]));
-        Http::ok($user, "User updated successfully");
     }
 
     #[Route('/users', 'DELETE')]
+    #[WithSession]
+    #[Authenticated(RoleName::Administrator)]
     public function deleteUser()
     {
-        $id = Http::query('id');
-        $this->userService->deleteUser($id);
-        Http::ok(null, "User deleted successfully");
+        try {
+            $id = Http::query('id');
+            $user = $this->userService->deleteUser($id);
+            $_SESSION['success_message'] = "User with the name of {$user->fullname} has been deleted successfully";
+            Http::redirect('/admin/user-list');
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+            $_SESSION['error_message'] = $e->getMessage();
+            Http::redirect('/admin/user-list');
+        }
     }
 }

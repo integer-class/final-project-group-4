@@ -7,6 +7,7 @@ use Presentation\Http\DTO\DtoRequestContract;
 class UpdateUserRequest implements DtoRequestContract
 {
     // same field as the User class
+    public int $id;
     public string $registration_number;
     public string $fullname;
     public string $username;

@@ -2,6 +2,7 @@
 
 namespace Business\Services;
 
+use Exception;
 use Presentation\Http\Helpers\Storage;
 use Primitives\Models\Role;
 use Primitives\Models\RoleName;
@@ -36,52 +37,53 @@ class UserService
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function createUser(array $raw_user): User
     {
         $avatar = Storage::handleUploadedImage('avatar', 'user');
-        $hashed_password = password_hash($raw_user['password'], PASSWORD_DEFAULT);
+        $hashedPassword = password_hash($raw_user['password'], PASSWORD_DEFAULT);
         $user = new User(
             id: null,
             registrationNumber: $raw_user['registration_number'],
             fullname: $raw_user['fullname'],
             username: $raw_user['username'],
-            password: $hashed_password,
+            password: $hashedPassword,
             email: $raw_user['email'],
             phone: $raw_user['phone'],
             avatar: $avatar,
             role: RoleName::from($raw_user['role']),
+            studyProgram: new StudyProgram($raw_user['study_program'] ?? ''),
         );
         return $this->userRepository->create($user);
     }
 
-    public function updateUser(string $id, array $raw_user): User
+    /**
+     * @throws Exception
+     */
+    public function updateUser(array $raw_user): User
     {
-        $hashed_password = null;
-        if (isset($raw_user['password'])) {
-            $hashed_password = password_hash($raw_user['password'], PASSWORD_DEFAULT);
-        }
-        $user = new User(
-            id: $id,
-            registrationNumber: $raw_user['registration_number'],
-            fullname: $raw_user['fullname'],
-            username: $raw_user['username'],
-            password: $hashed_password,
-            email: $raw_user['email'],
-            phone: $raw_user['phone'],
-            avatar: $raw_user['avatar'],
-            role: RoleName::from($raw_user['role']),
-            studyProgram: new StudyProgram($raw_user['study_program'] ?? ''),
-        );
+        $user = $this->getUserById($raw_user['id']);
+        $avatar = Storage::updateUploadedImage('avatar', $user->avatar, 'user');
+        $user->updateWith([
+            'registration_number' => $raw_user['registration_number'],
+            'fullname' => $raw_user['fullname'],
+            'username' => $raw_user['username'],
+            'password' => $raw_user['password'],
+            'email' => $raw_user['email'],
+            'phone' => $raw_user['phone'],
+            'avatar' => $avatar,
+            'role' => RoleName::from($raw_user['role']),
+            'study_program' => new StudyProgram($raw_user['study_program'] ?? ''),
+        ]);
         return $this->userRepository->update($user);
     }
 
-    public function deleteUser(int $id): void
+    public function deleteUser(int $id): User
     {
         $user = $this->userRepository->getById($id);
         Storage::removeStoredImage("user/$user->avatar");
-        $this->userRepository->delete($id);
+        return $this->userRepository->delete($id);
     }
 
     public function getUsersCount(): int

@@ -3,6 +3,7 @@
 namespace Presentation\Http\Controllers;
 
 use Business\Services\EventService;
+use Exception;
 use Presentation\Http\Attributes\Authenticated;
 use Presentation\Http\Attributes\Route;
 use Presentation\Http\Attributes\WithSession;
@@ -37,7 +38,7 @@ class EventController extends Controller
             ]);
             $_SESSION['success_message'] = 'Event has been reserved successfully';
             Http::redirect("/student/room?id={$event->id}");
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $_SESSION['error_message'] = $e->getMessage();
             Http::redirect("/student/room?id={$request->room_id}");
         }
@@ -53,7 +54,7 @@ class EventController extends Controller
             $event = $this->eventService->assignApprover($id, $request->approvers);
             $_SESSION['success_message'] = "The approvers have been assigned for the event {$event->title} successfully";
             Http::redirect("/admin/schedule");
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $_SESSION['error_message'] = $e->getMessage();
             Http::redirect("/admin/schedule");
         }
@@ -71,7 +72,7 @@ class EventController extends Controller
             $event = $this->eventService->approve($id, $approverId);
             $_SESSION['success_message'] = "The event {$event->title} has been approved successfully";
             Http::redirect("/approver/schedule");
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $_SESSION['error_message'] = $e->getMessage();
             Http::redirect("/approver/schedule");
         }
@@ -89,7 +90,7 @@ class EventController extends Controller
             $event = $this->eventService->reject($id, $approverId, $request->reason);
             $_SESSION['success_message'] = "The event {$event->title} has been rejected successfully";
             Http::redirect("/approver/schedule");
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $_SESSION['error_message'] = $e->getMessage();
             Http::redirect("/approver/schedule");
         }

@@ -55,7 +55,8 @@ class User
         }
 
         if (isset($user['password']) && $user['password'] !== '') {
-            $this->password = $user['password'];
+            $hashed_password = password_hash($user['password'], PASSWORD_DEFAULT);
+            $this->password = $hashed_password;
         }
 
         if (isset($user['email']) && $user['email'] !== '') {

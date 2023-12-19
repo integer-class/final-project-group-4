@@ -117,7 +117,7 @@ class UserRepository implements IUserRepository
             'email' => $user->email,
             'phone' => $user->phone,
             'avatar' => $user->avatar,
-            'role' => $user->role->name
+            'role' => $user->role->value
         ]);
 
         return $this->getById($this->databaseClient->getLastInsertedId());
@@ -152,11 +152,13 @@ class UserRepository implements IUserRepository
         return $user;
     }
 
-    public function delete(int $id): void
+    public function delete(int $id): User
     {
+        $user = $this->getById($id);
         $this->databaseClient->executeNonQuery("
             DELETE FROM dbo.[User] WHERE Id = ?
         ", [$id]);
+        return $user;
     }
 
     public function getCount(): int

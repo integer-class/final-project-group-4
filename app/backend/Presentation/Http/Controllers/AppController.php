@@ -44,6 +44,7 @@ class AppController extends Controller
     }
 
     #[Route('/profile', 'GET')]
+    #[WithSession]
     #[Authenticated(RoleName::Administrator, RoleName::Approver, RoleName::Student)]
     public function profile(): void
     {

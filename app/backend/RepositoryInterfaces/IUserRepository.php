@@ -13,6 +13,6 @@ interface IUserRepository
     public function getAllByRole(RoleName $role): array;
     public function create(User $user): User;
     public function update(User $user): User;
-    public function delete(int $id): void;
+    public function delete(int $id): User;
     public function getCount(): int;
 }
