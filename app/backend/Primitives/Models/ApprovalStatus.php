@@ -2,7 +2,7 @@
 
 namespace Primitives\Models;
 
-enum ApproverStatus: string
+enum ApprovalStatus: string
 {
     case Approved = 'APPROVED';
     case Rejected = 'REJECTED';

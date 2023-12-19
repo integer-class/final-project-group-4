@@ -57,6 +57,9 @@ class Storage
      */
     public static function updateUploadedImage(string $name, string $old_path, ?string $directory): string
     {
+        if (!isset($_FILES[$name]) || $_FILES[$name]['size'] <= 0) {
+            return $old_path;
+        }
         self::removeStoredImage($old_path);
         return self::handleUploadedImage($name, $directory);
     }

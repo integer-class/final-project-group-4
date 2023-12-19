@@ -41,7 +41,7 @@ class HttpPresenter
                     $route = $attribute->newInstance();
                     if ($route->path === $request_path && $route->method === $request_method) {
                         try {
-                            if ($request_method === "POST") {
+                            if ($request_method === "POST" || $request_method === "PUT") {
                                 $parameters = $method->getParameters();
                                 // method doesn't have any parameters so just invoke it
                                 if (count($parameters) !== 1) {

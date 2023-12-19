@@ -1,7 +1,7 @@
 <?php
 
 use Presentation\Http\Helpers\View;
-use Primitives\Models\ApproverStatus;
+use Primitives\Models\ApprovalStatus;
 use Primitives\Models\Event;
 use Primitives\Models\RoleName;
 use Primitives\Models\User;
@@ -56,9 +56,9 @@ use Primitives\Models\User;
                     <?php
                     $status = $event->getStatus($user->id);
                     $badgeColor = match ($status) {
-                        ApproverStatus::Approved => "badge-success",
-                        ApproverStatus::Rejected => "badge-danger",
-                        ApproverStatus::Pending => "badge-pending",
+                        ApprovalStatus::Approved => "badge-success",
+                        ApprovalStatus::Rejected => "badge-danger",
+                        ApprovalStatus::Pending => "badge-pending",
                         default => "badge-secondary",
                     };
                     ?>

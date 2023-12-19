@@ -39,4 +39,43 @@ class User
             studyProgram: isset($user['StudyProgram']) ? new StudyProgram($user['StudyProgram']) : null,
         );
     }
+
+    public function updateWith(array $user): void
+    {
+        if (isset($user['registrationNumber']) && $user['registrationNumber'] !== '') {
+            $this->registrationNumber = $user['registrationNumber'];
+        }
+
+        if (isset($user['fullname']) && $user['fullname'] !== '') {
+            $this->fullname = $user['fullname'];
+        }
+
+        if (isset($user['username']) && $user['username'] !== '') {
+            $this->username = $user['username'];
+        }
+
+        if (isset($user['password']) && $user['password'] !== '') {
+            $this->password = $user['password'];
+        }
+
+        if (isset($user['email']) && $user['email'] !== '') {
+            $this->email = $user['email'];
+        }
+
+        if (isset($user['phone']) && $user['phone'] !== '') {
+            $this->phone = $user['phone'];
+        }
+
+        if (isset($user['avatar']) && $user['avatar'] !== '') {
+            $this->avatar = $user['avatar'];
+        }
+
+        if (isset($user['role']) && $user['role'] !== '') {
+            $this->role = RoleName::from($user['role']);
+        }
+
+        if (isset($user['studyProgram']) && $user['studyProgram'] !== '') {
+            $this->studyProgram = new StudyProgram($user['studyProgram']);
+        }
+    }
 }

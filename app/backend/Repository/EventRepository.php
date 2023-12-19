@@ -4,7 +4,7 @@ namespace Repository;
 
 use DateTime;
 use Exception;
-use Primitives\Models\ApproverStatus;
+use Primitives\Models\ApprovalStatus;
 use Primitives\Models\Event;
 use Primitives\Models\RoleName;
 use RepositoryInterfaces\IEventRepository;
@@ -298,7 +298,7 @@ class EventRepository implements IEventRepository
         }, $events);
     }
 
-    public function getPreviousApproverStatus(int $id, int $approverId): ApproverStatus
+    public function getPreviousApproverStatus(int $id, int $approverId): ApprovalStatus
     {
         $status = $this->client->executeQuery('
         SELECT
@@ -314,8 +314,8 @@ class EventRepository implements IEventRepository
             'ea_event_id' => $id,
             'user_id' => $approverId
         ]);
-        if (count($status) <= 0) return ApproverStatus::Unknown;
-        return ApproverStatus::from($status[0]['Status']);
+        if (count($status) <= 0) return ApprovalStatus::Unknown;
+        return ApprovalStatus::from($status[0]['Status']);
     }
 
     /**
@@ -389,7 +389,7 @@ class EventRepository implements IEventRepository
             $arguments["user_id$index"] = $approver;
             $arguments["before_user_id$index"] = $approvers[$index - 1] ?? null;
             $arguments["after_user_id$index"] = $approvers[$index + 1] ?? null;
-            $arguments["status$index"] = ApproverStatus::Pending->value;
+            $arguments["status$index"] = ApprovalStatus::Pending->value;
         }
 
         $this->client->executeNonQuery($query, $arguments);
@@ -411,7 +411,7 @@ class EventRepository implements IEventRepository
             SET Status = :status
             WHERE EventID = :event_id AND UserID = :user_id
         ', [
-            'status' => ApproverStatus::Approved->value,
+            'status' => ApprovalStatus::Approved->value,
             'event_id' => $id,
             'user_id' => $approverId
         ]);
@@ -426,7 +426,7 @@ class EventRepository implements IEventRepository
             SET Status = :status, Reason = :reason
             WHERE EventID = :event_id AND UserID = :user_id
         ', [
-            'status' => ApproverStatus::Rejected->value,
+            'status' => ApprovalStatus::Rejected->value,
             'reason' => $reason,
             'event_id' => $id,
             'user_id' => $approverId

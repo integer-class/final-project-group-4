@@ -3,6 +3,7 @@
 namespace Primitives\Models;
 
 use DateTime;
+use Exception;
 
 class Event
 {
@@ -14,7 +15,7 @@ class Event
      * @param DateTime $endsAt
      * @param Room $room
      * @param User $pic
-     * @param Approver[] $approvers
+     * @param Approval[] $approvers
      */
     public function __construct(
         public int      $id,
@@ -32,7 +33,7 @@ class Event
     public function isApproved(): bool
     {
         foreach ($this->approvers as $approver) {
-            if ($approver->status->value != ApproverStatus::Approved) {
+            if ($approver->status->value != ApprovalStatus::Approved) {
                 return false;
             }
         }
@@ -40,7 +41,7 @@ class Event
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public static function fromArray(array $data, array $approvers): Event
     {
@@ -72,7 +73,7 @@ class Event
                 role: RoleName::from($data['PicRole']),
                 studyProgram: null,
             ),
-            approvers: !$hasApprover ? [] : array_map(fn($approver) => new Approver(
+            approvers: !$hasApprover ? [] : array_map(fn($approver) => new Approval(
                 user: new User(
                     id: $approver['ApproverId'],
                     registrationNumber: $approver['ApproverRegistrationNumber'],
@@ -85,7 +86,7 @@ class Event
                     role: RoleName::from($approver['ApproverRole']),
                     studyProgram: null
                 ),
-                status: ApproverStatus::from($approver['Status']),
+                status: ApprovalStatus::from($approver['Status']),
                 previousApproverId: $approver['BeforeUserId'],
                 nextApproverId: $approver['AfterUserId'],
                 reason: $approver['Reason'],
@@ -93,13 +94,43 @@ class Event
         );
     }
 
-    public function getStatus(int $id): ApproverStatus
+    public function getStatus(int $id): ApprovalStatus
     {
         foreach ($this->approvers as $approver) {
             if ($approver->user->id == $id) {
                 return $approver->status;
             }
         }
-        return ApproverStatus::Unknown;
+        return ApprovalStatus::Unknown;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function updateWith(array $event): void
+    {
+        if (isset($event['title']) && $event['title'] !== '') {
+            $this->title = $event['title'];
+        }
+
+        if (isset($event['description']) && $event['description'] !== '') {
+            $this->description = $event['description'];
+        }
+
+        if (isset($event['startsAt']) && $event['startsAt'] !== '') {
+            $this->startsAt = new DateTime($event['startsAt']);
+        }
+
+        if (isset($event['endsAt']) && $event['endsAt'] !== '') {
+            $this->endsAt = new DateTime($event['endsAt']);
+        }
+
+        if (isset($event['roomId']) && $event['roomId'] !== '') {
+            $this->room->id = $event['roomId'];
+        }
+
+        if (isset($event['picId']) && $event['picId'] !== '') {
+            $this->pic->id = $event['picId'];
+        }
     }
 }

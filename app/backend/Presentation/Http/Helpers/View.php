@@ -39,7 +39,6 @@ class View
     {
         $routeSegments = self::getRouteSegments();
         $requestPath = implode('/', $routeSegments);
-        error_log($requestPath);
         return $requestPath === $path ? 'active' : '';
     }
 

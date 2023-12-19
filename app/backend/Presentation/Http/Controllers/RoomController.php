@@ -10,23 +10,8 @@ use Presentation\Http\Helpers\Http;
 
 class RoomController extends Controller
 {
-    public function __construct(private RoomService $roomService)
+    public function __construct(private readonly RoomService $roomService)
     {
-    }
-
-    #[Route('/rooms', 'GET')]
-    public function getAll(): void
-    {
-        $rooms = $this->roomService->getAllRooms();
-        Http::ok($rooms, "Rooms retrieved successfully");
-    }
-
-    #[Route('/room', 'GET')]
-    public function getById(): void
-    {
-        $id = Http::query('id');
-        $room = $this->roomService->getRoomById($id);
-        Http::ok($room, "Room retrieved successfully");
     }
 
     #[Route('/rooms/search', 'GET')]
@@ -54,18 +39,27 @@ class RoomController extends Controller
     #[Route('/rooms', 'PUT')]
     public function update(UpdateRoomRequest $room): void
     {
-        $id = Http::query('id');
-        $room = $this->roomService->updateRoom($id, $room->toArray());
-        $_SESSION['success_message'] = "Room with an ID of {$room->id} has been updated successfully";
-        Http::redirect($_SERVER['HTTP_REFERER']);
+        try {
+            $room = $this->roomService->updateRoom($room->toArray());
+            $_SESSION['success_message'] = "Room with the name of {$room->name} has been updated successfully";
+            Http::redirect('/admin/room-list');
+        } catch (\Exception $e) {
+            $_SESSION['error_message'] = $e->getMessage();
+            Http::redirect('/admin/room-list');
+        }
     }
 
     #[Route('/rooms', 'DELETE')]
     public function delete(): void
     {
-        $id = Http::query('id');
-        $this->roomService->deleteRoom($id);
-        $_SESSION['success_message'] = "Room deleted successfully";
-        Http::redirect($_SERVER['HTTP_REFERER']);
+        try {
+            $id = Http::query('id');
+            $this->roomService->deleteRoom($id);
+            $_SESSION['success_message'] = "Room deleted successfully";
+            Http::redirect($_SERVER['HTTP_REFERER']);
+        } catch (\Exception $e) {
+            $_SESSION['error_message'] = $e->getMessage();
+            Http::redirect('/admin/room-list');
+        }
     }
 }
