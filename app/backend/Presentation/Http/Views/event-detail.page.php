@@ -9,6 +9,7 @@ use Primitives\Models\User;
 /** @var Event $event */
 /** @var User[] $approvers */
 /** @var User $user */
+/** @var bool $isAllowedToApprove */
 
 ?>
 <div class="container mx-auto form-container">
@@ -110,9 +111,7 @@ use Primitives\Models\User;
                 </div>
             </div>
 
-            <?php if (count($event->approvers) <= 0 ||
-                // the user is an approver and the event is pending for their approval
-                array_filter($event->approvers, fn($approver) => $approver->user->id === $user->id && $approver->status === ApproverStatus::Pending)):
+            <?php if ($isAllowedToApprove):
                 ?>
                 <div class="row mx-auto" style="gap: 1rem; max-width: 30rem">
                     <button

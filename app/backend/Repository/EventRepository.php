@@ -298,6 +298,26 @@ class EventRepository implements IEventRepository
         }, $events);
     }
 
+    public function getPreviousApproverStatus(int $id, int $approverId): ApproverStatus
+    {
+        $status = $this->client->executeQuery('
+        SELECT
+            Status
+        FROM Event_Approver
+        WHERE EventID = :event_id AND UserID = (
+            SELECT BeforeUserID
+            FROM Event_Approver
+            WHERE EventID = :ea_event_id AND UserID = :user_id
+        )
+        ', [
+            'event_id' => $id,
+            'ea_event_id' => $id,
+            'user_id' => $approverId
+        ]);
+        if (count($status) <= 0) return ApproverStatus::Unknown;
+        return ApproverStatus::from($status[0]['Status']);
+    }
+
     /**
      * @throws Exception
      */

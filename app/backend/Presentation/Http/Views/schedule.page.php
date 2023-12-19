@@ -55,21 +55,12 @@ use Primitives\Models\User;
                 <?php if ($user->role !== RoleName::Student): ?>
                     <?php
                     $status = $event->getStatus($user->id);
-                    $badgeColor = "";
-                    switch ($status) {
-                        case ApproverStatus::Approved:
-                            $badgeColor = "badge-success";
-                            break;
-                        case ApproverStatus::Rejected:
-                            $badgeColor = "badge-danger";
-                            break;
-                        case ApproverStatus::Pending:
-                            $badgeColor = "badge-pending";
-                            break;
-                        default:
-                            $badgeColor = "badge-secondary";
-                            break;
-                    }
+                    $badgeColor = match ($status) {
+                        ApproverStatus::Approved => "badge-success",
+                        ApproverStatus::Rejected => "badge-danger",
+                        ApproverStatus::Pending => "badge-pending",
+                        default => "badge-secondary",
+                    };
                     ?>
                     <td><span class="badge <?= $badgeColor ?>"><?= $status->value ?></span></td>
                 <?php endif; ?>

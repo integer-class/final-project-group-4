@@ -2,6 +2,8 @@
 
 namespace RepositoryInterfaces;
 
+use Primitives\Models\Approver;
+use Primitives\Models\ApproverStatus;
 use Primitives\Models\Event;
 use Primitives\Models\RoleName;
 
@@ -12,6 +14,7 @@ interface IEventRepository
     public function getByRoomId(int $roomId): array;
     public function getAllEventsNeedingApprovalFrom(int $userId): array;
     public function getAllEventsFrom(int $userId): array;
+    public function getPreviousApproverStatus(int $id, int $approverId): ApproverStatus;
     public function create(array $event): Event;
     public function assignApprover(int $id, array $approvers): Event;
     public function approve(int $id, int $approverId): Event;

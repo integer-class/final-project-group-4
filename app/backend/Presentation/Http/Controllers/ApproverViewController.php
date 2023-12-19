@@ -10,6 +10,7 @@ use Presentation\Http\Attributes\Route;
 use Presentation\Http\Attributes\WithSession;
 use Presentation\Http\Helpers\Http;
 use Presentation\Http\Helpers\Session;
+use Primitives\Models\ApproverStatus;
 use Primitives\Models\RoleName;
 
 class ApproverViewController extends Controller
@@ -92,11 +93,22 @@ class ApproverViewController extends Controller
         $id = Http::query('id');
         $event = $this->eventService->getEventById($id);
         $approvers = $this->userService->getAllApprovers();
+        $previousApproverStatus = $this->eventService->getPreviousApproverStatus($event->id, $this->session->user->id);
+        // the approval needs to be done in order, hence why we need to check these things
+        $isAllowedToApprove =
+            // more than zero approvers have been assigned
+            count($event->approvers) <= 0 ||
+            // the user is an approver and the event is pending for their approval
+            array_filter($event->approvers, fn($approver) => $approver->user->id === $this->session->user->id && $approver->status === ApproverStatus::Pending) &&
+            // the user is an approver and the event is pending for the previous approver
+            $previousApproverStatus === ApproverStatus::Approved;
+
         $this->view('event-detail', [
             '__layout_title__' => 'Schedule',
             'user' => $this->session->user,
             'event' => $event,
-            'approvers' => $approvers
+            'approvers' => $approvers,
+            'isAllowedToApprove' => $isAllowedToApprove
         ]);
     }
 }

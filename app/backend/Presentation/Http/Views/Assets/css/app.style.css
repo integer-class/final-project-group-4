@@ -13,6 +13,10 @@ body {
     view-transition-name: body;
 }
 
+td {
+    vertical-align: middle;
+}
+
 ::view-transition-old(body),
 ::view-transition-new(body) {
     animation-duration: 100ms;

@@ -2,7 +2,9 @@
 
 namespace Business\Services;
 
+use Exception;
 use Presentation\Http\Helpers\Session;
+use Primitives\Models\ApproverStatus;
 use Primitives\Models\Event;
 use Primitives\Models\RoleName;
 use Repository\EventRepository;
@@ -41,8 +43,22 @@ class EventService
         return $this->eventRepository->assignApprover($id, $approvers);
     }
 
+    public function getPreviousApproverStatus(int $id, int $approverId): ApproverStatus
+    {
+        return $this->eventRepository->getPreviousApproverStatus($id, $approverId);
+    }
+
+    /**
+     * @throws Exception
+     */
     public function approve(int $id, int $approverId): Event
     {
+        if ($this->session->user->role != RoleName::Administrator) {
+            throw new Exception("You are not authorized to approve events.");
+        }
+        if ($this->eventRepository->getPreviousApproverStatus($id, $approverId) != ApproverStatus::Approved) {
+            throw new Exception("You are not authorized to approve this event.");
+        }
         return $this->eventRepository->approve($id, $approverId);
     }
 
