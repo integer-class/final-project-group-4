@@ -1,0 +1,123 @@
+.form-container {
+    border-radius: 1rem;
+    margin-block: 2rem;
+    padding: 0;
+}
+
+.cover-image-container {
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    overflow: hidden;
+    height: 12rem;
+    position: relative;
+    color: white;
+    display: flex;
+    padding: 2rem;
+    padding-top: 3rem;
+    gap: 2rem;
+}
+
+.cover-image {
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -80%;
+    width: 100%;
+    object-position: bottom;
+    z-index: -1;
+    filter: brightness(0.5);
+}
+
+.white-shadow {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 100%;
+    background: linear-gradient(to top , rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 50%);
+    pointer-events: none;
+}
+
+.bordered-container {
+    border-left: 1px solid #c9c9c9;
+    border-right: 1px solid #c9c9c9;
+    border-bottom: 1px solid #c9c9c9;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    padding: 2rem;
+}
+
+.room-detail-container {
+    display: flex;
+    width: 100%;
+    margin-top: 16rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.room-detail h1,
+.room-detail p {
+    text-shadow: 0 0 1rem rgba(0, 0, 0, 0.75);
+    font-family: 'Jost', sans-serif;
+}
+
+.room-detail p {
+    font-size: 1.25rem;
+}
+
+.form-title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    font-family: 'Jost', sans-serif;
+    text-align: center;
+}
+
+.input-container {
+    margin: 0 auto;
+    max-width: 48rem;
+}
+
+.reservation-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+}
+
+.coc-title {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    font-family: 'Jost', sans-serif;
+}
+
+.coc-list {
+    font-family: 'Jost', sans-serif;
+    font-size: 1.15rem;
+    line-height: 2rem;
+}
+
+.coc-checkbox {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.coc-checkbox-container {
+    display: flex;
+    gap: 0.5rem;
+    font-weight: 500;
+    font-family: 'Jost', sans-serif;
+    font-size: 1.05rem;
+}
+
+.event-form-input {
+    display: flex;
+    gap: 1rem;
+}
+
+.coc-button {
+    display: block;
+    margin: 0 auto;
+}

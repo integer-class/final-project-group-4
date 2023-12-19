@@ -1,0 +1,162 @@
+.form-container {
+    border-radius: 1rem;
+    margin-block: 2rem;
+    padding: 0;
+}
+
+.cover-image-container {
+    border-top-left-radius: 1rem;
+    border-top-right-radius: 1rem;
+    overflow: hidden;
+    height: 12rem;
+    position: relative;
+    color: white;
+    display: flex;
+    padding: 3rem 2rem 2rem;
+    gap: 2rem;
+}
+
+.cover-image {
+    object-fit: cover;
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -80%;
+    width: 100%;
+    object-position: bottom;
+    z-index: -1;
+    filter: brightness(0.5);
+}
+
+.white-shadow {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 100%;
+    background: linear-gradient(to top , rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 50%);
+    pointer-events: none;
+}
+
+.bordered-container {
+    border-left: 1px solid #c9c9c9;
+    border-right: 1px solid #c9c9c9;
+    border-bottom: 1px solid #c9c9c9;
+    border-bottom-left-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    padding: 2rem;
+}
+
+.room-detail-container {
+    display: flex;
+    width: 100%;
+    margin-top: 16rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.room-detail h1,
+.room-detail p {
+    text-shadow: 0 0 1rem rgba(0, 0, 0, 0.75);
+    font-family: 'Jost', sans-serif;
+}
+
+.room-detail p {
+    font-size: 1.25rem;
+}
+
+.form-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-family: 'Jost', sans-serif;
+}
+
+.input-container {
+    margin: 0 auto;
+    max-width: 48rem;
+}
+
+.event-detail-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    width: 100%;
+    font-family: 'Jost', sans-serif;
+    padding-block: 0.5rem;
+    border-bottom: 2px solid var(--color-secondary);
+}
+
+.event-detail-item span {
+    font-size: 1.25rem;
+}
+
+.event-detail-label {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.event-description {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.event-description p {
+    font-size: 1.15rem;
+}
+
+.event-approver {
+    font-family: 'Jost', sans-serif;
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.event-approver small {
+    font-size: 0.9rem;
+}
+
+.event-approver-input {
+    display: flex;
+    gap: 1rem;
+}
+
+.approver-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.approver-item-wrapper p {
+    margin: 0;
+    color: #64748b;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+    margin-top: 0.25rem;
+}
+
+.approver-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.approver-item span {
+    font-size: 1.15rem;
+}
+
+.form-label {
+    font-family: 'Jost', sans-serif;
+    font-size: 1.25rem;
+}
+
+.modal-title {
+    font-family: 'Jost', sans-serif;
+    font-size: 1.5rem;
+}

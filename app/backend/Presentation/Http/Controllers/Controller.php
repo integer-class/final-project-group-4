@@ -3,7 +3,7 @@
 namespace Presentation\Http\Controllers;
 abstract class Controller
 {
-    protected function view(string $view, array $data = []): void
+    protected function view(string $view, array $data = [], bool $withLayout = true): void
     {
         $viewPath = realpath(dirname(__FILE__) . '/../Views');
 

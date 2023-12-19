@@ -4,7 +4,7 @@ namespace Primitives\Models;
 
 enum RoleName: string
 {
-    case Administrator = "Administrator";
-    case Student = "Student";
-    case Lecturer = "Lecturer";
+    case Administrator = "ADMIN";
+    case Student = "STUDENT";
+    case Approver = "APPROVER";
 }

@@ -19,13 +19,12 @@ class AppController extends Controller
     #[WithSession]
     public function index(): void
     {
-        $role = $this->session->getRole();
-        switch ($role) {
+        switch ($this->session->user?->role) {
             case RoleName::Administrator:
                 Http::redirect('/admin/dashboard');
                 break;
-            case RoleName::Lecturer:
-                Http::redirect('/lecturer/dashboard');
+            case RoleName::Approver:
+                Http::redirect('/approver/dashboard');
                 break;
             case RoleName::Student:
                 Http::redirect('/student/dashboard');
@@ -41,6 +40,16 @@ class AppController extends Controller
     {
         $this->view('login', [
             '__layout_title__' => 'Login'
+        ], false);
+    }
+
+    #[Route('/profile', 'GET')]
+    #[Authenticated(RoleName::Administrator, RoleName::Approver, RoleName::Student)]
+    public function profile(): void
+    {
+        $this->view('profile', [
+            '__layout_title__' => 'Profile',
+            'user' => $this->session->user,
         ]);
     }
 }

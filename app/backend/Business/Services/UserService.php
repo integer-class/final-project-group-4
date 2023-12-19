@@ -4,6 +4,7 @@ namespace Business\Services;
 
 use Presentation\Http\Helpers\Storage;
 use Primitives\Models\Role;
+use Primitives\Models\RoleName;
 use Primitives\Models\StudyProgram;
 use Primitives\Models\User;
 use RepositoryInterfaces\IUserRepository;
@@ -22,6 +23,11 @@ class UserService
     public function getUserById(int $id): User
     {
         return $this->userRepository->getById($id);
+    }
+
+    public function getAllApprovers(): array
+    {
+        return $this->userRepository->getAllByRole(RoleName::Approver);
     }
 
     public function getUserByUsernameOrEmail(string $username_or_email): User|null
@@ -45,8 +51,7 @@ class UserService
             email: $raw_user['email'],
             phone: $raw_user['phone'],
             avatar: $avatar,
-            role: new Role($raw_user['role']),
-            studyProgram: new StudyProgram($raw_user['study_program'] ?? '')
+            role: RoleName::from($raw_user['role']),
         );
         return $this->userRepository->create($user);
     }
@@ -66,7 +71,7 @@ class UserService
             email: $raw_user['email'],
             phone: $raw_user['phone'],
             avatar: $raw_user['avatar'],
-            role: new Role($raw_user['role']),
+            role: RoleName::from($raw_user['role']),
             studyProgram: new StudyProgram($raw_user['study_program'] ?? ''),
         );
         return $this->userRepository->update($user);
@@ -77,5 +82,10 @@ class UserService
         $user = $this->userRepository->getById($id);
         Storage::removeStoredImage("user/$user->avatar");
         $this->userRepository->delete($id);
+    }
+
+    public function getUsersCount(): int
+    {
+        return $this->userRepository->getCount();
     }
 }

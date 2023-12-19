@@ -2,9 +2,7 @@
 
 namespace Repository;
 
-use Primitives\Models\Role;
 use Primitives\Models\RoleName;
-use Primitives\Models\StudyProgram;
 use Primitives\Models\User;
 use RepositoryInterfaces\IUserRepository;
 
@@ -25,12 +23,10 @@ class UserRepository implements IUserRepository
                 Email,
                 Phone,
                 Avatar,
-                R.Name as Role,
+                Role,
                 SP.Name as StudyProgram
             FROM
                  dbo.[User]
-            LEFT JOIN dbo.User_Role UR on [User].ID = UR.UserID
-            LEFT JOIN dbo.Role R on UR.RoleID = R.ID
             LEFT JOIN dbo.User_StudyPrograms USP on [User].ID = USP.UserID
             LEFT JOIN dbo.StudyPrograms SP on USP.StudyProgramID = SP.ID
         ");
@@ -50,12 +46,9 @@ class UserRepository implements IUserRepository
                 Email,
                 Phone,
                 Avatar,
-                R.Name as Role,
-                SP.Name as StudyProgram
+                Role
             FROM
                  dbo.[User]
-            LEFT JOIN dbo.User_Role UR on [User].ID = UR.UserID
-            LEFT JOIN dbo.Role R on UR.RoleID = R.ID
             LEFT JOIN dbo.User_StudyPrograms USP on [User].ID = USP.UserID
             LEFT JOIN dbo.StudyPrograms SP on USP.StudyProgramID = SP.ID
             WHERE [User].Id = ?
@@ -76,11 +69,9 @@ class UserRepository implements IUserRepository
                 Email,
                 Phone,
                 Avatar,
-                R.Name as Role
+                Role
             FROM
                  dbo.[User]
-            LEFT JOIN dbo.User_Role UR on [User].ID = UR.UserID
-            LEFT JOIN dbo.Role R on UR.RoleID = R.ID
             WHERE Username = ? OR Email = ? OR RegistrationNumber = ?
         ", [
             $username,
@@ -92,33 +83,44 @@ class UserRepository implements IUserRepository
         return User::fromArray($users[0]);
     }
 
+    public function getAllByRole(RoleName $role): array
+    {
+        $users = $this->databaseClient->executeQuery("
+            SELECT
+                [User].Id as Id,
+                RegistrationNumber,
+                Username,
+                Password,
+                FullName,
+                Email,
+                Phone,
+                Avatar,
+                Role
+            FROM
+                 dbo.[User]
+            WHERE Role = :role
+        ", ['role' => $role->value]);
+
+        return array_map(fn($user) => User::fromArray($user), $users);
+    }
+
     public function create(User $user): User
     {
-        $user_id = $this->databaseClient->executeQuery("
-            INSERT INTO dbo.[User] (RegistrationNumber, FullName, Username, Password, Email, Phone, Avatar)
-            VALUES (?, ?, ?, ?, ?, ?, ?);
-
-            SELECT SCOPE_IDENTITY() as Id;
-        ", [
-            $user->registrationNumber,
-            $user->fullname,
-            $user->username,
-            $user->password,
-            $user->email,
-            $user->phone,
-            $user->avatar
-        ])[0]['Id'];
-
-        $role_id = $this->databaseClient->executeQuery("
-            SELECT ID FROM dbo.Role WHERE Name = ?
-        ", [$user->role->name])[0]['Id'];
-
         $this->databaseClient->executeNonQuery("
-            INSERT INTO dbo.User_Role (UserID, RoleID)
-            VALUES (?, ?)
-        ", [$user_id, $role_id]);
+            INSERT INTO dbo.[User] (RegistrationNumber, FullName, Username, Password, Email, Phone, Avatar, Role)
+            VALUES (:registration_number, :fullname, :username, :password, :email, :phone, :avatar, :role);
+        ", [
+            'registration_number' => $user->registrationNumber,
+            'fullname' => $user->fullname,
+            'username' => $user->username,
+            'password' => $user->password,
+            'email' => $user->email,
+            'phone' => $user->phone,
+            'avatar' => $user->avatar,
+            'role' => $user->role->name
+        ]);
 
-        return $user;
+        return $this->getById($this->databaseClient->getLastInsertedId());
     }
 
     public function update(User $user): User
@@ -133,7 +135,8 @@ class UserRepository implements IUserRepository
                 Password = ?,
                 Email = ?,
                 Phone = ?,
-                Avatar = ?
+                Avatar = ?,
+                Role = ?
             WHERE Id = ?
         ", [
             $user->registrationNumber,
@@ -146,17 +149,6 @@ class UserRepository implements IUserRepository
             $user->id
         ]);
 
-        // update user role
-        $role_id = $this->databaseClient->executeQuery("
-            SELECT ID FROM dbo.Role WHERE Name = ?
-        ", [$user->role->name])[0]['Id'];
-
-        $this->databaseClient->executeNonQuery("
-            UPDATE dbo.User_Role
-            SET RoleID = ?
-            WHERE UserID = ?
-        ", [$role_id, $user->id]);
-
         return $user;
     }
 
@@ -165,5 +157,12 @@ class UserRepository implements IUserRepository
         $this->databaseClient->executeNonQuery("
             DELETE FROM dbo.[User] WHERE Id = ?
         ", [$id]);
+    }
+
+    public function getCount(): int
+    {
+        return $this->databaseClient->executeQuery("
+            SELECT COUNT(Id) as Count FROM dbo.[User]
+        ")[0]['Count'];
     }
 }

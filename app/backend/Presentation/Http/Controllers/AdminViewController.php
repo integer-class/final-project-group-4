@@ -2,6 +2,7 @@
 
 namespace Presentation\Http\Controllers;
 
+use Business\Services\EventService;
 use Business\Services\RoomService;
 use Business\Services\UserService;
 use Presentation\Http\Attributes\Authenticated;
@@ -14,9 +15,10 @@ use Primitives\Models\RoleName;
 class AdminViewController extends Controller
 {
     public function __construct(
-        private readonly Session     $session,
-        private readonly UserService $userService,
-        private readonly RoomService $roomService
+        private readonly Session      $session,
+        private readonly UserService  $userService,
+        private readonly RoomService  $roomService,
+        private readonly EventService $eventService
     )
     {
     }
@@ -26,9 +28,19 @@ class AdminViewController extends Controller
     #[Authenticated(RoleName::Administrator)]
     public function dashboard(): void
     {
+        $usersCount = $this->userService->getUsersCount();
+        $roomsCount = $this->roomService->getRoomsCount();
+        $pendingEventsCount = $this->eventService->getPendingEventsCount();
+        $approvedEventsCount = $this->eventService->getApprovedEventsCount();
+        $rejectedEventsCount = $this->eventService->getRejectedEventsCount();
         $this->view('dashboard', [
             '__layout_title__' => 'Dashboard',
-            'user' => $this->session->user
+            'user' => $this->session->user,
+            'usersCount' => $usersCount,
+            'roomsCount' => $roomsCount,
+            'pendingEventsCount' => $pendingEventsCount,
+            'approvedEventsCount' => $approvedEventsCount,
+            'rejectedEventsCount' => $rejectedEventsCount
         ]);
     }
 
@@ -38,7 +50,7 @@ class AdminViewController extends Controller
     public function roomList(): void
     {
         $rooms = $this->roomService->getAllRooms();
-        $this->view('admin.room-list', [
+        $this->view('room-list', [
             '__layout_title__' => 'Room List',
             'user' => $this->session->user,
             'rooms' => $rooms
@@ -59,14 +71,27 @@ class AdminViewController extends Controller
         ]);
     }
 
+    #[Route('/admin/add-room', 'GET')]
+    #[WithSession]
+    #[Authenticated(RoleName::Administrator)]
+    public function addRoom(): void
+    {
+        $this->view('admin.add-room', [
+            '__layout_title__' => 'Add Room',
+            'user' => $this->session->user
+        ]);
+    }
+
     #[Route('/admin/schedule', 'GET')]
     #[WithSession]
     #[Authenticated(RoleName::Administrator)]
     public function schedule(): void
     {
-        $this->view('admin.schedule', [
+        $events = $this->eventService->getAllEvents();
+        $this->view('schedule', [
             '__layout_title__' => 'Schedule',
-            'user' => $this->session->user
+            'user' => $this->session->user,
+            'events' => $events
         ]);
     }
 
@@ -80,6 +105,33 @@ class AdminViewController extends Controller
             '__layout_title__' => 'User List',
             'user' => $this->session->user,
             'users' => $users
+        ]);
+    }
+
+    #[Route('/admin/add-user', 'GET')]
+    #[WithSession]
+    #[Authenticated(RoleName::Administrator)]
+    public function addUser(): void
+    {
+        $this->view('admin.add-user', [
+            '__layout_title__' => 'Add User',
+            'user' => $this->session->user,
+        ]);
+    }
+
+    #[Route('/admin/event', 'GET')]
+    #[WithSession]
+    #[Authenticated(RoleName::Administrator)]
+    public function eventDetail(): void
+    {
+        $id = Http::query('id');
+        $event = $this->eventService->getEventById($id);
+        $approvers = $this->userService->getAllApprovers();
+        $this->view('event-detail', [
+            '__layout_title__' => 'Schedule',
+            'user' => $this->session->user,
+            'event' => $event,
+            'approvers' => $approvers
         ]);
     }
 }

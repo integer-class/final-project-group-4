@@ -7,19 +7,13 @@ use Presentation\Http\Attributes\Route;
 use Presentation\Http\DTO\User\CreateUserRequest;
 use Presentation\Http\DTO\User\UpdateUserRequest;
 use Presentation\Http\Helpers\Http;
+use Presentation\Http\Helpers\Storage;
 use Primitives\Models\User;
 
 class UserController extends Controller
 {
     public function __construct(private readonly UserService $userService)
     {
-    }
-
-    #[Route('/users', 'GET')]
-    public function getUsers()
-    {
-        $users = $this->userService->getAllUsers();
-        Http::ok($users, "Users retrieved successfully");
     }
 
     #[Route('/users', 'GET')]
@@ -35,17 +29,28 @@ class UserController extends Controller
     {
         $avatar = null;
         try {
-            $avatar = Http::handleUploadedImage('avatar');
+            $avatar = Storage::handleUploadedImage('avatar', 'user');
         } catch (\Exception $e) {
             error_log($e->getMessage());
-            Http::badRequest(['avatar' => $e->getMessage()]);
+            $_SESSION['old'] = $_POST;
+            $_SESSION['errors'] = ['avatar' => $e->getMessage()];
+            Http::redirect('/admin/add-user');
             return;
         }
 
-        $user = $this->userService->createUser(array_merge($user->toArray(), [
-            'avatar' => $avatar,
-        ]));
-        Http::ok($user, "User created successfully");
+        try {
+            $user = $this->userService->createUser(array_merge($user->toArray(), [
+                'avatar' => $avatar,
+            ]));
+            $_SESSION['success_message'] = "User created successfully";
+            Http::redirect('/admin/user-list');
+        } catch (\Exception $e) {
+            error_log($e->getMessage());
+            $_SESSION['old'] = $_POST;
+            $_SESSION['error_message'] = $e->getMessage();
+            Http::redirect('/admin/add-user');
+            return;
+        }
     }
 
     #[Route('/users', 'PUT')]

@@ -1,64 +1,70 @@
-<div class="d-flex w-100 h-100">
-    <?php
+<?php
 
-    use Primitives\Models\User;
+use Primitives\Models\User;
 
-    /** @var User[] $users */
-
-    require_once __DIR__ . '/Components/sidenav.component.php';
-    ?>
-    <main class="dashboard-main">
-        <?php
-        require_once __DIR__ . '/Components/topbar.component.php';
-        ?>
-        <div class="container mt-5">
-            <div class="row mb-4">
-                <div class="col-6">
-                    <h1 class="list-title">List of All Users</h1>
-                </div>
-                <div class="col-6">
-                    <button type="button" class="button button-add float-end">+ Add New User</button>
-                </div>
-            </div>
-
-            <table class="table" id="users-table">
-                <thead>
-                <tr>
-                    <th scope="col" class="name-row">Email</th>
-                    <th scope="col">NIM</th>
-                    <th scope="col">Fullname</th>
-                    <th scope="col">Study Program</th>
-                    <th scope="col">Role</th>
-                    <th scope="col" class="text-center">Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <?php foreach ($users as $user) { ?>
-                    <tr>
-                        <td><?= $user->email ?></td>
-                        <td><?= $user->registrationNumber ?></td>
-                        <td><?= $user->fullname ?></td>
-                        <td><?= $user->studyProgram->name ?></td>
-                        <td><?= $user->role->name->value ?></td>
-                        <td class="text-center">
-                            <?php if ($_SESSION['user']['id'] !== $user->id) { ?>
-                                <button
-                                        type="button" class="button button-delete"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#deleteUserModal"
-                                        data-bs-room-id="<?= $user->id ?>"
-                                >
-                                    Delete
-                                </button>
-                            <?php } ?>
-                            <button type="button" class="button button-edit">Edit</button>
-                        </td>
-                    </tr>
-                <?php } ?>
-                </tbody>
-            </table>
+/** @var User[] $users */
+/** @var User $user */
+?>
+<div class="container mt-2">
+    <div class="row mb-4">
+        <div class="col-6">
+            <h1 class="list-title">List of All Users</h1>
         </div>
-    </main>
+        <div class="col-6">
+            <a href="/admin/add-user" type="button" class="button info-button float-end">+ Add New User</a>
+        </div>
+    </div>
+
+    <?php if (isset($_SESSION['success_message'])): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= $_SESSION['success_message'] ?>
+            <?php unset($_SESSION['success_message']) ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (isset($_SESSION['error_message'])): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= $_SESSION['error_message'] ?>
+            <?php unset($_SESSION['error_message']) ?>
+        </div>
+    <?php endif; ?>
+
+    <table class="table" id="users-table">
+        <thead>
+        <tr>
+            <th scope="col" class="name-row">Email</th>
+            <th scope="col">NIM</th>
+            <th scope="col">Fullname</th>
+            <th scope="col">Study Program</th>
+            <th scope="col">Role</th>
+            <th scope="col" class="text-center">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php foreach ($users as $u) { ?>
+            <tr>
+                <td><?= $u->email ?></td>
+                <td><?= $u->registrationNumber ?></td>
+                <td><?= $u->fullname ?></td>
+                <td><?= $u->studyProgram?->name ?? '-' ?></td>
+                <td><?= $u->role->name ?></td>
+                <td class="text-center d-flex justify-content-center" style="gap: 0.5rem">
+                    <?php if ($user->id !== $u->id) { ?>
+                        <button
+                                type="button" class="button danger-button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#deleteUserModal"
+                                data-bs-room-id="<?= $u->id ?>"
+                        >
+                            Delete
+                        </button>
+                    <?php } ?>
+                    <button type="button" class="button primary-button">Edit</button>
+                </td>
+            </tr>
+        <?php } ?>
+        </tbody>
+    </table>
 </div>
 
 <div
@@ -83,9 +89,9 @@
                 </p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="button secondary-button" data-bs-dismiss="modal">Close</button>
                 <form id="form" action="/users" method="post">
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="button danger-button">Delete</button>
                 </form>
             </div>
         </div>

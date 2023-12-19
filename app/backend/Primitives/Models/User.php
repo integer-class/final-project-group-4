@@ -5,16 +5,16 @@ namespace Primitives\Models;
 class User
 {
     public function __construct(
-        public ?int         $id,
-        public ?string      $registrationNumber,
-        public string       $fullname,
-        public string       $username,
-        public ?string      $password,
-        public string       $email,
-        public string       $phone,
-        public string       $avatar,
-        public Role         $role,
-        public StudyProgram $studyProgram
+        public ?int          $id,
+        public ?string       $registrationNumber,
+        public string        $fullname,
+        public string        $username,
+        public ?string       $password,
+        public string        $email,
+        public string        $phone,
+        public string        $avatar,
+        public RoleName      $role,
+        public ?StudyProgram $studyProgram
     )
     {
     }
@@ -35,8 +35,8 @@ class User
             email: $user['Email'],
             phone: $user['Phone'],
             avatar: $user['Avatar'],
-            role: new Role($user['Role']),
-            studyProgram: new StudyProgram($user['StudyProgram'] ?? '-')
+            role: RoleName::from($user['Role']),
+            studyProgram: isset($user['StudyProgram']) ? new StudyProgram($user['StudyProgram']) : null,
         );
     }
 }

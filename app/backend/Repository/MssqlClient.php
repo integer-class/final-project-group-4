@@ -51,7 +51,7 @@ class MssqlClient
     {
         $statement = $this->pdo->prepare($query);
         $statement->execute($parameters);
-        return $statement->fetchAll(\PDO::FETCH_ASSOC);
+        return $statement->fetchAll();
     }
 
     public function executeNonQuery(string $query,
@@ -59,5 +59,10 @@ class MssqlClient
     {
         $statement = $this->pdo->prepare($query);
         $statement->execute($parameters);
+    }
+
+    public function getLastInsertedId(): int
+    {
+        return $this->pdo->lastInsertId();
     }
 }

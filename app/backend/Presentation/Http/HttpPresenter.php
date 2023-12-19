@@ -25,9 +25,9 @@ class HttpPresenter
         if (str_contains($request_path, '?')) {
             $request_path = substr($request_path, 0, strpos($request_path, '?'));
         }
-        $request_method = $_SERVER['REQUEST_METHOD'];
 
         // mock request method since we can't do anything other than POST or GET from the form action
+        $request_method = $_SERVER['REQUEST_METHOD'];
         if (isset($_GET['_method'])) {
             $request_method = $_GET['_method'];
         }

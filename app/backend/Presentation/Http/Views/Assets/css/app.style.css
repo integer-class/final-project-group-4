@@ -3,6 +3,49 @@
     --color-secondary: #EFEFEF;
     --color-white: #FFFFFF;
     --color-black: #020617;
+    --color-danger: #dc2626;
+    --color-info: #0ea5e9;
+    --color-success: #22c55e;
+    --color-pending: #f97316;
+}
+
+body {
+    view-transition-name: body;
+}
+
+td {
+    vertical-align: middle;
+}
+
+::view-transition-old(body),
+::view-transition-new(body) {
+    animation-duration: 100ms;
+}
+
+@keyframes fade-out {
+    to { opacity: 0 }
+}
+
+@keyframes fade-in {
+    from { opacity: 0 }
+}
+
+@keyframes slide-to-bottom {
+    to { transform: translateY(-10rem); }
+}
+
+@keyframes slide-from-bottom {
+    from { transform: translateY(10rem) }
+}
+
+::view-transition-old(body) {
+    animation: 90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+        250ms cubic-bezier(0.4, 0, 1, 1) both slide-to-bottom;
+}
+
+::view-transition-new(body) {
+    animation: 90ms cubic-bezier(0.4, 0, 1, 1) 90ms both fade-in,
+        250ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-bottom;
 }
 
 .input-text {
@@ -23,6 +66,11 @@
     border: 0.1rem solid var(--color-primary);
 }
 
+.input-text-left {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
 /* dashboard styles */
 .content-container {
     display: flex;
@@ -31,9 +79,11 @@
 }
 
 .sidenav {
+    position: sticky;
     display: flex;
     flex-direction: column;
     padding: 2rem;
+    view-transition-name: sidenav;
 }
 
 .sidenav-logo {
@@ -76,8 +126,8 @@
 }
 
 .dashboard-main {
-    padding: 2rem 2rem 2rem 0;
     flex: 1;
+    overflow-y: auto;
 }
 
 .searchbar {
@@ -87,6 +137,7 @@
     padding: 0.75rem 1rem;
     width: 100%;
     border-radius: 2rem;
+    position: relative;
 }
 
 .searchbar svg {
@@ -109,10 +160,48 @@
     border-color: initial;
 }
 
+.search-results {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: calc(100% + 0.5rem);
+    background-color: var(--color-secondary);
+    padding: 1rem;
+    border-radius: 1.5rem;
+    display: none;
+    max-height: 20rem;
+    overflow-y: auto;
+}
+
+.search-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    font-family: 'Jost', sans-serif;
+    text-decoration: none;
+    color: var(--color-black);
+}
+
+.search-item:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+}
+
 .topbar {
+    position: sticky;
+    background-color: white;
+    top: 0;
+    z-index: 10;
     display: flex;
     justify-content: space-between;
     gap: 1.5rem;
+    padding: 2rem;
+    view-transition-name: topbar;
 }
 
 .topbar-profile {
@@ -124,18 +213,32 @@
     cursor: pointer;
 }
 
-.primary-button,
-.secondary-button {
+.button {
     font-family: 'Jost', sans-serif;
     font-weight: bold;
     border: none;
-    padding: 0.75rem 3rem;
+    padding: 0.75rem 2rem;
     cursor: pointer;
     border-radius: 0.5rem;
+    text-decoration: none;
 }
 
-.primary-button:hover,
-.secondary-button:hover {
+.button-small {
+    font-family: 'Jost', sans-serif;
+    font-weight: 600;
+    border: none;
+    padding: 0.25rem 0.75rem;
+    cursor: pointer;
+    border-radius: 0.25rem;
+    text-decoration: none;
+}
+
+.button-right {
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.button:hover {
     filter: brightness(0.9);
 }
 
@@ -155,4 +258,51 @@
 
 .secondary-button:hover {
     background-color: var(--color-secondary);
+}
+
+.danger-button {
+    color: white;
+    background-color: var(--color-danger);
+}
+
+.danger-button:hover {
+    background-color: var(--color-danger);
+}
+
+.info-button {
+    color: white;
+    background-color: var(--color-info);
+}
+
+.button-group {
+    display: flex;
+}
+
+.badge {
+    font-size: 0.95rem;
+    padding: 0.25rem 0.5rem;
+    font-weight: 600;
+    color: white;
+    border-radius: 0.25rem;
+}
+
+.badge-danger {
+    background-color: var(--color-danger);
+}
+
+.badge-success {
+    background-color: var(--color-success);
+}
+
+.badge-info {
+    background-color: var(--color-info);
+}
+
+.badge-pending {
+    background-color: var(--color-pending);
+}
+
+.badge-secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-black);
 }

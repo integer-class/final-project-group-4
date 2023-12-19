@@ -1,6 +1,11 @@
 <div class="topbar">
     <?php
-    /** @var array $user */
+
+    use Presentation\Http\Helpers\View;
+    use Primitives\Models\User;
+
+    /** @var User $user */
+
     ?>
     <form action="/" method="get" class="searchbar">
         <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -10,10 +15,11 @@
             />
         </svg>
         <input type="text" name="room_name" class="searchbar-input" placeholder="Search Rooms..."/>
+        <div class="search-results"></div>
     </form>
     <div class="dropdown">
         <img
-                class="topbar-profile dropdown-toggle" src="/uploaded_images/user/<?= $user['avatar'] ?>"
+                class="topbar-profile dropdown-toggle" src="/uploaded_images/user/<?= $user->avatar ?>"
                 alt="profile"
                 id="dropdownMenuButton1" data-bs-toggle="dropdown"
                 aria-expanded="false"
@@ -21,12 +27,12 @@
         <ul class="dropdown-menu">
             <li>
                 <span class="dropdown-item disabled">
-                    <strong><?= $user['fullname'] ?></strong>
+                    <strong><?= $user->fullname ?></strong>
                 </span>
             </li>
             <li>
                 <span class="dropdown-item disabled">
-                    <?= $user['email'] ?>
+                    <?= $user->email ?>
                 </span>
             </li>
             <li>
@@ -40,3 +46,46 @@
         </ul>
     </div>
 </div>
+
+<script>
+    $(function () {
+        const searchInput = $('.searchbar-input');
+        const searchResults = $('.search-results');
+
+        let debounce = null;
+        searchInput.on('input', function (e) {
+                clearTimeout(debounce);
+                const query = e.target.value;
+
+                if (query.length === 0) {
+                    searchResults.css('display', 'none');
+                    return;
+                }
+
+                debounce = setTimeout(() => {
+                    $.ajax({
+                        url: '/rooms/search',
+                        method: 'GET',
+                        data: {
+                            query: query
+                        },
+                        success: function (response) {
+                            searchResults.css('display', 'block');
+                            searchResults.innerHTML = '';
+                            response.data.forEach(function (room) {
+                                const searchItem = document.createElement('a');
+                                searchItem.href = `<?= View::route('room') ?>?id=${room.id}`;
+                                searchItem.classList.add('search-item');
+                                searchItem.innerHTML = `
+                                    <span>[${room.code}]: ${room.name}</span>
+                                    <span>${room.floor}th Floor | ${room.capacity} People</span>
+                                `;
+                                searchResults.append(searchItem);
+                            })
+                        }
+                    })
+                }, 250);
+            }
+        )
+    })
+</script>

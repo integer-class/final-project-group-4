@@ -4,7 +4,8 @@ namespace Primitives\Models;
 
 enum ApproverStatus: string
 {
-    case APPROVED = 'APPROVED';
-    case REJECTED = 'REJECTED';
-    case PENDING = 'PENDING';
+    case Approved = 'APPROVED';
+    case Rejected = 'REJECTED';
+    case Pending = 'PENDING';
+    case Unknown = 'UNKNOWN';
 }

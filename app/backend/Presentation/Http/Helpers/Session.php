@@ -3,13 +3,14 @@
 namespace Presentation\Http\Helpers;
 
 use Primitives\Models\RoleName;
+use Primitives\Models\User;
 
 class Session
 {
     const SESSION_STARTED = true;
     const SESSION_NOT_STARTED = false;
     private bool $sessionState = self::SESSION_NOT_STARTED;
-    private static $instance;
+    private static Session $instance;
 
     private function __construct()
     {
@@ -68,14 +69,6 @@ class Session
         }
 
         return FALSE;
-    }
-
-    public function getRole(): RoleName|null
-    {
-        if (!isset($this->user['role'])) {
-            return null;
-        }
-        return $this->user['role'];
     }
 
     public function isSessionStarted(): bool

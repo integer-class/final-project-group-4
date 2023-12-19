@@ -11,10 +11,11 @@ use Presentation\Http\Helpers\Session;
 use Primitives\Exceptions\InvalidPasswordException;
 use Primitives\Exceptions\UserNotFoundException;
 use Primitives\Models\RoleName;
+use Primitives\Models\User;
 
 class AuthController extends Controller
 {
-    public function __construct(private readonly AuthService $auth_service,
+    public function __construct(private readonly AuthService $authService,
                                 private readonly Session     $session)
     {
     }
@@ -23,26 +24,29 @@ class AuthController extends Controller
     public function login(LoginRequest $login_request): void
     {
         try {
-            $user = $this->auth_service->login($login_request->username, $login_request->password);
+            $user = $this->authService->login($login_request->username, $login_request->password);
             $this->session->startSession();
-            $this->session->user = [
-                'id' => $user->id,
-                'fullname' => $user->fullname,
-                'username' => $user->username,
-                'email' => $user->email,
-                'phone' => $user->phone,
-                'avatar' => $user->avatar,
-                'role' => $user->role->name
-            ];
-            switch ($user->role->name) {
+            $this->session->user = new User(
+                id: $user->id,
+                registrationNumber: $user->registrationNumber,
+                fullname: $user->fullname,
+                username: $user->username,
+                password: null,
+                email: $user->email,
+                phone: $user->phone,
+                avatar: $user->avatar,
+                role: $user->role,
+                studyProgram: $user->studyProgram,
+            );
+            switch ($user->role) {
                 case RoleName::Administrator:
                     Http::redirect('/admin/dashboard');
                     break;
-                case RoleName::Lecturer:
-                    Http::redirect('/lecturer/dashboard');
+                case RoleName::Approver:
+                    Http::redirect('/approver/dashboard');
                     break;
                 case RoleName::Student:
-                    Http::redirect('/user/dashboard');
+                    Http::redirect('/student/dashboard');
                     break;
             }
         } catch (InvalidPasswordException $e) {
