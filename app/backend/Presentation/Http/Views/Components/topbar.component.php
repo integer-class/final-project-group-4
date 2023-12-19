@@ -1,7 +1,8 @@
 <div class="topbar">
     <?php
 
-    use Primitives\Models\User as User;
+    use Presentation\Http\Helpers\View;
+    use Primitives\Models\User;
 
     /** @var User $user */
 
@@ -73,7 +74,7 @@
                             searchResults.innerHTML = '';
                             response.data.forEach(function (room) {
                                 const searchItem = document.createElement('a');
-                                searchItem.href = `/room?id=${room.id}`;
+                                searchItem.href = `<?= View::route('room') ?>?id=${room.id}`;
                                 searchItem.classList.add('search-item');
                                 searchItem.innerHTML = `
                                     <span>[${room.code}]: ${room.name}</span>

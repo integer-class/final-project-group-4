@@ -33,7 +33,7 @@ class AdminViewController extends Controller
         $pendingEventsCount = $this->eventService->getPendingEventsCount();
         $approvedEventsCount = $this->eventService->getApprovedEventsCount();
         $rejectedEventsCount = $this->eventService->getRejectedEventsCount();
-        $this->view('admin.dashboard', [
+        $this->view('dashboard', [
             '__layout_title__' => 'Dashboard',
             'user' => $this->session->user,
             'usersCount' => $usersCount,

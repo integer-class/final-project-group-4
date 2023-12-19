@@ -441,11 +441,11 @@ class EventRepository implements IEventRepository
         $userIdField = '';
         $groupUserQuery = '';
         if ($userId != null && $role == RoleName::Student) {
-            $userIdField = 'Event.UserID AS UserID';
+            $userIdField = 'Event.UserID AS UserID,';
             $filterUserQuery = 'AND UserID = :user_id';
             $groupUserQuery = ', Event.UserID';
         } else if ($role != null && $role == RoleName::Approver) {
-            $userIdField = 'EA.UserID AS ApproverID';
+            $userIdField = 'EA.UserID AS ApproverID,';
             $filterUserQuery = 'AND ApproverID = :user_id';
             $groupUserQuery = ', EA.UserID';
         }
@@ -463,7 +463,7 @@ class EventRepository implements IEventRepository
             WITH EventCount AS (
                 SELECT
                     Event.Title AS Title,
-                    {$q['userIdField']},
+                    {$q['userIdField']}
                     SUM(IIF(Status = 'PENDING', 1, 0)) AS PendingCount,
                     SUM(IIF(Status = 'APPROVED', 1, 0)) AS ApprovedCount,
                     SUM(IIF(Status = 'REJECTED', 1, 0)) AS RejectedCount
@@ -485,7 +485,7 @@ class EventRepository implements IEventRepository
             WITH EventCount AS (
                 SELECT
                     Event.Title AS Title,
-                    {$q['userIdField']},
+                    {$q['userIdField']}
                     SUM(IIF(Status = 'PENDING', 1, 0)) AS PendingCount,
                     SUM(IIF(Status = 'APPROVED', 1, 0)) AS ApprovedCount,
                     SUM(IIF(Status = 'REJECTED', 1, 0)) AS RejectedCount
@@ -507,7 +507,7 @@ class EventRepository implements IEventRepository
             WITH EventCount AS (
                 SELECT
                     Event.Title AS Title,
-                    {$q['userIdField']},
+                    {$q['userIdField']}
                     SUM(IIF(Status = 'PENDING', 1, 0)) AS PendingCount,
                     SUM(IIF(Status = 'APPROVED', 1, 0)) AS ApprovedCount,
                     SUM(IIF(Status = 'REJECTED', 1, 0)) AS RejectedCount
