@@ -50,6 +50,8 @@ Please note that this project is just a final project for the 3rd semester, so t
 
 ## Project Milestones and Timeline
 
+![Gantt Chart](./gantt-chart.png)
+
 TBD
 
 ## Project Risks
@@ -62,7 +64,7 @@ TBD
 
 ## Budget
 
-TBD. I don't think we need a budget for this project, since we're not going to buy anything and we're not going to hire anyone. It's just a final project what do you expect.
+![Cost Estimate](./cost-estimate.png)
 
 ## Project Success Criteria
 
