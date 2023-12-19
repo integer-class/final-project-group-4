@@ -18,16 +18,6 @@ VALUES ('Administrator', NULL, 'administrator', 'admin@localhost.com',
         '$2a$12$rMd7.a71S0.tlVGi36cD9ODTEK52iANR2s5w5DgMOxD3LQPBOz5jG',
         '08123456789', 'profile_default_6.png', 'APPROVER');
 
-INSERT INTO [StudyPrograms] (Name)
-VALUES ('Teknik Informatika'),
-       ('Sistem Informasi Bisnis'),
-       ('Pengembangan Piranti Lunak Situs');
-
-INSERT INTO [User_StudyPrograms] (UserId, StudyProgramId)
-VALUES (4, 1),
-       (5, 2),
-       (6, 3);
-
 INSERT INTO [Room] (Code, Name, Floor, Capacity, Side, Image)
 VALUES ('RT01', 'Ruang Teori 1', 5, 60, 'west', 'rt1.jpg'),
        ('RT02', 'Ruang Teori 2', 5, 30, 'west', 'rt2.jpg'),

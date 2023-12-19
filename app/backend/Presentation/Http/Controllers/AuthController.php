@@ -36,7 +36,6 @@ class AuthController extends Controller
                 phone: $user->phone,
                 avatar: $user->avatar,
                 role: $user->role,
-                studyProgram: $user->studyProgram,
             );
             switch ($user->role) {
                 case RoleName::Administrator:

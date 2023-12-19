@@ -14,7 +14,6 @@ class User
         public string        $phone,
         public string        $avatar,
         public RoleName      $role,
-        public ?StudyProgram $studyProgram
     )
     {
     }
@@ -36,7 +35,6 @@ class User
             phone: $user['Phone'],
             avatar: $user['Avatar'],
             role: RoleName::from($user['Role']),
-            studyProgram: isset($user['StudyProgram']) ? new StudyProgram($user['StudyProgram']) : null,
         );
     }
 
@@ -73,10 +71,6 @@ class User
 
         if (isset($user['role']) && $user['role'] !== '') {
             $this->role = RoleName::from($user['role']);
-        }
-
-        if (isset($user['studyProgram']) && $user['studyProgram'] !== '') {
-            $this->studyProgram = new StudyProgram($user['studyProgram']);
         }
     }
 }

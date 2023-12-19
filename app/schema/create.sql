@@ -17,29 +17,6 @@ CREATE TABLE
 );
 
 CREATE TABLE
-    [dbo].[StudyPrograms]
-(
-    [Id]        INT          NOT NULL IDENTITY (1, 1),
-    [Name]      VARCHAR(255) NOT NULL,
-    [CreatedAt] DATETIME     NOT NULL DEFAULT GETDATE(),
-    [UpdatedAt] DATETIME     NOT NULL DEFAULT GETDATE(),
-    [DeletedAt] DATETIME     NULL,
-    CONSTRAINT [PK_StudyPrograms ] PRIMARY KEY ([Id])
-);
-
-CREATE TABLE
-    [dbo].[User_StudyPrograms]
-(
-    [Id]             INT      NOT NULL IDENTITY (1, 1),
-    [UserID]         INT      NOT NULL,
-    [StudyProgramID] INT      NOT NULL,
-    [CreatedAt]      DATETIME NOT NULL DEFAULT GETDATE(),
-    [UpdatedAt]      DATETIME NOT NULL DEFAULT GETDATE(),
-    [DeletedAt]      DATETIME NULL,
-    CONSTRAINT [PK_User_StudyPrograms] PRIMARY KEY ([Id])
-);
-
-CREATE TABLE
     [dbo].[Room]
 (
     [Id]        INT          NOT NULL IDENTITY (1, 1),
@@ -97,16 +74,6 @@ CREATE TABLE
     [DeletedAt]    DATETIME     NULL,
     CONSTRAINT [PK_Event_Approver] PRIMARY KEY ([Id])
 );
-
-ALTER TABLE
-    [dbo].[User_StudyPrograms]
-    ADD CONSTRAINT [FK_User_StudyPrograms_User]
-        FOREIGN KEY ([UserID]) REFERENCES [dbo].[User] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE;
-
-ALTER TABLE
-    [dbo].[User_StudyPrograms]
-    ADD CONSTRAINT [FK_User_StudyPrograms_StudyPrograms]
-        FOREIGN KEY ([StudyProgramID]) REFERENCES [dbo].[StudyPrograms] ([Id]) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE
     [dbo].[Event]

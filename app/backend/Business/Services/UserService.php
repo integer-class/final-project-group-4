@@ -4,9 +4,7 @@ namespace Business\Services;
 
 use Exception;
 use Presentation\Http\Helpers\Storage;
-use Primitives\Models\Role;
 use Primitives\Models\RoleName;
-use Primitives\Models\StudyProgram;
 use Primitives\Models\User;
 use RepositoryInterfaces\IUserRepository;
 
@@ -53,7 +51,6 @@ class UserService
             phone: $raw_user['phone'],
             avatar: $avatar,
             role: RoleName::from($raw_user['role']),
-            studyProgram: new StudyProgram($raw_user['study_program'] ?? ''),
         );
         return $this->userRepository->create($user);
     }
@@ -74,7 +71,6 @@ class UserService
             'phone' => $raw_user['phone'],
             'avatar' => $avatar,
             'role' => RoleName::from($raw_user['role']),
-            'study_program' => new StudyProgram($raw_user['study_program'] ?? ''),
         ]);
         return $this->userRepository->update($user);
     }

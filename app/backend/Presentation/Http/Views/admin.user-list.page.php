@@ -35,7 +35,6 @@ use Primitives\Models\User;
             <th scope="col" class="name-row">Email</th>
             <th scope="col">NIM</th>
             <th scope="col">Fullname</th>
-            <th scope="col">Study Program</th>
             <th scope="col">Role</th>
             <th scope="col" class="text-center">Action</th>
         </tr>
@@ -46,7 +45,6 @@ use Primitives\Models\User;
                 <td><?= $u->email ?></td>
                 <td><?= $u->registrationNumber ?></td>
                 <td><?= $u->fullname ?></td>
-                <td><?= $u->studyProgram?->name ?? '-' ?></td>
                 <td><?= $u->role->name ?></td>
                 <td class="text-center d-flex justify-content-center" style="gap: 0.5rem">
                     <?php if ($user->id !== $u->id) { ?>

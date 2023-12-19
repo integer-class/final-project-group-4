@@ -71,7 +71,6 @@ class Event
                 phone: $data['PicPhone'],
                 avatar: $data['PicAvatar'],
                 role: RoleName::from($data['PicRole']),
-                studyProgram: null,
             ),
             approvers: !$hasApprover ? [] : array_map(fn($approver) => new Approval(
                 user: new User(
@@ -84,7 +83,6 @@ class Event
                     phone: $approver['ApproverPhone'],
                     avatar: $approver['ApproverAvatar'],
                     role: RoleName::from($approver['ApproverRole']),
-                    studyProgram: null
                 ),
                 status: ApprovalStatus::from($approver['Status']),
                 previousApproverId: $approver['BeforeUserId'],

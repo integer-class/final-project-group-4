@@ -23,12 +23,9 @@ class UserRepository implements IUserRepository
                 Email,
                 Phone,
                 Avatar,
-                Role,
-                SP.Name as StudyProgram
+                Role
             FROM
                  dbo.[User]
-            LEFT JOIN dbo.User_StudyPrograms USP on [User].ID = USP.UserID
-            LEFT JOIN dbo.StudyPrograms SP on USP.StudyProgramID = SP.ID
         ");
 
         return array_map(fn($user) => User::fromArray($user), $users);
@@ -49,8 +46,6 @@ class UserRepository implements IUserRepository
                 Role
             FROM
                  dbo.[User]
-            LEFT JOIN dbo.User_StudyPrograms USP on [User].ID = USP.UserID
-            LEFT JOIN dbo.StudyPrograms SP on USP.StudyProgramID = SP.ID
             WHERE [User].Id = ?
         ", [$id])[0];
 
