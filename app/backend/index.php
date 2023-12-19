@@ -73,7 +73,7 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     // view controllers
     $appController = new AppController($session);
     $adminViewController = new AdminViewController($session, $userService, $roomService, $eventService);
-    $studentViewController = new StudentViewController($session, $roomService, $eventService);
+    $studentViewController = new StudentViewController($session, $roomService, $eventService, $userService);
     $approverViewController = new ApproverViewController($session, $roomService, $eventService, $userService);
 
     $httpPresenter = new HttpPresenter();

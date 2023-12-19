@@ -61,10 +61,10 @@ $prefix = $user->role == RoleName::Administrator ? 'admin' : 'approver';
                     <?= $event->description ?>
                 </p>
             </div>
-            <?php if ($user->role == RoleName::Administrator): ?>
-                <!-- Dynamic Form to add approver using a dropdown select -->
-                <div class="event-approver">
-                    <label for="select-approver" class="event-detail-label">Approver</label>
+            <!-- Dynamic Form to add approver using a dropdown select -->
+            <div class="event-approver">
+                <label for="select-approver" class="event-detail-label">Approver</label>
+                <?php if ($user->role == RoleName::Administrator): ?>
                     <?php if (count($event->approvers) <= 0): ?>
                         <div class="event-approver-input">
                             <select name="approver" id="select-approver" class="input-text">
@@ -79,17 +79,35 @@ $prefix = $user->role == RoleName::Administrator ? 'admin' : 'approver';
                         </div>
                         <small>This will be requested in the order they're added</small>
                     <?php endif; ?>
-                    <div class="approver-list" id="approver-list">
-                        <?php if (count($event->approvers) > 0): ?>
-                            <?php foreach ($event->approvers as $approver): ?>
+                <?php endif; ?>
+                <div class="approver-list" id="approver-list">
+                    <?php if (count($event->approvers) > 0): ?>
+                        <?php foreach ($event->approvers as $approver): ?>
+                            <?php
+                            $backgroundColor = "";
+                            switch ($approver->status) {
+                                case ApproverStatus::Approved:
+                                    $backgroundColor = "#22c55e";
+                                    break;
+                                case ApproverStatus::Rejected:
+                                    $backgroundColor = "#dc2626";
+                                    break;
+                                case ApproverStatus::Pending:
+                                    $backgroundColor = "#f97316";
+                                    break;
+                            }
+                            ?>
+                            <div class="approver-item-wrapper">
                                 <div class="approver-item">
                                     <span><?= $approver->user->fullname ?></span>
+                                    <span style="background-color: <?= $backgroundColor ?>"><?= $approver->status->value ?></span>
                                 </div>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </div>
+                                <p><?= $approver->reason ?></p>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                 </div>
-            <?php endif; ?>
+            </div>
 
             <?php if (count($event->approvers) <= 0 ||
                 // the user is an approver and the event is pending for their approval

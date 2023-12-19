@@ -88,6 +88,7 @@ class Event
                 status: ApproverStatus::from($approver['Status']),
                 previousApproverId: $approver['BeforeUserId'],
                 nextApproverId: $approver['AfterUserId'],
+                reason: $approver['Reason'],
             ), $approvers),
         );
     }

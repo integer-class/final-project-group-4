@@ -1,5 +1,6 @@
 <?php
 
+use Presentation\Http\Helpers\View;
 use Primitives\Models\Event;
 
 /** @var Event[] $events */
@@ -44,7 +45,12 @@ use Primitives\Models\Event;
                 <td><?= $event->startsAt->format('Y-m-d') ?></td>
                 <td><?= $event->endsAt->format('Y-m-d') ?></td>
                 <td class="text-center d-flex justify-content-center">
-                    <a href="/approver/event?id=<?= $event->id ?>" class="button button-edit">Detail</a>
+                    <a
+                            href="<?= View::route('event') ?>?id=<?= $event->id ?>"
+                            class="button button-edit"
+                    >
+                        Detail
+                    </a>
                 </td>
             </tr>
         <?php endforeach; ?>

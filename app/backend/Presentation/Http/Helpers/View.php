@@ -2,6 +2,8 @@
 
 namespace Presentation\Http\Helpers;
 
+use Primitives\Models\RoleName;
+
 class View
 {
     /**
@@ -39,5 +41,26 @@ class View
         $requestPath = implode('/', $routeSegments);
         error_log($requestPath);
         return $requestPath === $path ? 'active' : '';
+    }
+
+    public static function route(string $path): string
+    {
+        $session = Session::getInstance();
+        $user = $session->user;
+        $prefix = "";
+
+        switch ($user->role) {
+            case RoleName::Administrator:
+                $prefix = "/admin";
+                break;
+            case RoleName::Approver:
+                $prefix = "/approver";
+                break;
+            case RoleName::Student:
+                $prefix = "/student";
+                break;
+        }
+
+        return "{$prefix}/{$path}";
     }
 }

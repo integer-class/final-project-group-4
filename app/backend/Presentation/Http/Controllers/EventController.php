@@ -85,9 +85,9 @@ class EventController extends Controller
         try {
             $session = Session::getInstance();
             $id = Http::query('id');
-            $approverId = $session->user['id'];
+            $approverId = $session->user->id;
             $event = $this->eventService->reject($id, $approverId, $request->reason);
-            $_SESSION['success_message'] = "The event {$event->title} has been approved successfully";
+            $_SESSION['success_message'] = "The event {$event->title} has been rejected successfully";
             Http::redirect("/approver/schedule");
         } catch (\Exception $e) {
             $_SESSION['error_message'] = $e->getMessage();

@@ -71,6 +71,12 @@ class EventService
     public function getAllEventsNeedingApprovalFromCurrentUser(): array
     {
         $session = Session::getInstance();
-        return $this->eventRepository->getAllEventsNeedingApprovalFrom($session->user['id']);
+        return $this->eventRepository->getAllEventsNeedingApprovalFrom($session->user->id);
+    }
+
+    public function getAllEventsFromCurrentUser(): array
+    {
+        $session = Session::getInstance();
+        return $this->eventRepository->getAllEventsFrom($session->user->id);
     }
 }

@@ -28,7 +28,7 @@ class ApproverViewController extends Controller
     #[Authenticated(RoleName::Approver)]
     public function dashboard(): void
     {
-        $this->view('dashboard', [
+        $this->view('approver.dashboard', [
             '__layout_title__' => 'Dashboard',
             'user' => $this->session->user
         ]);
@@ -78,7 +78,7 @@ class ApproverViewController extends Controller
 
     #[Route('/approver/event', 'GET')]
     #[WithSession]
-    #[Authenticated(RoleName::Approver, RoleName::Administrator)]
+    #[Authenticated(RoleName::Approver)]
     public function eventDetail(): void
     {
         $id = Http::query('id');

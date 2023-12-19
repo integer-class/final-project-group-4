@@ -118,4 +118,20 @@ class AdminViewController extends Controller
             'user' => $this->session->user,
         ]);
     }
+
+    #[Route('/admin/event', 'GET')]
+    #[WithSession]
+    #[Authenticated(RoleName::Administrator)]
+    public function eventDetail(): void
+    {
+        $id = Http::query('id');
+        $event = $this->eventService->getEventById($id);
+        $approvers = $this->userService->getAllApprovers();
+        $this->view('event-detail', [
+            '__layout_title__' => 'Schedule',
+            'user' => $this->session->user,
+            'event' => $event,
+            'approvers' => $approvers
+        ]);
+    }
 }

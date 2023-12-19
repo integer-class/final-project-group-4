@@ -18,6 +18,7 @@ class StudentViewController extends Controller
         private readonly Session      $session,
         private readonly RoomService  $roomService,
         private readonly EventService $eventService,
+        private readonly UserService  $userService,
     )
     {
     }
@@ -27,7 +28,7 @@ class StudentViewController extends Controller
     #[Authenticated(RoleName::Student)]
     public function dashboard(): void
     {
-        $this->view('dashboard', [
+        $this->view('student.dashboard', [
             '__layout_title__' => 'Dashboard',
             'user' => $this->session->user
         ]);
@@ -81,9 +82,27 @@ class StudentViewController extends Controller
     #[Authenticated(RoleName::Student)]
     public function schedule(): void
     {
-        $this->view('admin.schedule', [
+        $events = $this->eventService->getAllEventsFromCurrentUser();
+        $this->view('schedule', [
             '__layout_title__' => 'Schedule',
-            'user' => $this->session->user
+            'user' => $this->session->user,
+            'events' => $events
+        ]);
+    }
+
+    #[Route('/student/event', 'GET')]
+    #[WithSession]
+    #[Authenticated(RoleName::Student)]
+    public function eventDetail(): void
+    {
+        $id = Http::query('id');
+        $event = $this->eventService->getEventById($id);
+        $approvers = $this->userService->getAllApprovers();
+        $this->view('event-detail', [
+            '__layout_title__' => 'Schedule',
+            'user' => $this->session->user,
+            'event' => $event,
+            'approvers' => $approvers
         ]);
     }
 }

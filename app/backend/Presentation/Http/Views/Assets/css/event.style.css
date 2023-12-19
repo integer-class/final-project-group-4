@@ -133,10 +133,30 @@
     gap: 0.5rem;
 }
 
+.approver-item-wrapper p {
+    margin: 0;
+    color: #64748b;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 1rem;
+    margin-top: 0.25rem;
+}
+
 .approver-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
+}
+
+.approver-item span {
+    font-size: 1.15rem;
+}
+
+.approver-item span:last-child {
+    font-size: 0.95rem;
+    padding: 0.05rem 0.5rem;
+    font-weight: 600;
+    color: white;
+    border-radius: 0.25rem;
 }
 
 .form-label {
