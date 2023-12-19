@@ -60,6 +60,11 @@ body {
     border: 0.1rem solid var(--color-primary);
 }
 
+.input-text-left {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
 /* dashboard styles */
 .content-container {
     display: flex;
@@ -222,6 +227,11 @@ body {
     text-decoration: none;
 }
 
+.button-right {
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
 .button:hover {
     filter: brightness(0.9);
 }
@@ -256,4 +266,8 @@ body {
 .info-button {
     color: white;
     background-color: var(--color-info);
+}
+
+.button-group {
+    display: flex;
 }
