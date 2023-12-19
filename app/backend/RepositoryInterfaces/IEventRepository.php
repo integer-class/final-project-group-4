@@ -3,6 +3,7 @@
 namespace RepositoryInterfaces;
 
 use Primitives\Models\Event;
+use Primitives\Models\RoleName;
 
 interface IEventRepository
 {
@@ -16,7 +17,7 @@ interface IEventRepository
     public function approve(int $id, int $approverId): Event;
     public function reject(int $id, int $approverId, string $reason): Event;
     public function delete(int $id): void;
-    public function getPendingEventsCount(): int;
-    public function getApprovedEventsCount(): int;
-    public function getRejectedEventsCount(): int;
+    public function getPendingEventsCount(?int $userId, ?RoleName $role): int;
+    public function getApprovedEventsCount(?int $userId, ?RoleName $role): int;
+    public function getRejectedEventsCount(?int $userId, ?RoleName $role): int;
 }

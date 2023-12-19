@@ -28,9 +28,17 @@ class StudentViewController extends Controller
     #[Authenticated(RoleName::Student)]
     public function dashboard(): void
     {
-        $this->view('student.dashboard', [
+        $roomsCount = $this->roomService->getRoomsCount();
+        $pendingEventsCount = $this->eventService->getPendingEventsCount();
+        $approvedEventsCount = $this->eventService->getApprovedEventsCount();
+        $rejectedEventsCount = $this->eventService->getRejectedEventsCount();
+        $this->view('dashboard', [
             '__layout_title__' => 'Dashboard',
-            'user' => $this->session->user
+            'user' => $this->session->user,
+            'roomsCount' => $roomsCount,
+            'pendingEventsCount' => $pendingEventsCount,
+            'approvedEventsCount' => $approvedEventsCount,
+            'rejectedEventsCount' => $rejectedEventsCount
         ]);
     }
 

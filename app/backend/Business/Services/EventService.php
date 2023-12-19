@@ -4,13 +4,16 @@ namespace Business\Services;
 
 use Presentation\Http\Helpers\Session;
 use Primitives\Models\Event;
+use Primitives\Models\RoleName;
 use Repository\EventRepository;
 
 class EventService
 {
     public function __construct(
+        private readonly Session         $session,
         private readonly EventRepository $eventRepository,
-    ) {
+    )
+    {
     }
 
     public function getAllEvents(): array
@@ -48,35 +51,40 @@ class EventService
         return $this->eventRepository->reject($id, $approverId, $reason);
     }
 
-    public function deleteEvent(int $id): array
-    {
-        $this->eventRepository->delete($id);
-    }
-
     public function getPendingEventsCount(): int
     {
+        $role = $this->session->user->role;
+        if ($role != RoleName::Administrator) {
+            return $this->eventRepository->getPendingEventsCount($this->session->user->id, $this->session->user->role);
+        }
         return $this->eventRepository->getPendingEventsCount();
     }
 
     public function getApprovedEventsCount(): int
     {
+        $role = $this->session->user->role;
+        if ($role != RoleName::Administrator) {
+            return $this->eventRepository->getApprovedEventsCount($this->session->user->id, $this->session->user->role);
+        }
         return $this->eventRepository->getApprovedEventsCount();
     }
 
     public function getRejectedEventsCount(): int
     {
+        $role = $this->session->user->role;
+        if ($role != RoleName::Administrator) {
+            return $this->eventRepository->getRejectedEventsCount($this->session->user->id, $this->session->user->role);
+        }
         return $this->eventRepository->getRejectedEventsCount();
     }
 
     public function getAllEventsNeedingApprovalFromCurrentUser(): array
     {
-        $session = Session::getInstance();
-        return $this->eventRepository->getAllEventsNeedingApprovalFrom($session->user->id);
+        return $this->eventRepository->getAllEventsNeedingApprovalFrom($this->session->user->id);
     }
 
     public function getAllEventsFromCurrentUser(): array
     {
-        $session = Session::getInstance();
-        return $this->eventRepository->getAllEventsFrom($session->user->id);
+        return $this->eventRepository->getAllEventsFrom($this->session->user->id);
     }
 }

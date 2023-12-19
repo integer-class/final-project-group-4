@@ -6,6 +6,7 @@ use DateTime;
 use Exception;
 use Primitives\Models\ApproverStatus;
 use Primitives\Models\Event;
+use Primitives\Models\RoleName;
 use RepositoryInterfaces\IEventRepository;
 
 class EventRepository implements IEventRepository
@@ -414,69 +415,90 @@ class EventRepository implements IEventRepository
         return $this->getById($id);
     }
 
-    public function getPendingEventsCount(): int
+    private function resolveUserFilterQuery(?int $userId = null, ?RoleName $role = RoleName::Administrator): array
     {
-        $events = $this->client->executeQuery("
-        SELECT
-            Event.Title AS Title,
-            SUM(IIF(Status = 'PENDING', 1, 0)) AS PendingCount,
-            SUM(IIF(Status = 'APPROVED', 1, 0)) AS ApprovedCount,
-            SUM(IIF(Status = 'REJECTED', 1, 0)) AS RejectedCount
-        FROM
-            dbo.[Event]
-        LEFT JOIN dbo.Event_Approver EA on Event.Id = EA.EventID
-        GROUP BY
-            Event.Id, Event.Title
-        ");
-
-        $pendingEvents = array_filter($events, function ($event) {
-            return $event['PendingCount'] > 0;
-        });
-
-        return count($pendingEvents);
+        $filterUserQuery = '';
+        $userIdField = '';
+        $groupUserQuery = '';
+        if ($userId != null && $role == RoleName::Student) {
+            $userIdField = 'Event.UserID AS UserID';
+            $filterUserQuery = 'AND UserID = :user_id';
+            $groupUserQuery = ', Event.UserID';
+        } else if ($role != null && $role == RoleName::Approver) {
+            $userIdField = 'EA.UserID AS ApproverID';
+            $filterUserQuery = 'AND ApproverID = :user_id';
+            $groupUserQuery = ', EA.UserID';
+        }
+        return [
+            'filterUserQuery' => $filterUserQuery,
+            'userIdField' => $userIdField,
+            'groupUserQuery' => $groupUserQuery
+        ];
     }
 
-    public function getApprovedEventsCount(): int
+    public function getPendingEventsCount(?int $userId = null, ?RoleName $role = RoleName::Administrator): int
     {
-        $events = $this->client->executeQuery("
-        SELECT
-            Event.Title AS Title,
-            SUM(IIF(Status = 'PENDING', 1, 0)) AS PendingCount,
-            SUM(IIF(Status = 'APPROVED', 1, 0)) AS ApprovedCount,
-            SUM(IIF(Status = 'REJECTED', 1, 0)) AS RejectedCount
-        FROM
-            dbo.[Event]
-        LEFT JOIN dbo.Event_Approver EA on Event.Id = EA.EventID
-        GROUP BY
-            Event.Id, Event.Title
-        ");
-
-        $approvedEvents = array_filter($events, function ($event) {
-            return $event['ApprovedCount'] > 0 && $event['PendingCount'] === 0 && $event['RejectedCount'] === 0;
-        });
-
-        return count($approvedEvents);
+        $q = $this->resolveUserFilterQuery($userId, $role);
+        return $this->client->executeQuery("
+            WITH EventCount AS (
+                SELECT
+                    Event.Title AS Title,
+                    {$q['userIdField']},
+                    SUM(IIF(Status = 'PENDING', 1, 0)) AS PendingCount,
+                    SUM(IIF(Status = 'APPROVED', 1, 0)) AS ApprovedCount,
+                    SUM(IIF(Status = 'REJECTED', 1, 0)) AS RejectedCount
+                FROM
+                    dbo.[Event]
+                LEFT JOIN dbo.Event_Approver EA on Event.Id = EA.EventID
+                GROUP BY Event.Id, Event.Title {$q['groupUserQuery']}
+            )
+            SELECT COUNT(Title) as Count
+            FROM EventCount
+            WHERE PendingCount > 0 {$q['filterUserQuery']}
+        ", $userId != null ? ['user_id' => $userId] : [])[0]['Count'];
     }
 
-    public function getRejectedEventsCount(): int
+    public function getApprovedEventsCount(?int $userId = null, ?RoleName $role = RoleName::Administrator): int
     {
-        $events = $this->client->executeQuery("
-        SELECT
-            Event.Title AS Title,
-            SUM(IIF(Status = 'PENDING', 1, 0)) AS PendingCount,
-            SUM(IIF(Status = 'APPROVED', 1, 0)) AS ApprovedCount,
-            SUM(IIF(Status = 'REJECTED', 1, 0)) AS RejectedCount
-        FROM
-            dbo.[Event]
-        LEFT JOIN dbo.Event_Approver EA on Event.Id = EA.EventID
-        GROUP BY
-            Event.Id, Event.Title
-        ");
+        $q = $this->resolveUserFilterQuery($userId, $role);
+        return $this->client->executeQuery("
+            WITH EventCount AS (
+                SELECT
+                    Event.Title AS Title,
+                    {$q['userIdField']},
+                    SUM(IIF(Status = 'PENDING', 1, 0)) AS PendingCount,
+                    SUM(IIF(Status = 'APPROVED', 1, 0)) AS ApprovedCount,
+                    SUM(IIF(Status = 'REJECTED', 1, 0)) AS RejectedCount
+                FROM
+                    dbo.[Event]
+                LEFT JOIN dbo.Event_Approver EA on Event.Id = EA.EventID
+                GROUP BY Event.Id, Event.Title {$q['groupUserQuery']}
+            )
+            SELECT COUNT(Title) as Count
+            FROM EventCount
+            WHERE ApprovedCount > 0 AND PendingCount = 0 AND RejectedCount = 0 {$q['filterUserQuery']}
+        ", $userId != null ? ['user_id' => $userId] : [])[0]['Count'];
+    }
 
-        $rejectedEvents = array_filter($events, function ($event) {
-            return $event['RejectedCount'] > 0;
-        });
-
-        return count($rejectedEvents);
+    public function getRejectedEventsCount(?int $userId = null, ?RoleName $role = RoleName::Administrator): int
+    {
+        $q = $this->resolveUserFilterQuery($userId, $role);
+        return $this->client->executeQuery("
+            WITH EventCount AS (
+                SELECT
+                    Event.Title AS Title,
+                    {$q['userIdField']},
+                    SUM(IIF(Status = 'PENDING', 1, 0)) AS PendingCount,
+                    SUM(IIF(Status = 'APPROVED', 1, 0)) AS ApprovedCount,
+                    SUM(IIF(Status = 'REJECTED', 1, 0)) AS RejectedCount
+                FROM
+                    dbo.[Event]
+                LEFT JOIN dbo.Event_Approver EA on Event.Id = EA.EventID
+                GROUP BY Event.Id, Event.Title {$q['groupUserQuery']}
+            )
+            SELECT COUNT(Title) as Count
+            FROM EventCount
+            WHERE RejectedCount > 0 {$q['filterUserQuery']}
+        ", $userId != null ? ['user_id' => $userId] : [])[0]['Count'];
     }
 }

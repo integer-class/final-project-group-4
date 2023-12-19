@@ -83,9 +83,9 @@ CREATE TABLE
 (
     [Id]           INT          NOT NULL IDENTITY (1, 1),
     [EventID]      INT          NOT NULL,
+    [UserID]       INT          NOT NULL,
     -- we use this to track who comes before and after this user in the approval process
     -- if it's null, it means this is the first or last approver
-    [UserID]       INT          NOT NULL,
     [BeforeUserID] INT          NULL,
     [AfterUserID]  INT          NULL,
     -- PENDING, APPROVED, REJECTED

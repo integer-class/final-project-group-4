@@ -62,7 +62,7 @@ if (!isset($_ENV["APP_HAS_INITIALISED"])) {
     $authService = new AuthService($userRepository);
     $userService = new UserService($userRepository);
     $roomService = new RoomService($roomRepository);
-    $eventService = new EventService($eventRepository);
+    $eventService = new EventService($session, $eventRepository);
 
     // controllers
     $userController = new UserController($userService);

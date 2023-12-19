@@ -11,7 +11,6 @@ class Session
     const SESSION_NOT_STARTED = false;
     private bool $sessionState = self::SESSION_NOT_STARTED;
     private static Session $instance;
-    private ?User $user = null;
 
     private function __construct()
     {
