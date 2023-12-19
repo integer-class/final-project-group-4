@@ -55,25 +55,25 @@ Please note that this project is just a final project for the 3rd semester, so t
 ### Milestone: Project Plan Finalized
 This milestone indicates the completion of all planning activities, including the development of the project plan, work breakdown structure, task dependencies, resource management plan, schedule, risk assessment, and budget.
 
-### Sub-Milestone: Work Breakdown Structure (WBS) Created
+#### Sub-Milestone: Work Breakdown Structure (WBS) Created
 This marks the completion of breaking down the project into smaller, manageable components to facilitate planning and control.
 
-### Sub-Milestone: Project Schedule Created
+#### Sub-Milestone: Project Schedule Created
 This marks the completion of developing a detailed timeline for project activities and milestones.
 
-### Sub-Milestone: Project Budget Finalized
+#### Sub-Milestone: Project Budget Finalized
 This marks the completion of estimating and documenting the project budget, including costs associated with resources, materials, and other expenses.
 
 ### Milestone: Completion of System Development and Readiness for Testing
 This milestone represents the completion of all development activities, including the user interface design, database schema creation, and functional development. It indicates that the system is ready to undergo testing processes before deployment. It's important to emphasize that this milestone marks the completion of development and the transition to the testing phase.
 
-### Sub-Milestone: User Interface Design and Development Completed
+#### Sub-Milestone: User Interface Design and Development Completed
 This marks the completion of the user interface design and its successful implementation.
 
-### Sub-Milestone: Database Schema Created and Implemented
+#### Sub-Milestone: Database Schema Created and Implemented
 This marks the completion of creating and implementing the database schema for the system.
 
-### Sub-Milestone: Core Functionality Developed
+#### Sub-Milestone: Core Functionality Developed
 This marks the completion of developing essential functionalities such as user registration, room listing, check-in/check-out processes, and room availability tracking.
 
 ## Project Risks
