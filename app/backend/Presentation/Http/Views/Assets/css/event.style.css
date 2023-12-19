@@ -151,14 +151,6 @@
     font-size: 1.15rem;
 }
 
-.approver-item span:last-child {
-    font-size: 0.95rem;
-    padding: 0.05rem 0.5rem;
-    font-weight: 600;
-    color: white;
-    border-radius: 0.25rem;
-}
-
 .form-label {
     font-family: 'Jost', sans-serif;
     font-size: 1.25rem;

@@ -81,6 +81,7 @@ class EventRepository implements IEventRepository
             Description,
             StartsAt,
             EndsAt,
+            Reason,
             PIC.Id                 as PicId,
             PIC.FullName           as PicFullName,
             PIC.RegistrationNumber as PicRegistrationNumber,
@@ -114,8 +115,8 @@ class EventRepository implements IEventRepository
              LEFT JOIN dbo.[User] BU on EA.BeforeUserID = BU.Id
              LEFT JOIN dbo.[User] AU on EA.AfterUserID = AU.Id
              LEFT JOIN dbo.[Room] R on Event.RoomID = R.Id
-        WHERE EA.UserID = :user_id AND EA.Status = :status
-        ', ['user_id' => $userId, 'status' => ApproverStatus::Pending->value]);
+        WHERE EA.UserID = :user_id
+        ', ['user_id' => $userId]);
 
         // group by event id before mapping to event object
         $events = array_reduce($events, function ($carry, $event) {

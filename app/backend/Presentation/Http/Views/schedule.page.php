@@ -1,9 +1,13 @@
 <?php
 
 use Presentation\Http\Helpers\View;
+use Primitives\Models\ApproverStatus;
 use Primitives\Models\Event;
+use Primitives\Models\RoleName;
+use Primitives\Models\User;
 
 /** @var Event[] $events */
+/** @var User $user */
 ?>
 
 <div class="container mt-2">
@@ -34,16 +38,41 @@ use Primitives\Models\Event;
             <th scope="col">Description</th>
             <th scope="col">Starts At</th>
             <th scope="col">Ends At</th>
+            <?php if ($user->role !== RoleName::Student): ?>
+                <th scope="col">Status</th>
+            <?php endif; ?>
             <th scope="col" class="text-center">Action</th>
         </tr>
         </thead>
         <tbody>
         <?php foreach ($events as $event): ?>
+
             <tr>
                 <td class="text-truncate" style="max-width: 10rem"><?= $event->title ?></td>
                 <td class="text-truncate" style="max-width: 12rem"><?= $event->description ?></td>
                 <td><?= $event->startsAt->format('Y-m-d') ?></td>
                 <td><?= $event->endsAt->format('Y-m-d') ?></td>
+                <?php if ($user->role !== RoleName::Student): ?>
+                    <?php
+                    $status = $event->getStatus($user->id);
+                    $badgeColor = "";
+                    switch ($status) {
+                        case ApproverStatus::Approved:
+                            $badgeColor = "badge-success";
+                            break;
+                        case ApproverStatus::Rejected:
+                            $badgeColor = "badge-danger";
+                            break;
+                        case ApproverStatus::Pending:
+                            $badgeColor = "badge-pending";
+                            break;
+                        default:
+                            $badgeColor = "badge-secondary";
+                            break;
+                    }
+                    ?>
+                    <td><span class="badge <?= $badgeColor ?>"><?= $status->value ?></span></td>
+                <?php endif; ?>
                 <td class="text-center d-flex justify-content-center">
                     <a
                             href="<?= View::route('event') ?>?id=<?= $event->id ?>"

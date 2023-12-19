@@ -3,8 +3,10 @@
     --color-secondary: #EFEFEF;
     --color-white: #FFFFFF;
     --color-black: #020617;
-    --color-danger: #FF0000;
-    --color-info: #00A3FF;
+    --color-danger: #dc2626;
+    --color-info: #0ea5e9;
+    --color-success: #22c55e;
+    --color-pending: #f97316;
 }
 
 body {
@@ -270,4 +272,33 @@ body {
 
 .button-group {
     display: flex;
+}
+
+.badge {
+    font-size: 0.95rem;
+    padding: 0.25rem 0.5rem;
+    font-weight: 600;
+    color: white;
+    border-radius: 0.25rem;
+}
+
+.badge-danger {
+    background-color: var(--color-danger);
+}
+
+.badge-success {
+    background-color: var(--color-success);
+}
+
+.badge-info {
+    background-color: var(--color-info);
+}
+
+.badge-pending {
+    background-color: var(--color-pending);
+}
+
+.badge-secondary {
+    background-color: var(--color-secondary);
+    color: var(--color-black);
 }

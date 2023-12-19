@@ -93,4 +93,13 @@ class Event
         );
     }
 
+    public function getStatus(int $id): ApproverStatus
+    {
+        foreach ($this->approvers as $approver) {
+            if ($approver->user->id == $id) {
+                return $approver->status;
+            }
+        }
+        return ApproverStatus::Unknown;
+    }
 }

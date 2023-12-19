@@ -1,5 +1,6 @@
 <?php
 
+use Presentation\Http\Helpers\View;
 use Primitives\Models\ApproverStatus;
 use Primitives\Models\Event;
 use Primitives\Models\RoleName;
@@ -9,14 +10,13 @@ use Primitives\Models\User;
 /** @var User[] $approvers */
 /** @var User $user */
 
-$prefix = $user->role == RoleName::Administrator ? 'admin' : 'approver';
 ?>
 <div class="container mx-auto form-container">
     <div class="cover-image-container">
         <img class="cover-image" src="/uploaded_images/room/<?= $event->room->image ?>"
              alt="<?= $event->room->name ?>"/>
         <div class="white-shadow"></div>
-        <a class="back-button" href="/<?= $prefix ?>/schedule">
+        <a class="back-button" href="<?= View::route('schedule') ?>">
             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="material-symbols:arrow-back">
                     <path
@@ -84,23 +84,24 @@ $prefix = $user->role == RoleName::Administrator ? 'admin' : 'approver';
                     <?php if (count($event->approvers) > 0): ?>
                         <?php foreach ($event->approvers as $approver): ?>
                             <?php
-                            $backgroundColor = "";
+                            $badgeColor = "";
                             switch ($approver->status) {
                                 case ApproverStatus::Approved:
-                                    $backgroundColor = "#22c55e";
+                                    $badgeColor = "badge-success";
                                     break;
                                 case ApproverStatus::Rejected:
-                                    $backgroundColor = "#dc2626";
+                                    $badgeColor = "badge-danger";
                                     break;
                                 case ApproverStatus::Pending:
-                                    $backgroundColor = "#f97316";
+                                    $badgeColor = "badge-pending";
                                     break;
                             }
                             ?>
                             <div class="approver-item-wrapper">
                                 <div class="approver-item">
                                     <span><?= $approver->user->fullname ?></span>
-                                    <span style="background-color: <?= $backgroundColor ?>"><?= $approver->status->value ?></span>
+                                    <span class="badge <?= $badgeColor ?>"
+                                          style="font-size: 0.95rem"><?= $approver->status->value ?></span>
                                 </div>
                                 <p><?= $approver->reason ?></p>
                             </div>
