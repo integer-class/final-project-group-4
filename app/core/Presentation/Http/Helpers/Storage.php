@@ -9,6 +9,11 @@ class Storage
     private static int $FILE_UPLOAD_SIZE = 5_000_000; // 5MB
 
     /**
+     * Handles the uploaded image and validate it and then returns its path
+     * It also moves the file to the specified directory
+     * @param string $name
+     * @param string|null $directory
+     * @return string
      * @throws Exception
      */
     public static function handleUploadedImage(string $name, ?string $directory): string
@@ -53,6 +58,11 @@ class Storage
     }
 
     /**
+     * Updates the uploaded image if the user uploads a new image
+     * @param string $name
+     * @param string $old_path
+     * @param string|null $directory
+     * @return string
      * @throws Exception
      */
     public static function updateUploadedImage(string $name, string $old_path, ?string $directory): string
@@ -64,6 +74,10 @@ class Storage
         return self::handleUploadedImage($name, $directory);
     }
 
+    /**
+     * Removes the stored image from the server
+     * @param string $path
+     */
     public static function removeStoredImage(string $path): void
     {
         unlink(__DIR__ . "/../Views/Assets/uploaded_images/$path");

@@ -4,6 +4,9 @@ namespace Presentation\Http\Attributes;
 
 use Presentation\Http\Helpers\Session;
 
+/**
+ * Starts a session.
+ */
 #[\Attribute]
 class WithSession
 {

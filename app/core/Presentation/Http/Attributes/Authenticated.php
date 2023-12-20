@@ -6,6 +6,12 @@ use Presentation\Http\Helpers\Http;
 use Presentation\Http\Helpers\Session;
 use Primitives\Models\RoleName;
 
+/**
+ * Guards a route to only allow authenticated users to access it.
+ * If the user is not authenticated, it will redirect to the login page.
+ * If the user is authenticated but does not have the required role, it will redirect to the home page.
+ * @param RoleName ...$role
+ */
 #[\Attribute]
 class Authenticated
 {

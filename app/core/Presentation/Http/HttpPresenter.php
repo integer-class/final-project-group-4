@@ -8,6 +8,11 @@ use Presentation\Http\Attributes\WithSession;
 use Presentation\Http\Controllers\Controller;
 use Presentation\Http\Helpers\Http;
 
+/**
+ * The main presenter for the application.
+ * This class will handle all the routes and execute the controller method.
+ * It utilizes the attributes to determine which method to execute.
+ */
 class HttpPresenter
 {
     /* @var $controllers Controller[] */
@@ -82,6 +87,11 @@ class HttpPresenter
         $this->handleStaticFiles($request_path);
     }
 
+    /**
+     * Handles static files such as css, js, images, etc.
+     * @param string $request_path
+     * @return void
+     */
     private function handleStaticFiles(string $request_path): void
     {
         $asset_path = dirname(__FILE__) . '/Views/Assets' . $request_path;

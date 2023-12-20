@@ -2,6 +2,11 @@
 
 namespace Presentation\Http\Attributes;
 
+/**
+ * Marks a method as a route.
+ * @param string $path
+ * @param string $method
+ */
 #[\Attribute]
 class Route
 {

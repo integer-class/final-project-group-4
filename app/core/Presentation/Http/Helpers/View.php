@@ -7,7 +7,8 @@ use Primitives\Models\RoleName;
 class View
 {
     /**
-     * @return string[]
+     * Gets the route segments from the request uri
+     * @return array<string>
      */
     private static function getRouteSegments(): array
     {
@@ -35,6 +36,9 @@ class View
         }
     }
 
+    /**
+     * Returns an 'active' class when the current route matches the given path
+     */
     public static function activeClass(string $path): string
     {
         $routeSegments = self::getRouteSegments();
@@ -42,6 +46,9 @@ class View
         return $requestPath === $path ? 'active' : '';
     }
 
+    /**
+     * Returns the route based on the user's role
+     */
     public static function route(string $path): string
     {
         $session = Session::getInstance();
