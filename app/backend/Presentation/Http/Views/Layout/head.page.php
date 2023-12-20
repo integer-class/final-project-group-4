@@ -56,7 +56,8 @@
             executeLater.push(func);
         }
 
-        window.addEventListener('load', function () {
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log("DOM loaded");
             for (let c = 0; c < executeLater.length; c++) {
                 executeLater[c]();
             }

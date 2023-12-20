@@ -13,6 +13,11 @@
                     const documentText = await response.text();
                     document.startViewTransition(() => {
                         document.documentElement.innerHTML = documentText;
+                        // trigger DOMContentLoaded event
+                        window.document.dispatchEvent(new Event("DOMContentLoaded", {
+                            bubbles: true,
+                            cancelable: true
+                        }));
                     })
                 }
             })
