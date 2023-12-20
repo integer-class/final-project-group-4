@@ -13,11 +13,14 @@
                     const documentText = await response.text();
                     document.startViewTransition(() => {
                         document.documentElement.innerHTML = documentText;
-                        // trigger DOMContentLoaded event
-                        window.document.dispatchEvent(new Event("DOMContentLoaded", {
-                            bubbles: true,
-                            cancelable: true
-                        }));
+                        setTimeout(() => {
+                            window.document.dispatchEvent(new Event("DOMContentLoaded", {
+                                bubbles: true,
+                                cancelable: true
+                            }));
+                            // this seems hacky to rely on timeout but the datatable can't be immediately initialized
+                            // it needs to wait for some time after the dom is ready
+                        }, 50);
                     })
                 }
             })

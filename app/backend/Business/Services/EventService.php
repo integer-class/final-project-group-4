@@ -33,8 +33,15 @@ class EventService
         return $this->eventRepository->getByRoomId($roomId);
     }
 
+    /**
+     * @throws Exception
+     */
     public function createEvent(array $event): Event
     {
+        $isValid = $this->eventRepository->isRoomAvailableFromDateRange($event['room_id'], $event['start_date'], $event['end_date']);
+        if (!$isValid) {
+            throw new Exception("The room is not available for the selected date range.");
+        }
         return $this->eventRepository->create($event);
     }
 

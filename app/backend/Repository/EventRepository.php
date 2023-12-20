@@ -372,6 +372,29 @@ class EventRepository implements IEventRepository
         return $this->getById($this->client->getLastInsertedId());
     }
 
+    /**
+     * @throws Exception
+     */
+    public function isRoomAvailableFromDateRange(int $roomId, string $startDate, string $endDate): array
+    {
+        return $this->client->executeQuery('
+        SELECT
+            Event.Id as Id
+        FROM 
+            Event
+        WHERE
+            Event.RoomID = :room_id AND
+            (
+                (:starts_at BETWEEN Event.StartsAt AND Event.EndsAt) OR
+                (:ends_at BETWEEN Event.StartsAt AND Event.EndsAt)
+            )
+        ', [
+            'room_id' => $roomId,
+            'starts_at' => (new DateTime($startDate))->format('Ymd'),
+            'ends_at' => (new DateTime($endDate))->format('Ymd')
+        ]);
+    }
+
     public function assignApprover(int $id, array $approvers): Event
     {
         $query = 'INSERT INTO Event_Approver (EventID, UserID, BeforeUserID, AfterUserID, Status) VALUES';
