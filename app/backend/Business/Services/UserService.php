@@ -70,7 +70,7 @@ class UserService
             'email' => $raw_user['email'],
             'phone' => $raw_user['phone'],
             'avatar' => $avatar,
-            'role' => RoleName::from($raw_user['role']),
+            'role' => $raw_user['role'],
         ]);
         return $this->userRepository->update($user);
     }

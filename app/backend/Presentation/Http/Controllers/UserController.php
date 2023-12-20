@@ -51,7 +51,7 @@ class UserController extends Controller
             error_log($e->getMessage());
             $_SESSION['old'] = $_POST;
             $_SESSION['error_message'] = $e->getMessage();
-            Http::redirect('/admin/edit-user?id=' . $user->id);
+            Http::redirect('/admin/user?id=' . $user->id);
         }
     }
 

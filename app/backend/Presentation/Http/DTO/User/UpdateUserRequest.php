@@ -15,18 +15,17 @@ class UpdateUserRequest implements DtoRequestContract
     public string $confirm_password;
     public string $email;
     public string $phone;
-    public string $avatar;
-    public int $role;
+    public string $role;
 
     public function __construct(array $raw)
     {
+        $this->id = $raw['id'];
         $this->registration_number = $raw['registration_number'];
         $this->fullname = $raw['fullname'];
         $this->username = $raw['username'];
         $this->password = $raw['password'];
         $this->email = $raw['email'];
         $this->phone = $raw['phone'];
-        $this->avatar = $raw['avatar'];
         $this->role = $raw['role'];
     }
 
@@ -62,10 +61,6 @@ class UpdateUserRequest implements DtoRequestContract
             $errors['phone'] = 'Phone is required';
         }
 
-        if (empty($this->avatar)) {
-            $errors['avatar'] = 'Avatar is required';
-        }
-
         if (empty($this->role)) {
             $errors['role'] = 'Role is required';
         }
@@ -76,6 +71,7 @@ class UpdateUserRequest implements DtoRequestContract
     public function toArray(): array
     {
         return [
+            'id' => $this->id,
             'registration_number' => $this->registration_number,
             'fullname' => $this->fullname,
             'username' => $this->username,

@@ -126,7 +126,7 @@ class AdminViewController extends Controller
     {
         $id = Http::query('id');
         $user = $this->userService->getUserById($id);
-        $this->view('admin.user', [
+        $this->view('user', [
             '__layout_title__' => 'User Detail',
             'user' => $this->session->user,
             'userDetail' => $user

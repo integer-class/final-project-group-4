@@ -141,6 +141,7 @@ class UserRepository implements IUserRepository
             $user->email,
             $user->phone,
             $user->avatar,
+            $user->role->value,
             $user->id
         ]);
 
