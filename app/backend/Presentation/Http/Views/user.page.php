@@ -1,5 +1,6 @@
 <?php
 
+use Presentation\Http\Helpers\View;
 use Primitives\Models\RoleName;
 use Primitives\Models\User;
 
@@ -24,19 +25,7 @@ use Primitives\Models\User;
         <h1 class="form-title">Edit User Detail</h1>
         <input type="text" value="<?= $userDetail->id ?>" name="id" hidden>
         <div class="input-container">
-            <?php if (isset($_SESSION['success_message'])): ?>
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <?= $_SESSION['success_message'] ?>
-                    <?php unset($_SESSION['success_message']) ?>
-                </div>
-            <?php endif; ?>
-
-            <?php if (isset($_SESSION['error_message'])): ?>
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <?= $_SESSION['error_message'] ?>
-                    <?php unset($_SESSION['error_message']) ?>
-                </div>
-            <?php endif; ?>
+            <?= View::flashMessages() ?>
             <div class="mb-4 image-input">
                 <svg id="camera-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
                     <path fill="#888888"

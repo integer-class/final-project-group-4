@@ -1,5 +1,6 @@
 <?php
 
+use Presentation\Http\Helpers\View;
 use Primitives\Models\Event;
 use Primitives\Models\Room;
 use Primitives\Models\User;
@@ -37,12 +38,7 @@ use Primitives\Models\User;
     </div>
     <div class="bordered-container">
         <h1 class="form-title">Reservation Details</h1>
-        <?php if (isset($_SESSION['error_message'])): ?>
-            <div class="alert alert-danger">
-                <?= $_SESSION['error_message'] ?>
-                <?php unset($_SESSION['error_message']) ?>
-            </div>
-        <?php endif; ?>
+        <?= View::flashMessages() ?>
         <form class="reservation-container" method="post" action="/room/reserve">
             <div class="">
                 <h2 class="coc-title">Code of Conduct</h2>
@@ -67,7 +63,8 @@ use Primitives\Models\User;
                 <div class="mb-4 w-100 event-form-input">
                     <div class="w-100">
                         <label for="start-date-input" class="form-label">Starts At</label>
-                        <input type="datetime-local" class="input-text" id="start-date-input" name="start_date" required>
+                        <input type="datetime-local" class="input-text" id="start-date-input" name="start_date"
+                               required>
                     </div>
                     <div class="w-100">
                         <label for="end-date-input" class="form-label">Ends At</label>

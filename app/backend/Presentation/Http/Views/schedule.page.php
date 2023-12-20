@@ -16,21 +16,7 @@ use Primitives\Models\User;
             <h1 class="list-title">List of All Events</h1>
         </div>
     </div>
-
-    <?php if (isset($_SESSION['success_message'])): ?>
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <?= $_SESSION['success_message'] ?>
-            <?php unset($_SESSION['success_message']) ?>
-        </div>
-    <?php endif; ?>
-
-    <?php if (isset($_SESSION['error_message'])): ?>
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <?= $_SESSION['error_message'] ?>
-            <?php unset($_SESSION['error_message']) ?>
-        </div>
-    <?php endif; ?>
-
+    <?= View::flashMessages() ?>
     <table class="table" id="rooms-table">
         <thead>
         <tr>

@@ -62,4 +62,33 @@ class View
 
         return "{$prefix}/{$path}";
     }
+
+    public static function flashMessages(): ?string
+    {
+        $session = Session::getInstance();
+
+        if (isset($session->success_message)) {
+            $message = $session->success_message;
+            unset($session->success_message);
+            return <<<HTML
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {$message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            HTML;
+        }
+
+        if (isset($session->error_message)) {
+            $message = $session->error_message;
+            unset($session->error_message);
+            return <<<HTML
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {$message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            HTML;
+        }
+
+        return null;
+    }
 }
