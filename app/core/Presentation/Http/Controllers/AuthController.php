@@ -27,17 +27,17 @@ class AuthController extends Controller
             $user = $this->authService->login($login_request->username, $login_request->password);
             $this->session->startSession();
             $this->session->user = new User(
-                id: $user->id,
-                registrationNumber: $user->registrationNumber,
-                fullname: $user->fullname,
-                username: $user->username,
+                id: $user->getId(),
+                registrationNumber: $user->getRegistrationNumber(),
+                fullname: $user->getFullname(),
+                username: $user->getUsername(),
                 password: null,
-                email: $user->email,
-                phone: $user->phone,
-                avatar: $user->avatar,
-                role: $user->role,
+                email: $user->getEmail(),
+                phone: $user->getPhone(),
+                avatar: $user->getAvatar(),
+                role: $user->getRole(),
             );
-            switch ($user->role) {
+            switch ($user->getRole()) {
                 case RoleName::Administrator:
                     Http::redirect('/admin/dashboard');
                     break;

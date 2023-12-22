@@ -10,6 +10,7 @@ use Presentation\Http\Attributes\Route;
 use Presentation\Http\Attributes\WithSession;
 use Presentation\Http\Helpers\Http;
 use Presentation\Http\Helpers\Session;
+use Primitives\Models\ApprovalStatus;
 use Primitives\Models\RoleName;
 
 class AdminViewController extends Controller
@@ -141,11 +142,17 @@ class AdminViewController extends Controller
         $id = Http::query('id');
         $event = $this->eventService->getEventById($id);
         $approvers = $this->userService->getAllApprovers();
+        $isAllowedToApprove =
+            // more than zero approvers have been assigned
+            count($event->getApprovers()) <= 0 ||
+            // the user is an approver and the event is pending for their approval
+            array_filter($event->getApprovers(), fn($approver) => $approver->getUser()->getId() === $this->session->user->id && $approver->getStatus() === ApprovalStatus::Pending);
         $this->view('event-detail', [
             '__layout_title__' => 'Schedule',
             'user' => $this->session->user,
             'event' => $event,
-            'approvers' => $approvers
+            'approvers' => $approvers,
+            'isAllowedToApprove' => $isAllowedToApprove
         ]);
     }
 }

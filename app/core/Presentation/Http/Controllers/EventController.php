@@ -37,7 +37,7 @@ class EventController extends Controller
                 'user_id' => $request->user_id,
             ]);
             $_SESSION['success_message'] = 'Event has been reserved successfully';
-            Http::redirect("/student/room?id={$event->id}");
+            Http::redirect("/student/room?id={$event->getId()}");
         } catch (Exception $e) {
             $_SESSION['error_message'] = $e->getMessage();
             Http::redirect("/student/room?id={$request->room_id}");
@@ -52,7 +52,7 @@ class EventController extends Controller
         try {
             $id = Http::query('id');
             $event = $this->eventService->assignApprover($id, $request->approvers);
-            $_SESSION['success_message'] = "The approvers have been assigned for the event {$event->title} successfully";
+            $_SESSION['success_message'] = "The approvers have been assigned for the event {$event->getTitle()} successfully";
             Http::redirect("/admin/schedule");
         } catch (Exception $e) {
             $_SESSION['error_message'] = $e->getMessage();
@@ -70,7 +70,7 @@ class EventController extends Controller
             $id = Http::query('id');
             $approverId = $session->user['id'];
             $event = $this->eventService->approve($id, $approverId);
-            $_SESSION['success_message'] = "The event {$event->title} has been approved successfully";
+            $_SESSION['success_message'] = "The event {$event->getTitle()} has been approved successfully";
             Http::redirect("/approver/schedule");
         } catch (Exception $e) {
             $_SESSION['error_message'] = $e->getMessage();
@@ -88,7 +88,7 @@ class EventController extends Controller
             $id = Http::query('id');
             $approverId = $session->user->id;
             $event = $this->eventService->reject($id, $approverId, $request->reason);
-            $_SESSION['success_message'] = "The event {$event->title} has been rejected successfully";
+            $_SESSION['success_message'] = "The event {$event->getTitle()} has been rejected successfully";
             Http::redirect("/approver/schedule");
         } catch (Exception $e) {
             $_SESSION['error_message'] = $e->getMessage();

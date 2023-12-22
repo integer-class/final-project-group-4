@@ -93,13 +93,13 @@ class ApproverViewController extends Controller
         $id = Http::query('id');
         $event = $this->eventService->getEventById($id);
         $approvers = $this->userService->getAllApprovers();
-        $previousApproverStatus = $this->eventService->getPreviousApproverStatus($event->id, $this->session->user->id);
+        $previousApproverStatus = $this->eventService->getPreviousApproverStatus($event->getId(), $this->session->user->id);
         // the approval needs to be done in order, hence why we need to check these things
         $isAllowedToApprove =
             // more than zero approvers have been assigned
-            count($event->approvers) <= 0 ||
+            count($event->getApprovers()) <= 0 ||
             // the user is an approver and the event is pending for their approval
-            array_filter($event->approvers, fn($approver) => $approver->user->id === $this->session->user->id && $approver->status === ApprovalStatus::Pending) &&
+            array_filter($event->getApprovers(), fn($approver) => $approver->getUser()->getId() === $this->session->user->id && $approver->getStatus() === ApprovalStatus::Pending) &&
             // the user is an approver and the event is pending for the previous approver
             $previousApproverStatus === ApprovalStatus::Approved;
 

@@ -34,7 +34,7 @@ class RoomController extends Controller
     {
         try {
             $room = $this->roomService->createRoom($room->toArray());
-            $_SESSION['success_message'] = "Room with the name of {$room->name} has been created successfully";
+            $_SESSION['success_message'] = "Room with the name of {$room->getName()} has been created successfully";
             Http::redirect("/admin/room-list");
         } catch (\Exception $e) {
             $_SESSION['error_message'] = $e->getMessage();
@@ -50,7 +50,7 @@ class RoomController extends Controller
     {
         try {
             $room = $this->roomService->updateRoom($room->toArray());
-            $_SESSION['success_message'] = "Room with the name of {$room->name} has been updated successfully";
+            $_SESSION['success_message'] = "Room with the name of {$room->getName()} has been updated successfully";
             Http::redirect('/admin/room-list');
         } catch (\Exception $e) {
             $_SESSION['error_message'] = $e->getMessage();

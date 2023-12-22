@@ -28,7 +28,7 @@ class UserController extends Controller
     {
         try {
             $user = $this->userService->createUser($user->toArray());
-            $_SESSION['success_message'] = "User with an email of {$user->email} has been created successfully";
+            $_SESSION['success_message'] = "User with an email of {$user->getEmail()} has been created successfully";
             Http::redirect('/admin/user-list');
         } catch (Exception $e) {
             error_log($e->getMessage());
@@ -45,7 +45,7 @@ class UserController extends Controller
     {
         try {
             $user = $this->userService->updateUser($user->toArray());
-            $_SESSION['success_message'] = "User with an email of {$user->email} has been updated successfully";
+            $_SESSION['success_message'] = "User with an email of {$user->getEmail()} has been updated successfully";
             Http::redirect('/admin/user-list');
         } catch (Exception $e) {
             error_log($e->getMessage());
@@ -63,7 +63,7 @@ class UserController extends Controller
         try {
             $id = Http::query('id');
             $user = $this->userService->deleteUser($id);
-            $_SESSION['success_message'] = "User with the name of {$user->fullname} has been deleted successfully";
+            $_SESSION['success_message'] = "User with the name of {$user->getFullname()} has been deleted successfully";
             Http::redirect('/admin/user-list');
         } catch (Exception $e) {
             error_log($e->getMessage());
